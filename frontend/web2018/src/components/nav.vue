@@ -1,17 +1,17 @@
 <template>
   <div>
 
-    <el-menu class="submenu" mode="horizontal" router=true>
+    <el-menu class="submenu" mode="horizontal" v-bind:router="true">
 
-      <el-menu-item index="0" id='img-submenu' router="/">
+      <el-menu-item index="0" id='img-submenu' >
         <img class="eesast" src="..\..\static\eesast.png"/>
       </el-menu-item>
-      <el-menu-item index="1" router="/">首页</el-menu-item>
+      <el-menu-item index="1" >首页</el-menu-item>
       <el-menu-item v-if="navflag==true" index="/login" >登录/注册</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="3" router="">组队</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="4" router="">对战</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="5" router="">个人中心</el-menu-item>
-      <el-menu-item index="6" router="">文件</el-menu-item>
+      <el-menu-item v-if="navflag!=true" index="3" >组队</el-menu-item>
+      <el-menu-item v-if="navflag!=true" index="4" >对战</el-menu-item>
+      <el-menu-item v-if="navflag!=true" index="5" >个人中心</el-menu-item>
+      <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
     </el-menu>
   </div>

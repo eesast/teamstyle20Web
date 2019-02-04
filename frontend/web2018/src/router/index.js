@@ -4,6 +4,7 @@ import announcement from '@/components/announcement'
 import empty from '@/components/empty'
 import HelloWorld from '@/components/Index.vue'
 import login from '@/components/Login.vue'
+import file from '@/components/file.vue'
 
 Vue.use(Router)
 
@@ -28,6 +29,10 @@ export default new Router({
     {
       path: '/login',
       component: login
+    },
+    {
+      path: '/file',
+      component: file
     }
   ]
 })
