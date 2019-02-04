@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <router-link to="announcement" class="link-to-announcement" @click.native="selectnav('dep study')" >announcement</router-link>
+    <router-link to="announcement" class="link-to-announcement" @click.native="" >announcement</router-link>
   </div>
 </template>
 
@@ -26,18 +26,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+html,body
+{
+  width:100%;
 }
 </style>

@@ -3,6 +3,7 @@
     <!-- <img src="./assets/logo.png"> -->
     <navbar></navbar>
     <router-view/>
+    <!-- <div class="footer_empty"></div> -->
     <foot></foot>
   </div>
 </template>
@@ -17,6 +18,20 @@ export default {
 </script>
 
 <style>
+html,body
+{
+  width:100%;
+  height:100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+/* .footer_empty
+{
+
+  height:5%;
+  width:100%;
+} */
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +39,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  width:100%;
+  height:100%;
 }
 </style>
