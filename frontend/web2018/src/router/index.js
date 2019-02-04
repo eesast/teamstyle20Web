@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import announcement from '@/components/announcement'
 import empty from '@/components/empty'
+import HelloWorld from '@/components/Index.vue'
+import login from '@/components/Login.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,10 @@ export default new Router({
       path: '/empty',
       // name:'announcement',
       component: empty
+    },
+    {
+      path: '/login',
+      component: login
     }
   ]
 })

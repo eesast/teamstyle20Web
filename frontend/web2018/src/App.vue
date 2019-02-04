@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
     <navbar></navbar>
     <router-view/>
-    <!-- <div class="footer_empty"></div> -->
     <foot></foot>
   </div>
 </template>

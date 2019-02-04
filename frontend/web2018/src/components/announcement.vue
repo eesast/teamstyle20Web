@@ -176,12 +176,15 @@ export default {
 <style>
 #announcement_contain
 {
+    margin-top:20px;
+    /* margin-bottom:20px; */
     width:100%;
     height:80%;
 }
 #announcement_card
 {
     position: relative;
+    margin-top:20px;
     width:70%;
     left:15%;
 }
