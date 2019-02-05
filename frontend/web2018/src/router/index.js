@@ -5,6 +5,7 @@ import empty from '@/components/empty'
 import HelloWorld from '@/components/Index.vue'
 import login from '@/components/Login.vue'
 import file from '@/components/file.vue'
+import team from '@/components/team.vue'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ export default new Router({
     {
       path: '/file',
       component: file
+    },
+    {
+      path: '/team',
+      component: team
     }
   ]
 })

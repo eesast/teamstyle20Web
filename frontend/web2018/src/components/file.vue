@@ -23,7 +23,7 @@
             align="right">
             <template slot="header" slot-scope="scope">
                  <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
-                        <el-button id="downloadall"@click="handleBatchDownload()">Download All</el-button>
+                        <el-button type="primary" id="downloadall"@click="handleBatchDownload()">Download All</el-button>
                 </el-tooltip>
             </template>
             </el-table-column>

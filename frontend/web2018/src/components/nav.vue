@@ -4,11 +4,11 @@
     <el-menu class="submenu" mode="horizontal" v-bind:router="true">
 
       <el-menu-item index="0" id='img-submenu' >
-        <img class="eesast" src="..\..\static\eesast.png"/>
+        <img class="eesast" src="..\..\static\img\eesast.png"/>
       </el-menu-item>
       <el-menu-item index="1" >首页</el-menu-item>
       <el-menu-item v-if="navflag==true" index="/login" >登录/注册</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="3" >组队</el-menu-item>
+      <el-menu-item v-if="navflag!=true" index="/team" >组队</el-menu-item>
       <el-menu-item v-if="navflag!=true" index="4" >对战</el-menu-item>
       <el-menu-item v-if="navflag!=true" index="5" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
@@ -22,7 +22,8 @@ export default {
     name: "navbar",
     data() {
       return {
-        navflag: true
+        // navflag: true
+        navflag:false
       }
     },
   methods: {

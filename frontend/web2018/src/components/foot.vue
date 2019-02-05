@@ -5,7 +5,7 @@
       <h4>赞助商</h4>
       <div class="supporter_container">
         <a href="">
-          <img src="..\..\static\github.svg"/>Github</a>
+          <img src="..\..\static\img\github.svg"/>Github</a>
       </div>
     </div>
     
@@ -18,15 +18,15 @@
     <div class="support">
       <h4>技术支持</h4>
       <a href="https://www.djangoproject.com/">
-        <img src="../../static/django.svg" /></a>
+        <img src="../../static/img/django.svg" /></a>
       <a href="https://www.docker.com/">
-        <img src="../../static/docker.svg" /></a> 
+        <img src="../../static/img/docker.svg" /></a> 
       <a href="https://cn.vuejs.org/">
-        <img src="../../static/vue.png"/></a>
+        <img src="../../static/img/vue.png"/></a>
       <a href="https://element.eleme.io/">
-        <img src="../../static/elementui.svg"/></a>
+        <img src="../../static/img/elementui.svg"/></a>
       <a href="https://github.com/">
-        <img src="../../static/github.svg"/></a>
+        <img src="../../static/img/github.svg"/></a>
     </div>
   </div>
 </template>
