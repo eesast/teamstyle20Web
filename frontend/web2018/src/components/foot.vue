@@ -51,7 +51,8 @@ html,body
   display: flex;
   flex-direction: row;
   background: rgb(109, 191, 230,0.2);
-  /* margin-top:20px; */
+  position: relative;
+  margin-top:50px;
 }
 
 .col {

@@ -55,7 +55,10 @@
                         <td>
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
-                                    <td valign="middle">{{detailData.members[index]}}</td>
+                                    <td valign="middle">{{detailData.members[index]}}
+                                        <el-button type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
+                                    </td>
+                                    <!-- <td v-if="iscaptain==true">踢出队伍</td> -->
                                 </tr>
                                 <!-- <tr class='table_th1'><td valign="middle">{{detailData.members[0]}}</td></tr>
                                 <tr class='table_th2'><td valign="middle">2</td></tr>
@@ -67,7 +70,58 @@
             </div>
         </el-tab-pane>
         <el-tab-pane label="加入队伍">
-
+            <el-table
+            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" 
+            stripe
+            style="width: 100%">
+             <el-table-column
+            label="队伍序号"
+            width="80">
+                <template slot-scope="scope">
+                    {{scope.$index+(currentPage-1)*pagesize}}
+                </template>
+            </el-table-column>
+            <el-table-column
+            prop="teamname"
+            label="队伍名称"
+            width="100">
+            </el-table-column>
+            <el-table-column
+            prop="captain"
+            label="队长"
+            width="100">
+            </el-table-column>
+            <el-table-column
+            prop="description"
+            label="队伍简介"
+            width="460">
+            </el-table-column>
+            <el-table-column
+            prop="members"
+            width="150"
+            label="队伍成员">
+                <template slot-scope="scope">
+                    <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
+                        <p v-for="(x,index) in scope.row.members">
+                            {{x}}
+                        </p>
+                    <!-- </table> -->
+                </template>
+            </el-table-column>
+            <el-table-column
+            label="操作">
+                <template slot-scope="scope">
+                    <el-button type="primary" @click="joinTeam(scope.$index+(currentPage-1)*pagesize)">加入队伍</el-button>
+                </template>
+            </el-table-column>
+            </el-table> 
+            <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            background
+            layout="prev, pager, next"
+            :total=tableData.length>
+            </el-pagination>
         </el-tab-pane>
         </el-tabs>
     </div>
@@ -78,7 +132,9 @@ export default {
     name: "team",
     data(){
         return {
-            inteam: true, //是否在队伍中
+            inteam: false, //是否在队伍中  影响“我的队伍”显示界面
+            iscaptain: true,//该成员是否为队长  影响“我的队伍”是否出现踢人选项
+            
             dialogFormVisible: false,//创建队伍对话框
             form: {
             teamname: '',
@@ -97,14 +153,123 @@ export default {
                 { min: 1, max: 50, message: '长度在 1 到 50 个字', trigger: 'blur' }],
             },
             formLabelWidth: '100px',//对话框宽度
-            detailData:
+            detailData:   //若当前用户已有队伍，则其队伍信息
             {
                 teamname:"划水大法好",
                 captain:"萌新0号",
                 invitecode:"1z2x3c4v",
                 description:"我们最爱划水",
+                members:['好人','萌新']
+            },
+            currentPage:1, //初始页
+            pagesize:10,    //    每页的数据
+            //加入队伍中所有队伍信息
+            // tableData: [{ 
+                //id:0,
+            //     teamname:"划水大法好",
+            //     captain:"萌新0号",
+            //     description:"我们最爱划水",
+            //     members:['好人','萌新']
+            // }, ]
+            tableData: [{ 
+                id:0,
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新']
+            }, {
+                id:0,
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
                 members:['好人','萌新','蒟蒻']
-            }
+            }, {   
+                id:0,
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            }, {
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            },{
+                teamname:"划水大法好",
+                captain:"萌新0号",
+                description:"我们最爱划水",
+                members:['好人','萌新','蒟蒻']
+            }]
         }
     },
     methods: {
@@ -143,8 +308,6 @@ export default {
             {
                 this.$message.error('队伍名称过长');
             }
-            
-            
         },
         onCopy()
         {
@@ -154,7 +317,73 @@ export default {
         onError()
         {
             this.$message.error('复制失败');
-        }
+        },
+        dropOut(index)//踢出id为index的队员
+        {
+             this.$confirm('是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">'+this.detailData.members[index]+'</span>&nbsp;&nbsp;&nbsp;请出队伍?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                dangerouslyUseHTMLString: true ,
+                type: 'warning'
+                }).then(() => {
+                    //****************发送命令将队员从队伍中删除 */
+                    // fetch()
+                this.$message({
+                    type: 'success',
+                    message: '操作成功!'
+                });
+                }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+                });
+        },
+        joinTeam(index)//加入第几个队伍
+        {
+            // console.log(index);
+            //this.tableData[index].id//为加入队伍的标号
+            var teamid=this.tableData[index].id;//获取队伍标号
+
+            this.$prompt('请输入邀请码', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+            // inputErrorMessage: '邮箱格式不正确'
+            }).then(({ value }) => {
+            //传入value作为teamid队伍的邀请码
+            // fetch('',()=>
+            // {
+
+            // }).then(response=>({
+            //     if(ok)
+            //     {
+            //           this.$message({
+            //                 type: 'success',
+            //                 message: '加入队伍成功'
+            //             });
+            //     }
+            //     else if(no)
+            //     {
+            //         this.$message({
+            //                 type: 'error',
+            //                 message: '加入队伍失败'
+            //         });
+            //     }
+            // }))    
+
+
+            }).catch(() => {
+            // this.$message({
+            //     type: 'info',
+            //     message: '取消加入队伍'
+            // });       
+            });
+        },
+        handleCurrentChange: function(currentPage){
+                this.currentPage = currentPage;
+                // console.log(this.currentPage)  //点击第几页
+        },
     }
 }
 </script>
@@ -172,13 +401,13 @@ export default {
 #team_contain
 {
     width:100%;
-    height:80%;
+    min-height:70%;
 }
 #team_card
 {
     position: relative;
-    width:60%;
-    left:20%;
+    width:70%;
+    left:15%;
     margin-top:2%;
 }
 #create_team
@@ -249,19 +478,24 @@ export default {
 {
     background-color: #f5f7fa;
     padding-top:10px;
-    height:30px;
+    height:50px;
     position: relative;
 }
 #members_table .table_th1
 {
     background-color:white;
     padding-top:10px;
-    height:30px;
+    height:50px;
     position: relative;
 }
 #copyinvitecode
 {
     position: relative;
     left:50px;
+}
+.dropout
+{
+    position: relative;
+    left:50%;
 }
 </style>

@@ -179,7 +179,7 @@ export default {
     margin-top:20px;
     /* margin-bottom:20px; */
     width:100%;
-    height:80%;
+    min-height:80%;
 }
 #announcement_card
 {
