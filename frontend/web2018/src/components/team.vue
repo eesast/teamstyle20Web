@@ -36,7 +36,10 @@
                  <table  id="detail_table">
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/star.svg" class="svg"></img>队伍名称</th>
-                        <td>{{detailData.teamname}}</td>
+                        <td>{{detailData.teamname}}
+                            <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;left:50%;" @click="clearTeam()">解散队伍</el-button>
+                            <el-button v-else type="danger" size="small" style="position:relative;left:50%;" @click="exitTeam()">退出队伍</el-button>
+                        </td>
                     </tr>
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/user.svg" class="svg"></img>队长</th>
@@ -56,7 +59,7 @@
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
                                     <td valign="middle">{{detailData.members[index]}}
-                                        <el-button type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
+                                        <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
                                     <!-- <td v-if="iscaptain==true">踢出队伍</td> -->
                                 </tr>
@@ -132,7 +135,7 @@ export default {
     name: "team",
     data(){
         return {
-            inteam: false, //是否在队伍中  影响“我的队伍”显示界面
+            inteam: true, //是否在队伍中  影响“我的队伍”显示界面
             iscaptain: true,//该成员是否为队长  影响“我的队伍”是否出现踢人选项
             
             dialogFormVisible: false,//创建队伍对话框
@@ -379,6 +382,14 @@ export default {
             //     message: '取消加入队伍'
             // });       
             });
+        },
+        clearTeam()//队长解散队伍
+        {
+
+        },
+        exitTeam()//队员退出队伍
+        {
+
         },
         handleCurrentChange: function(currentPage){
                 this.currentPage = currentPage;
