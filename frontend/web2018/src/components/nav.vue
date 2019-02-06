@@ -10,7 +10,7 @@
       <el-menu-item v-if="navflag==true" index="/login" >登录/注册</el-menu-item>
       <el-menu-item v-if="navflag!=true" index="/team" >组队</el-menu-item>
       <el-menu-item v-if="navflag!=true" index="/battle" >对战</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="5" >个人中心</el-menu-item>
+      <el-menu-item v-if="navflag!=true" index="/personal" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
     </el-menu>
