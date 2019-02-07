@@ -11,9 +11,16 @@
         </el-card>
     </div>    
     <div class="empty"></div>
-    <div class="part2">
-        <el-card shadow="always">
-            part2
+    <div class="part2" style="vertical-align: top;">
+        <el-card shadow="always"  style="text-align:left;">
+        <h4>对战比分：{{score}}</h4>
+        <h4>当前排名：{{rank}}</h4>
+        <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName" max-height="400">
+            <el-table-column prop="teams" label="对战队伍">
+            </el-table-column>
+            <el-table-column prop="result" label="对战结果">
+            </el-table-column>
+        </el-table>
         </el-card>
     </div>
     <div class="empty_content"></div>
@@ -30,16 +37,77 @@ export default {
             password:"********",
             team: "one",
             phone: "12345678899",
-            mail: "123456789@163.com"
+            mail: "123456789@163.com",
+            score: 100,
+            rank: 5,
+            tableData:[
+                {
+                    teams: "team1",
+                    result: "victory"
+                },
+                {
+                    teams: "team2",
+                    result: "fail"
+                },
+                {
+                    teams: "team3",
+                    result: "fail"
+                },
+                {
+                    teams: "team4",
+                    result: "victory"
+                },
+                {
+                    teams: "team2",
+                    result: "fail"
+                },
+                {
+                    teams: "team3",
+                    result: "fail"
+                },
+                {
+                    teams: "team4",
+                    result: "victory"
+                },
+                {
+                    teams: "team2",
+                    result: "fail"
+                },
+                {
+                    teams: "team3",
+                    result: "fail"
+                },
+                {
+                    teams: "team4",
+                    result: "victory"
+                }
+            ]
         }
     },
     methods: {
-         
+        tableRowClassName({row, rowIndex}) {
+        if (row.result=== "fail") {
+          return 'warning-row';
+        } 
+        else {
+          return 'success-row';
+        }
+      }
     }
 }
 </script>
 
 <style>
+.el-table .warning-row {
+    background: tomato;
+  }
+
+  .el-table .success-row {
+    background: greenyellow;
+  }
+.el-button{
+    float: right;
+}
 #personal
 {
     position: relative;
@@ -49,29 +117,20 @@ export default {
 .part1,.part2,.empty
 {
     display: inline-block;
-    position: relative;
     margin-top:30px;
 }
 .part1
 {
     width:35%;
     left:10%;
-    /* min-height: 100%; */
-    /* min-height:100%; */
-    /* background: black; */
-    /* position: relative; */
 }
 .empty
 {
-    width:14%;
+    width:8%;
 }
 .part2
 {
-    /* left:5%; */
-    /* height:100%; */
-    /* top:; */
     width:35%;
-    /* min-height:70%; */
-    /* position: relative; */
+    float:top;
 }
 </style>
