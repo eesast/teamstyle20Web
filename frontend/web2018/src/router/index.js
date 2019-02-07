@@ -8,6 +8,7 @@ import file from '@/components/file.vue'
 import team from '@/components/team.vue'
 import battle from '@/components/battle.vue'
 import personal from '@/components/personal.vue'
+import alter from '@/components/alter.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
     {
       path: '/personal',
       component: personal
+    },
+    {
+      path: '/alter',
+      name: alter,
+      component: alter
     }
   ]
 })

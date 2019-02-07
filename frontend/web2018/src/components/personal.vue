@@ -1,12 +1,17 @@
 <template>
-<div id="battle_contain">
-    <div class="code_content">
+<div id="personal">
+    <div class="part1">
         <el-card shadow="always" style="text-align:left;">
-            part1
+            <h4>账号：{{name}}</h4>
+            <h4>密码：{{password}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
+            <h4>绑定手机号：{{phone}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
+            <h4>绑定邮箱号：{{mail}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
+            <h4 v-if="flag0">创建的队伍：{{team}}</h4>
+            <h4 v-else="flag0">加入的队伍：{{team}}</h4>
         </el-card>
     </div>    
-    <div class="empty_content"></div>
-    <div class="battle_content">
+    <div class="empty"></div>
+    <div class="part2">
         <el-card shadow="always">
             part2
         </el-card>
@@ -17,10 +22,15 @@
     
 <script>
 export default {
-    name: 'battle',
+    name: 'personal',
     data() {
         return {
-            
+            flag0: true,
+            name: "test",
+            password:"********",
+            team: "one",
+            phone: "12345678899",
+            mail: "123456789@163.com"
         }
     },
     methods: {
@@ -30,36 +40,37 @@ export default {
 </script>
 
 <style>
-#battle_contain
+#personal
 {
     position: relative;
     width:100%;
     min-height: 70%;
 }
-.code_content,.battle_content,.empty_content
+.part1,.part2,.empty
 {
     display: inline-block;
     position: relative;
     margin-top:30px;
 }
-.code_content
+.part1
 {
-    width:18%;
+    width:35%;
+    left:10%;
     /* min-height: 100%; */
     /* min-height:100%; */
     /* background: black; */
     /* position: relative; */
 }
-.empty_content
+.empty
 {
     width:14%;
 }
-.battle_content
+.part2
 {
     /* left:5%; */
     /* height:100%; */
     /* top:; */
-    width:50%;
+    width:35%;
     /* min-height:70%; */
     /* position: relative; */
 }
