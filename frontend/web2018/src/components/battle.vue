@@ -201,6 +201,7 @@ export default {
     position: relative;
     width:100%;
     min-height: 70%;
+    margin-bottom:50px; 
 }
 .code_content,.battle_content,.empty_content
 {

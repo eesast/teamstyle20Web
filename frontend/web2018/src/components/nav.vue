@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="nav">
 
     <el-menu class="submenu" mode="horizontal" v-bind:router="true">
 
@@ -35,7 +35,11 @@ export default {
 </script>
 
 <style scoped>
-img{
+#nav
+{
+  height:10%;
+}
+#nav img{
   height:60px;
   width:60px;
 }

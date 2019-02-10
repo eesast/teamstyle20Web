@@ -26,6 +26,15 @@ export default{
 </script>
 
 <style>
+.index
+{
+  min-height:70%;
+  position: relative;
+}
+.el-carousel
+{
+  overflow: hidden;
+}
 .el-carousel__item{
   margin-top:30px;
 }

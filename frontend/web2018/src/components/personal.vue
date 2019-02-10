@@ -3,9 +3,9 @@
     <div class="part1">
         <el-card shadow="always" style="text-align:left;">
             <h4>账号：{{name}}</h4>
-            <h4>密码：{{password}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
-            <h4>绑定手机号：{{phone}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
-            <h4>绑定邮箱号：{{mail}}<el-button size="mini" type="primary" icon="el-icon-edit" index="/alter"></el-button></h4>
+            <h4>密码：{{password}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
+            <h4>绑定手机号：{{phone}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
+            <h4>绑定邮箱号：{{mail}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
             <h4 v-if="flag0">创建的队伍：{{team}}</h4>
             <h4 v-else="flag0">加入的队伍：{{team}}</h4>
         </el-card>
@@ -92,6 +92,12 @@ export default {
         else {
           return 'success-row';
         }
+      },
+      toalter()
+      {
+          this.$router.replace({
+                path: '/alter',
+        })
       }
     }
 }
@@ -113,6 +119,7 @@ export default {
     position: relative;
     width:100%;
     min-height: 70%;
+    margin-bottom:50px; 
 }
 .part1,.part2,.empty
 {

@@ -47,12 +47,12 @@ html,body
 
 .footer {
   width: 100%;
-  height: 150px;
+  height: 20%;
   display: flex;
   flex-direction: row;
   background: rgb(109, 191, 230,0.2);
   position: relative;
-  margin-top:50px;
+  /* margin-top:5%; */
 }
 
 .col {

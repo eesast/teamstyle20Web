@@ -37,7 +37,7 @@
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/star.svg" class="svg"></img>队伍名称</th>
                         <td>{{detailData.teamname}}
-                            <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;left:50%;" @click="clearTeam()">解散队伍</el-button>
+                            <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;float:right;" @click="clearTeam()">解散队伍</el-button>
                             <el-button v-else type="danger" size="small" style="position:relative;left:50%;" @click="exitTeam()">退出队伍</el-button>
                         </td>
                     </tr>
@@ -51,7 +51,7 @@
                     </tr>
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/edit-square.svg" class="svg"></img>队伍简介</th>
-                        <td><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input></td>
+                        <td><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input><el-button size="mini" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
                     </tr>      
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/team.svg"  class="svg"></img>队伍成员</th>
@@ -391,6 +391,10 @@ export default {
         {
 
         },
+        edit_description()//修改队伍简介
+        {
+
+        },
         handleCurrentChange: function(currentPage){
                 this.currentPage = currentPage;
                 // console.log(this.currentPage)  //点击第几页
@@ -413,6 +417,7 @@ export default {
 {
     width:100%;
     min-height:70%;
+    margin-bottom:50px; 
 }
 #team_card
 {
@@ -502,11 +507,13 @@ export default {
 #copyinvitecode
 {
     position: relative;
-    left:50px;
+    /* left:50px; */
+    float:right;
 }
 .dropout
 {
     position: relative;
-    left:50%;
+    /* left:50%; */
+    float:right;
 }
 </style>
