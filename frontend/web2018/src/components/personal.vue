@@ -105,7 +105,7 @@ export default {
   .el-table .success-row {
     background: greenyellow;
   }
-.el-button{
+#personal .el-button{
     float: right;
 }
 #personal
