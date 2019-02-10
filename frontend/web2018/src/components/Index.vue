@@ -10,7 +10,7 @@
     <div class="intro">
       <h4>这里是比赛简介</h4>
     </div>
-    <el-button>报名参加</el-button>
+    <el-button @click="indexjump">报名参加</el-button>
   </div>
 </template>
 
@@ -24,6 +24,11 @@ export default{
         {id: 1, idView: require('..\\..\\static\\test\\2.jpg')},
         {id: 2, idView: require('..\\..\\static\\test\\4.jpg')}
       ]
+    }
+  },
+  methods:{
+    indexjump(){
+      this.$router.push({path: '/login',query: { flag: true } })
     }
   }
 }

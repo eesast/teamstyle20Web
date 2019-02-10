@@ -1,7 +1,6 @@
 <template>
   <div>
-
-    <el-menu class="submenu" mode="horizontal" v-bind:router="true">
+    <el-menu class="submenu" mode="horizontal" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="0" id='img-submenu' >
         <img class="eesast" src="..\..\static\img\eesast.png"/>
@@ -30,7 +29,12 @@ export default {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
         }
+    },
+  computed:{
+    onRoutes(){
+      return this.$route.path;
     }
+  }
 };
 </script>
 
