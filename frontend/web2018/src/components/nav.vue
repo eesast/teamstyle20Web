@@ -22,7 +22,7 @@ export default {
     name: "navbar",
     data() {
       return {
-        //navflag: true
+        // navflag: true
         navflag:false
       }
     },

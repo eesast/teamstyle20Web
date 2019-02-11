@@ -16,7 +16,7 @@
             <el-table-column
             prop="title"
             label="标题"
-            width="350">
+            min-width="40%">
                 <template slot-scope="scope">
                 <el-badge v-if="scope.$index==0" value="new" class="announcement-item">
                         <!-- <div slot="reference" class="name-wrapper"> -->
@@ -30,7 +30,7 @@
             <el-table-column
             prop="pub_date"
             label="发布时间"
-            width="350">
+            min-width="30%">
                 <template slot-scope="scope">
                 <i class="el-icon-time"></i>
                 <span style="margin-left: 10px">{{ scope.row.pub_date }}</span>
@@ -40,6 +40,7 @@
             <el-table-column
             prop="last_update_date"
             label="最后更新时间"
+            min-width="30%"
             >
                 <template slot-scope="scope">
                 <i class="el-icon-time"></i>

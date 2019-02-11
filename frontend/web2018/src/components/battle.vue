@@ -28,7 +28,7 @@
     </div>    
     <div class="empty_content"></div>
     <div class="battle_content">
-        <el-card shadow="always">
+        <el-card shadow="always" style="width:100%;">
             <el-table
             :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             :default-sort = "{prop: 'teamname', order: 'descending'}"
@@ -36,30 +36,32 @@
             style="width: 100%">
             <el-table-column
             label="#"
-            width="80">
+            min-width="10%">
                 <template slot-scope="scope">{{scope.$index+(currentPage-1)*pagesize}}</template>
             </el-table-column>
             <el-table-column
             prop="teamname"
             label="队伍名称"
             sortable
-            width="200">
+            min-width="25%">
             </el-table-column>
             <el-table-column
             prop="captain"
             label="队长"
             sortable
-            width="150">
+            min-width="20%">
             </el-table-column>
             <el-table-column
             prop="score"
             label="得分"
             sortable
-            width="180">
+            min-width="15%">
             </el-table-column>
             <el-table-column
             prop="option"
-            label="操作">
+            align="center"
+            label="操作"
+            min-width="30%">
             <template slot-scope="scope">
                 <el-button type="danger" size="mini">发起对战</el-button>
             </template>
@@ -219,14 +221,14 @@ export default {
 }
 .empty_content
 {
-    width:14%;
+    width:9%;
 }
 .battle_content
 {
     /* left:5%; */
     /* height:100%; */
     /* top:; */
-    width:50%;
+    width:60%;
     /* min-height:70%; */
     /* position: relative; */
 }

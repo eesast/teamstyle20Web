@@ -123,6 +123,11 @@ export default {
 </script>
 
 <style scoped>
+#login
+{
+  min-height: 70%;
+  margin-bottom:50px;
+}
   .el-form-item{
     width:40%;
     position: relative;

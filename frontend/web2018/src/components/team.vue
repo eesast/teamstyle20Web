@@ -36,7 +36,7 @@
                  <table  id="detail_table">
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/star.svg" class="svg"></img>队伍名称</th>
-                        <td>{{detailData.teamname}}
+                        <td>{{detailData.teamname}}</td><td>
                             <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;float:right;" @click="clearTeam()">解散队伍</el-button>
                             <el-button v-else type="danger" size="small" style="position:relative;left:50%;" @click="exitTeam()">退出队伍</el-button>
                         </td>
@@ -44,23 +44,25 @@
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/user.svg" class="svg"></img>队长</th>
                         <td>{{detailData.captain}}</td>
+                        <td></td>
                     </tr>
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/id card.svg" class="svg"></img>邀请码</th>
-                        <td>{{detailData.invitecode}}<el-button v-clipboard:copy="detailData.invitecode" v-clipboard:success="onCopy" v-clipboard:error="onError" id="copyinvitecode"type="primary">复制</el-button></td>
+                        <td>{{detailData.invitecode}}</td><td><el-button v-clipboard:copy="detailData.invitecode" v-clipboard:success="onCopy" v-clipboard:error="onError" id="copyinvitecode"type="primary" size="small">复制</el-button></td>
                     </tr>
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/edit-square.svg" class="svg"></img>队伍简介</th>
-                        <td><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input><el-button size="mini" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
+                        <td colspan="2"><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input><el-button size="mini" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
                     </tr>      
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/team.svg"  class="svg"></img>队伍成员</th>
-                        <td>
+                        <td colspan="2">
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
                                     <td valign="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
+                                    
                                     <!-- <td v-if="iscaptain==true">踢出队伍</td> -->
                                 </tr>
                                 <!-- <tr class='table_th1'><td valign="middle">{{detailData.members[0]}}</td></tr>
@@ -68,6 +70,7 @@
                                 <tr class='table_th1'><td valign="middle">3</td></tr> -->
                             </table>
                         </td>
+                        <!-- <td></td> -->
                     </tr>  
                 </table>    
             </div>
@@ -78,8 +81,8 @@
             stripe
             style="width: 100%">
              <el-table-column
-            label="队伍序号"
-            width="80">
+            label="#"
+            min-width="5%">
                 <template slot-scope="scope">
                     {{scope.$index+(currentPage-1)*pagesize}}
                 </template>
@@ -87,34 +90,37 @@
             <el-table-column
             prop="teamname"
             label="队伍名称"
-            width="100">
+            min-width="13%">
             </el-table-column>
             <el-table-column
             prop="captain"
             label="队长"
-            width="100">
+            min-width="12%">
             </el-table-column>
             <el-table-column
             prop="description"
             label="队伍简介"
-            width="460">
+            min-width="30%">
             </el-table-column>
             <el-table-column
             prop="members"
-            width="150"
+            min-width="10%"
+            align="center"
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
-                        <p v-for="(x,index) in scope.row.members">
+                        <p v-for="(x,index) in scope.row.members" style="border-bottom:0.5px solid ;text-align:center;">
                             {{x}}
                         </p>
                     <!-- </table> -->
                 </template>
             </el-table-column>
             <el-table-column
+            min-width="30%"
+            align="center"
             label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="joinTeam(scope.$index+(currentPage-1)*pagesize)">加入队伍</el-button>
+                    <el-button size="small" type="primary" @click="joinTeam(scope.$index+(currentPage-1)*pagesize)">加入队伍</el-button>
                 </template>
             </el-table-column>
             </el-table> 
@@ -474,7 +480,8 @@ export default {
 #detail_table tr td
 {
     position: relative;
-    padding:12px;
+    /* padding:12px; */
+    vertical-align: middle;
     color:black;
     /* left:200px; */
 }
@@ -509,6 +516,7 @@ export default {
     position: relative;
     /* left:50px; */
     float:right;
+    /* text-align: right; */
 }
 .dropout
 {

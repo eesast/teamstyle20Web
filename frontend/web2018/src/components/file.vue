@@ -9,21 +9,22 @@
             <el-table-column
             prop="filename"
             label="文件名"
-            width="650">
+            min-width="60%">
             </el-table-column>
             <el-table-column
             prop="download"
-            width="50"
+            min-width="10%"
             label="下载">
                 <template slot-scope="scope">
                 <a :href="scope.row.download" :download="scope.row.filename"><i class="el-icon-download"></i></a>
                 </template>
             </el-table-column>
             <el-table-column
+            min-width="30%"
             align="right">
             <template slot="header" slot-scope="scope">
                  <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
-                        <el-button type="primary" id="downloadall"@click="handleBatchDownload()">Download All</el-button>
+                        <el-button size="mini" type="primary" id="downloadall"@click="handleBatchDownload()">Download All</el-button>
                 </el-tooltip>
             </template>
             </el-table-column>
