@@ -1,14 +1,16 @@
 <template>
   <div class="index" top="30px">
     <el-carousel height="300px" indicator-position="outside"  type="card">
-      <el-carousel-item v-for="item in items" :key="item">
-        <h3>{{ item }}</h3>
+      <el-carousel-item v-for="item in items" :key="item.id">
+        <el-row>
+          <el-col><img height="300"  ref="imgHeight" :src="item.idView" class="banner_img"/></el-col>
+        </el-row>
       </el-carousel-item>
     </el-carousel>
-    <div class="intro" height="300px">
+    <div class="intro">
       <h4>这里是比赛简介</h4>
     </div>
-    <el-button>报名参加</el-button>
+    <el-button @click="indexjump">报名参加</el-button>
   </div>
 </template>
 
@@ -18,8 +20,15 @@ export default{
   data (){
     return{
       items:[
-        1,2,3,4,5
+        {id: 0, idView: require('..\\..\\static\\test\\1.jpg')},
+        {id: 1, idView: require('..\\..\\static\\test\\2.jpg')},
+        {id: 2, idView: require('..\\..\\static\\test\\4.jpg')}
       ]
+    }
+  },
+  methods:{
+    indexjump(){
+      this.$router.push({path: '/login',query: { flag: true } })
     }
   }
 }
@@ -36,9 +45,8 @@ export default{
   overflow: hidden;
 }
 .el-carousel__item{
-  margin-top:30px;
 }
-  .el-carousel__item h3 {
+  /*.el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
     opacity: 0.75;
@@ -51,5 +59,5 @@ export default{
   
   .el-carousel__item:nth-child(2n+1) {
      background-color: #d3dce6;
-  }
+  }*/
 </style>
