@@ -15,7 +15,8 @@ export default {
 }
 </script>
 
-<style>
+<style >
+  @import './common/font/font.css';
 html,body
 {
   width:100%;

@@ -10,7 +10,7 @@
     </div>
     
     <div class="copyright">
-      <h4>teamstyle20
+      <h4><span id="teamstyle">teamstyle20</span>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
       © 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</h4>
     </div>
@@ -39,6 +39,105 @@ export default {
 </script>
 
 <style scoped>
+/* @-webkit-keyframes neon2 {
+  from {
+    backgroud-position: 0 0;
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #228DFF,
+               0 0 70px  #228DFF,
+               0 0 80px  #228DFF,
+               0 0 100px #228DFF,
+               0 0 150px #228DFF;
+  }
+  to {
+    background-position: 2000px 0;
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #228DFF,
+               0 0 35px #228DFF,
+               0 0 40px #228DFF,
+               0 0 50px #228DFF,
+               0 0 75px #228DFF;
+  }
+}
+@-moz-keyframes neon2 {
+  from {
+    backgroud-position: 0 0;
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #228DFF,
+               0 0 70px  #228DFF,
+               0 0 80px  #228DFF,
+               0 0 100px #228DFF,
+               0 0 150px #228DFF;
+  }
+  to {
+   background-position: 2000px 0;
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #228DFF,
+               0 0 35px #228DFF,
+               0 0 40px #228DFF,
+               0 0 50px #228DFF,
+               0 0 75px #228DFF;
+  }
+}
+@keyframes neon2 {
+  from {
+    
+    backgroud-position: 0 0;
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #228DFF,
+               0 0 70px  #228DFF,
+               0 0 80px  #228DFF,
+               0 0 100px #228DFF,
+               0 0 150px #228DFF;
+  }
+  to {
+    background-position: 2000px 0;
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #228DFF,
+               0 0 35px #228DFF,
+               0 0 40px #228DFF,
+               0 0 50px #228DFF,
+               0 0 75px #228DFF;
+  }
+} */
+@keyframes ran {
+    from {
+        backgroud-position: 0 0;
+    }
+    to {
+        background-position: 2000px 0;
+    }
+}
+#teamstyle
+{
+  font-family:'Balonb';
+  /* color:#303030da; */
+  font-size:26px;
+  /* -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
+  -moz-animation: neon2 1.5s ease-in-out infinite alternate;
+  animation: neon2 1.5s ease-in-out infinite alternate; */
+  background: -webkit-linear-gradient(45deg, #F56C6C,#E6A23C,yellow,#67C23A,#409EFF,purple,#909399,#ffffff);
+  -moz-linear-gradient:(45deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+  -ms-linear-gradient:(45deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
+  color:transparent;
+  animation: ran 30s linear infinite;
+  /*设置字体颜色透明*/
+  -webkit-background-clip:text;
+  /*背景裁剪为文本形式*/
+  /* animation: ran 10s linear infinite; */
+}
 html,body
 {
   width:100%;
