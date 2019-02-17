@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     submit(){
-
+        this.$router.push({path: '/',query: {flag : false,ifnull : true}})
     },
     handleClick(tab, event) {
         console.log(tab, event);

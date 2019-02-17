@@ -6,12 +6,13 @@
         <img class="eesast" src="..\..\static\img\eesast.png"/>
       </el-menu-item>
       <el-menu-item index="/" >首页</el-menu-item>
-      <el-menu-item v-if="navflag==true" index="/login" >登录/注册</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="/team" >组队</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="/battle" >对战</el-menu-item>
-      <el-menu-item v-if="navflag!=true" index="/personal" >个人中心</el-menu-item>
+      <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
+      <el-menu-item v-show="navflag!=true" index="/team" >组队</el-menu-item>
+      <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item>
+      <el-menu-item v-show="navflag!=true" index="/personal" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
+      <el-menu-item v-show="navflag!=true"> <el-button  @click="navjump">退出登录</el-button></el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -22,17 +23,25 @@ export default {
     data() {
       return {
         // navflag: true
-        navflag:false
+       navflag: false
       }
     },
   methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
+        },
+        navjump(){
+          this.navflag = true;
+          this.$router.push({path: '/'})
         }
     },
   computed:{
     onRoutes(){
-      return this.$route.path;
+    if(this.$route.query.ifnull){
+        this.navflag = this.$route.query.flag;
+      }
+    else {};
+    return this.$route.path;
     }
   }
 };
