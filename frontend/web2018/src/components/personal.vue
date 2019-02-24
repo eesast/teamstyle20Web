@@ -4,10 +4,15 @@
         <el-card shadow="always" style="text-align:left;">
             <h4>账号：{{name}}</h4>
             <h4>密码：{{password}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
-            <h4>绑定手机号：{{phone}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
-            <h4>绑定邮箱号：{{mail}}<el-button size="mini" type="primary" icon="el-icon-edit" @click="toalter()"></el-button></h4>
+            <h4>绑定手机号：{{phone}}</h4>
+            <h4>绑定邮箱号：{{mail}}</h4>
             <h4 v-if="flag0">创建的队伍：{{team}}</h4>
             <h4 v-else="flag0">加入的队伍：{{team}}</h4>
+            <el-collapse v-model="activeNames" @change="handleChange">
+            <el-collapse-item title="队伍简介" name="1">
+                {{intro}}
+            </el-collapse-item>
+            </el-collapse>
         </el-card>
     </div>    
     <div class="empty"></div>
@@ -33,6 +38,7 @@ export default {
     data() {
         return {
             flag0: false,
+            intro:"jjafhadhfuka",
             name: "test",
             password:"********",
             team: "one",

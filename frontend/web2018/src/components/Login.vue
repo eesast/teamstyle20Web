@@ -93,7 +93,6 @@ export default {
           phone:"",
           email:"",
           department:"",
-
           token:"",
           id:""
         },
@@ -229,6 +228,10 @@ export default {
     },
     find:function(){
       //it will be put into use until backend is finished
+    },
+    submit(){
+        this.$router.push({path: '/',query: {flag : false,ifnull : true}})
+
     },
     handleClick(tab, event) {
         console.log(tab, event);
