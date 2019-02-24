@@ -32,7 +32,7 @@ export default {
     name: 'personal',
     data() {
         return {
-            flag0: true,
+            flag0: false,
             name: "test",
             password:"********",
             team: "one",

@@ -71,6 +71,10 @@ export default {
             },{
                 filename:'大赛文件2.pdf',
                 download:'/大赛文件2.pdf'
+            },
+            {
+                filename:'大赛文件2.pdf',
+                download:'/大赛文件2.pdf'
             }]
         }
     },
