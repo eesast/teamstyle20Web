@@ -17,6 +17,8 @@
 
 <script>
 import nav from '@/components/nav.vue'
+import { EventBus } from "../bus.js"
+
 export default{
   name:"index",
   data (){
@@ -31,7 +33,8 @@ export default{
   },
   methods:{
     indexjump(){
-        this.$router.push({path: '/login',query: {flag : true,ifnull : true}})
+        EventBus.$emit('send-msg', {flag:true})
+        this.$router.push({path: '/login'})
     }
   },
   computed:{

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { EventBus } from "../bus.js"
 export default {
     name: "navbar",
     data() {
@@ -37,16 +38,22 @@ export default {
           this.$router.push({path: '/'})
         }
     },
+
   computed:{
     onRoutes(){
-    if(this.$route.query.ifnull){
-        this.navflag = this.$route.query.flag;
-      }
-    else {};
+    //if(this.$route.query.ifnull){
+        //this.navflag = this.$route.query.flag;
+     //}
+   // else {};
     return this.$route.path;
     }
+  },
+  mounted(){
+            EventBus.$on("send-msg", ({flag}) => {
+                this.navflag =flag;}
+            )
   }
-};
+}
 </script>
 
 <style scoped>
