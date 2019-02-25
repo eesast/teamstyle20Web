@@ -10,9 +10,8 @@
     </div>
     
     <div class="copyright">
-      <h4><span id="teamstyle">teamstyle20</span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-      © 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</h4>
+      <h4 id="teamstyle" class="cpr">teamstyle20</h4>
+     <h4 class="cpr">© 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</h4>
     </div>
     
     <div class="support">
@@ -162,7 +161,7 @@ html,body
 
 .supporter {
   order: 1;
-  width: 15%;
+  width: 25%;
   padding: 0 4%;
   vertical-align: middle;
   text-align: center;
@@ -209,6 +208,14 @@ h4 {
   order:3;
   padding: 0;
   text-align: center;
+  vertical-align: middle;
+}
+.copyright .cpr
+{
+  display: inline;
+  top:20px;
+  position: relative;
+  margin-right:40px;
 }
 .copyright a
 {
@@ -227,14 +234,56 @@ h4 {
   align-items: flex-start;
 }
 .support h4{
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   padding-bottom: 10px;
   border-bottom: solid #f0f0f0 1px;
 }
 .support img {
-  width: 30px;
-  height: 30px;
+  max-width: 30px;
+  height: auto;
   vertical-align: middle;
   margin: 20px 1%;
 }
+ 
+ @media screen and (max-width: 460px)
+ { 
+   h4
+  {
+    font-size:1em;
+  }
+  .copyright .cpr
+  {
+    display:block;
+    top:0em;
+    
+    font-size:0.8em;
+    margin-right:0px;
+    margin-top:0.8em;
+    position: relative;
+  }
+  .support
+  {
+    width:50%;
+  }
+    .support img {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    margin: 0px 1%;
+  }
+   .supporter_container a {
+  font-size:1em;
+}
+
+  
+  #teamstyle
+  {
+    font-size:1.5em;
+    top:0em;
+  } 
+ }
+@media screen and (max-width: 768px)
+{
+  
+} 
 </style>
