@@ -245,7 +245,7 @@ h4 {
   margin: 20px 1%;
 }
  
- @media screen and (max-width: 460px)
+ @media screen and (max-width: 480px)
  { 
    h4
   {
