@@ -23,7 +23,10 @@
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
+            <el-row>
+            <el-button size="small"type="primary"icon="el-icon-view">查看代码</el-button>
             <el-button size="small"type="success"icon="el-icon-download">点击下载</el-button>
+            </el-row>
         </el-card>
     </div>    
     <div class="empty_content"></div>

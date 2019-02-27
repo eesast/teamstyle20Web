@@ -48,7 +48,7 @@ export default{
 <style>
 .index
 {
-  min-height:70%;
+  min-height:75%;
   position: relative;
 }
 .el-carousel
@@ -71,4 +71,5 @@ export default{
   .el-carousel__item:nth-child(2n+1) {
      background-color: #d3dce6;
   }*/
+
 </style>
