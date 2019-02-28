@@ -19,7 +19,7 @@
 import nav from '@/components/nav.vue'
 import { EventBus } from "../bus.js"
 
-export default{
+export default {
   name:"index",
   data (){
     return{
@@ -43,6 +43,7 @@ export default{
     }
   }
 }
+// console.log(this.$route.path);
 </script>
 
 <style>

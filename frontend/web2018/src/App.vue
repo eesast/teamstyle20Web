@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <navbar v-if="$route.name.name !== 'error'"></navbar>
     <router-view/>
-    <foot></foot>
+    <foot v-if="$route.name.name !== 'error'"></foot>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   name: 'App',
   components:{navbar, foot}
 }
+
 </script>
 
 <style >

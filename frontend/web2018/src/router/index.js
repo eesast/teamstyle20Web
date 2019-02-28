@@ -9,6 +9,7 @@ import team from '@/components/team.vue'
 import battle from '@/components/battle.vue'
 import personal from '@/components/personal.vue'
 import alter from '@/components/alter.vue'
+import error from '@/components/error.vue'
 
 Vue.use(Router)
 
@@ -23,37 +24,49 @@ export default new Router({
     {
       path: '/announcement',
       // name:'announcement',
+      name: announcement,
       component: announcement
     },
     {
       path: '/empty',
       // name:'announcement',
+      name: empty,
       component: empty
     },
     {
       path: '/login',
+      name: login,
       component: login
     },
     {
       path: '/file',
+      name: file,
       component: file
     },
     {
       path: '/team',
+      name: team,
       component: team
     },
     {
       path: '/battle',
+      name: battle,
       component: battle
     },
     {
       path: '/personal',
+      name: personal,
       component: personal
     },
     {
       path: '/alter',
       name: alter,
       component: alter
+    },
+    {
+      path: '*',
+      name: error,
+      component: error
     }
   ]
 })
