@@ -1,7 +1,8 @@
 <template>
     <div id="error_contain">
     <h2>404 NOT FOUND</h2>
-    <img class="eesast" src="..\..\static\img\eesast.png"/></img><h3>访问页面错误！</h3>
+    <img class="eesast" src="..\..\static\img\eesast.png"/></img><h1>温馨提示</h1>
+    <h3>访问页面错误!</h3>
     <h4>请检查网络连接是否正常，或网址是否正确</h4>
     <el-button type="primary" size="small" @click="gotoindex()">返回首页</el-button>
     
@@ -40,8 +41,19 @@ export default {
 #error_contain img
 {
     /* display: inline; */
-    height:48px;
-    width:48px;
+    height:30px;
+    width:30px;
+}
+#error_contain img,#error_contain h1
+{
+    display:inline-flex;
+    text-align: center;
+    vertical-align: middle;
+    color: #228DFF;
+    padding: 4px;
+    font-size:28px;
+    position: relative;
+    left:-5px;
 }
 #error_contain h2
 {
