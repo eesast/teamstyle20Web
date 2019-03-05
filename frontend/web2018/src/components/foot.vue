@@ -147,6 +147,7 @@ html,body
 .footer {
   width: 100%;
   height: 15%;
+  min-height:120px;
   display: flex;
   flex-direction: row;
   background: rgb(109, 191, 230,0.2);
