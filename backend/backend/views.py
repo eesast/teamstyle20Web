@@ -11,7 +11,10 @@ from django.db.models import Q
 
 def is_json(myjson):
     try:
-        json_object = json.loads(myjson)
+        if(isinstance(myjson, str)):
+            json_object = json.loads(myjson)
+        else:
+            json_object = json.loads(myjson.decode('utf-8'))
     except ValueError:
         return False
     return json_object
