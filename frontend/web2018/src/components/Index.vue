@@ -40,7 +40,7 @@ export default {
     },
     
   },
-  updated:function()
+  created:function()
   {
     window.onload=function(){
 
