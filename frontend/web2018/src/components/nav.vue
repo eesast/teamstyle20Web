@@ -73,4 +73,12 @@ el-menu{
 .bu1{
   float: right
 }
+
+
+  @media screen and (max-width:720px) {
+    /* #nav el-menu-item
+    {
+      font-size:10px;
+    } */
+  }
 </style>
