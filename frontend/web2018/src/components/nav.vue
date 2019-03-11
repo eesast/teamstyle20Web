@@ -5,7 +5,7 @@
       <el-menu-item index="0" id='img-submenu' >
         <img class="eesast" src="..\..\static\img\eesast.png"/>
       </el-menu-item>
-      <el-menu-item index="/" >首页</el-menu-item>
+      <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/team" >组队</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item>
@@ -73,4 +73,12 @@ el-menu{
 .bu1{
   float: right
 }
+
+
+  @media screen and (max-width:720px) {
+    /* #nav el-menu-item
+    {
+      font-size:10px;
+    } */
+  }
 </style>

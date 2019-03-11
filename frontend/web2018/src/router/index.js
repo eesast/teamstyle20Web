@@ -10,6 +10,7 @@ import battle from '@/components/battle.vue'
 import personal from '@/components/personal.vue'
 import alter from '@/components/alter.vue'
 import error from '@/components/error.vue'
+import emptyindex from '@/components/empty_index.vue'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/alter',
       name: alter,
       component: alter
+    },
+    {
+      path: '/empty_index',
+      name: emptyindex,
+      component: emptyindex
     },
     {
       path: '*',
