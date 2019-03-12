@@ -144,7 +144,7 @@ export default {
         
         // console.log(2);
         return {
-            inteam: true, //是否在队伍中  影响“我的队伍”显示界面
+            inteam: false, //是否在队伍中  影响“我的队伍”显示界面
             iscaptain: true,//该成员是否为队长  影响“我的队伍”是否出现踢人选项
             
             dialogFormVisible: false,//创建队伍对话框

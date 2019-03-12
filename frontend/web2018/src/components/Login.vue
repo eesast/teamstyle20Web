@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-      <el-tab-pane label="登录" name="login">
+      <el-tab-pane label="登录" name="login" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
@@ -14,7 +14,7 @@
          </el-form-item>
     </el-form>
     </el-tab-pane>
-      <el-tab-pane label="注册" name="register">
+      <el-tab-pane label="注册" name="register" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
@@ -48,7 +48,7 @@
       </el-form-item>
     </el-form>
     </el-tab-pane>
-    <el-tab-pane label="帮助" name="help">
+    <el-tab-pane label="帮助" name="help" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
@@ -252,7 +252,7 @@ function setCookie(cname,cvalue){
   .el-form-item{
     width:40%;
     position: relative;
-    left:10%;
+    /* left:10%; */
   }
   .el-input{
     display: inline-block;

@@ -35,7 +35,7 @@ export default {
         },
         navjump(){
           this.navflag = true;
-          this.$router.push({path: '/'})
+          this.$router.push({path: '/empty_index'})
         }
     },
 
