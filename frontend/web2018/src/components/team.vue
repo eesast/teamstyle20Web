@@ -52,7 +52,7 @@
                     </tr>
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/edit-square.svg" class="svg"></img>队伍简介</th>
-                        <td colspan="2"><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input><el-button size="mini" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
+                        <td colspan="1"><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input></td><td><el-button size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
                     </tr>      
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/team.svg"  class="svg"></img>队伍成员</th>
@@ -109,9 +109,9 @@
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
-                        <p v-for="(x,index) in scope.row.members" style="border-bottom:0.5px solid ;text-align:center;">
-                            {{x}}
-                        </p>
+                        <span v-for="(x,index) in scope.row.members" style="border-bottom:0.5px solid ;text-align:center;">
+                            {{x}}<br/>
+                        </span>
                     <!-- </table> -->
                 </template>
             </el-table-column>
@@ -128,8 +128,9 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             background
+            :page-size="pagesize"
             layout="prev, pager, next"
-            :total=tableData.length>
+            :total="tableData.length">
             </el-pagination>
         </el-tab-pane>
         </el-tabs>
@@ -140,6 +141,7 @@
 export default {
     name: "team",
     data(){
+        
         // console.log(2);
         return {
             inteam: true, //是否在队伍中  影响“我的队伍”显示界面
@@ -172,7 +174,7 @@ export default {
                 members:['好人','萌新']
             },
             currentPage:1, //初始页
-            pagesize:10,    //    每页的数据
+            pagesize:5,    //    每页的数据
             //加入队伍中所有队伍信息
             // tableData: [{ 
                 //id:0,
@@ -462,6 +464,11 @@ export default {
     text-align: left;
     color: #909399;
     border-collapse: collapse;
+}
+#detail_table .el-button
+{
+    width:90px;
+    margin-right:5px;
 }
 #detail_table tr
 {

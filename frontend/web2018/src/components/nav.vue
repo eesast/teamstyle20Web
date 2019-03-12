@@ -12,7 +12,7 @@
       <el-menu-item v-show="navflag!=true" index="/personal" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
-      <el-menu-item v-show="navflag!=true" class="bu1" index=""> <el-button  @click="navjump">退出登录</el-button></el-menu-item>
+      <el-menu-item v-show="navflag!=true" class="bu1" index=""> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
       <el-menu-item index="/personal" v-show="navflag!=true" class="bu1"> {{name}} </el-menu-item>
     </el-menu>
   </div>
@@ -62,8 +62,8 @@ export default {
   height:10%;
 }
 #nav img{
-  height:60px;
-  width:60px;
+  height:40px;
+  width:40px;
 }
 
 el-menu{
