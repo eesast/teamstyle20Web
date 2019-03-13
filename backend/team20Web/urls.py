@@ -20,7 +20,7 @@ from backend import views
 urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/', views.index, name='index'),
-    path('api/view/announcement/<int:post_id>', views.detail, name='announcement_detail'),
+    path('api/announcement/<int:post_id>', views.detail, name='announcement_detail'),
     path('api/auth', views.auth),
     path('api/auth/', views.auth),
     path('api/users', views.users),
@@ -28,5 +28,7 @@ urlpatterns = [
     path('api/users/<int:user_id>', views.modifyUser),
     path('api/teams', views.teams),
     path('api/teams/', views.teams),
-    path('api/teams/<int:teamid>', views.modifyTeamByID)
+    path('api/teams/<int:teamid>', views.modifyTeamByID),
+    path('api/announce/list', views.listAnnouncementAPI),
+    path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
 ]

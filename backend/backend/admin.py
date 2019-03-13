@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
+admin.site.site_url = '/api'
+
 class GlobalSettingAdmin(admin.ModelAdmin):
     list_display = ('year', 'game_name', 'submission_start', 'submission_end')
     def has_add_permission(self, request):
@@ -19,11 +21,13 @@ class TeamAdmin(admin.ModelAdmin):
     readonly_fields = ('member_num', 'createAt',)
 
 class BattleAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'team_engaged', 'request_time', 'status')
+    list_display = ('id', 'team_engaged', 'request_time', 'status', 'robot_num','result')
+    list_display_links = ('id', 'team_engaged', 'request_time')
+    readonly_fields = ('id','team_engaged', 'start_time','request_time','robot_num', 'status', 'result')
     def has_delete_permission(self, request, obj=None):
         return False
-    def has_change_permission(self, request, obj=None):
-        return False
+    def save_model(self, request, obj, form, change):
+        pass
     def has_add_permission(self, request):
         return False
 

@@ -1,0 +1,35 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'run', 'dev' ]
+2 info using npm@6.9.0
+3 info using node@v11.11.0
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle web2018@1.0.0~predev: web2018@1.0.0
+6 info lifecycle web2018@1.0.0~dev: web2018@1.0.0
+7 verbose lifecycle web2018@1.0.0~dev: unsafe-perm in lifecycle true
+8 verbose lifecycle web2018@1.0.0~dev: PATH: /usr/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/var/www/teamstyle20Web/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+9 verbose lifecycle web2018@1.0.0~dev: CWD: /var/www/teamstyle20Web
+10 silly lifecycle web2018@1.0.0~dev: Args: [ '-c',
+10 silly lifecycle   'webpack-dev-server --inline --progress --config build/webpack.dev.conf.js' ]
+11 silly lifecycle web2018@1.0.0~dev: Returned: code: 1  signal: null
+12 info lifecycle web2018@1.0.0~dev: Failed to exec dev script
+13 verbose stack Error: web2018@1.0.0 dev: `webpack-dev-server --inline --progress --config build/webpack.dev.conf.js`
+13 verbose stack Exit status 1
+13 verbose stack     at EventEmitter.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:301:16)
+13 verbose stack     at EventEmitter.emit (events.js:197:13)
+13 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+13 verbose stack     at ChildProcess.emit (events.js:197:13)
+13 verbose stack     at maybeClose (internal/child_process.js:984:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:265:5)
+14 verbose pkgid web2018@1.0.0
+15 verbose cwd /var/www/teamstyle20Web
+16 verbose Linux 4.4.0-142-generic
+17 verbose argv "/usr/bin/node" "/usr/bin/npm" "run" "dev"
+18 verbose node v11.11.0
+19 verbose npm  v6.9.0
+20 error code ELIFECYCLE
+21 error errno 1
+22 error web2018@1.0.0 dev: `webpack-dev-server --inline --progress --config build/webpack.dev.conf.js`
+22 error Exit status 1
+23 error Failed at the web2018@1.0.0 dev script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 1, true ]

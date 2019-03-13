@@ -529,20 +529,18 @@
 * /api/announce/list  GET
     列出所有公告的标题、发布时间和最后更新时间
 
-    * header
-    | key | value |
-    |-------|------|
-    | x-access-token |用户token|
     * response
     请求成功，返回状态码200和JSON文本(数组):
     ```
     [
         {
+            "id":0,
             "title":"这是一个公告",
             "pub_date":"Dec. 1,2018,8:38 p.m.",
             "last_update_date":"Dec. 1,2018,8:38 p.m."
         },
         {
+        	"id":1,
             "title":"这也是一个公告",
             "pub_date":"Dec. 1,2018,8:38 p.m.",
             "last_update_date":"Dec. 1,2018,8:38 p.m."
@@ -550,16 +548,14 @@
     ]
     ```
     若token失效，返回401
-*  /api/announce/view/:id  GET
+* /api/announce/view/:id  GET
     获取该id公告的具体内容
-    * header
-    | key | value |
-    |-------|------|
-    | x-access-token |用户token|
+
     * response
     若请求成功，返回状态码200和JSON文本:
     ```
     {
+        "id":0,
         "title":"这是一个公告",
         "content":"这只是一个公告，还没有什么内容"
         "pub_date":"Dec. 1,2018,8:38 p.m.",
