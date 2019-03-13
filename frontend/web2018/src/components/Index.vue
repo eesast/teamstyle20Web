@@ -205,6 +205,7 @@ loop();
 	-webkit-text-stroke: 1px rgb(245, 62, 62);
 }
 h1.fire-text {
+  top:50px;
 	background-size: 70% 132%;
   background-image: url('/static/img/xx.gif');
   font-family: 'kuhei';

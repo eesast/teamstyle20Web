@@ -260,7 +260,7 @@ export default {
 }
 .code_content
 {
-    width:22%;
+    width:20%;
     /* min-width:250px; */
     /* min-height: 100%; */
     /* min-height:100%; */
@@ -281,7 +281,7 @@ export default {
     /* left:5%; */
     /* height:100%; */
     /* top:; */
-    width:60%;
+    width:70%;
     left:-2%;
     /* min-height:70%; */
     /* position: relative; */
@@ -290,8 +290,8 @@ export default {
 {
   width:100%;
   min-width:565px;
-  position: absolute;
-  top:-10%;
+  position: fixed;
+  top:0%;
   left:0%;
 }
 #battle_dialog .el-dialog
