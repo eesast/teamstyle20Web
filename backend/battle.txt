@@ -1,0 +1,5 @@
+﻿1.參與隊伍
+2.發起時間
+3.robot個數
+4.當前狀態：（0:queuing, 1: battling, 2: finished）
+5.比賽結果

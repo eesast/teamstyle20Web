@@ -18,11 +18,20 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ('teamname','captain','members', 'member_num','createAt')
     readonly_fields = ('member_num', 'createAt',)
 
+class BattleAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'team_engaged', 'request_time', 'status')
+    def has_delete_permission(self, request, obj=None):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def has_add_permission(self, request):
+        return False
 
 #admin.site.register(Student)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(File)
 admin.site.register(GlobalSetting, GlobalSettingAdmin)
+admin.site.register(Battle,BattleAdmin)
 
 

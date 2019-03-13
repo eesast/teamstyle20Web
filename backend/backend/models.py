@@ -169,3 +169,15 @@ class GlobalSetting(models.Model):
 
 
 
+
+class Battle(models.Model):
+    team_engaged = models.CharField(max_length = 1000)
+    request_time = models.DateTimeField(auto_now_add= True)
+    start_time = models.DateTimeField(null=True)
+    robot_num = models.IntegerField()
+    status = models.CharField(max_length = 50)
+    result = models.CharField(max_length = 1000)
+    def __str__(self):
+        return self.request_time.strftime() + ':' +   self.team_engaged
+
+

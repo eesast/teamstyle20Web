@@ -18,9 +18,9 @@ from django.urls import path
 from backend import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('announcement/<int:post_id>', views.detail, name='announcement_detail'),
+    path('api/admin/', admin.site.urls),
+    path('api/', views.index, name='index'),
+    path('api/announcement/<int:post_id>', views.detail, name='announcement_detail'),
     path('api/auth', views.auth),
     path('api/auth/', views.auth),
     path('api/users', views.users),
