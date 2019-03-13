@@ -547,7 +547,7 @@
         },
     ]
     ```
-    若token失效，返回401
+
 * /api/announce/view/:id  GET
     获取该id公告的具体内容
 
@@ -562,9 +562,11 @@
         "last_update_date":"Dec. 1,2018,8:38 p.m."
     }
     ```
-    若token失效，返回401
 
 
+    若找不到公告，返回状态码404和文本:
+
+    404 Not found.
 
 
 

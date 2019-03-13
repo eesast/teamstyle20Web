@@ -15,6 +15,7 @@ class GlobalSettingAdmin(admin.ModelAdmin):
         return False
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'pub_date', 'last_update_date')
+    readonly_fields = ('last_update_date',)
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('teamname','captain','members', 'member_num','createAt')

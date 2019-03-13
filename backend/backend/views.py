@@ -258,10 +258,22 @@ def modifyTeamByID(request, teamid):
 def listAnnouncementAPI(request):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
     if request.method == 'GET':
-        query
-
-    return HttpResponse("", status=200)
+        query = Announcement.objects.all()
+        output = list()
+        for annoucement in query:
+            output.append(annoucement.get_AnnouncementInfo(0))
+        response = JsonResponse(output, status=200, safe=False)
+    return response
 
 
 def viewAnnouncementAPI(request, post_id):
-    return HttpResponse("", status=200)
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        try:
+            query = Announcement.objects.get(pk=post_id)
+            output = list()
+            output.append(query.get_AnnouncementInfo(1))
+            response = JsonResponse(output, status=200, safe=False)
+        except Announcement.DoesNotExist:
+            response = HttpResponse("404 Not found.", status = 404)
+    return response

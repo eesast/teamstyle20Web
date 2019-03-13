@@ -15,7 +15,7 @@ class Team(models.Model):
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
     score = models.IntegerField(default = -1)
     rank = models.IntegerField(default = 999999)
-    battle_code = models.FileField(null = True)
+    battle_code = models.FileField(null = True, upload_to='Codes')
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True)
     history_active = models.CharField(max_length = 8000, default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
@@ -139,6 +139,15 @@ class Announcement(models.Model):
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add = True)
     last_update_date = models.DateTimeField(auto_now = True)
+    def get_AnnouncementInfo(self, showtype=0):
+        output = dict()
+        output["id"] = self.pk
+        output["title"] = self.title
+        output["pub_date"] = self.pub_date
+        output["last_update_date"] = self.last_update_date
+        if showtype > 0:
+            output["content"] = self.content
+        return output
 
     def __str__(self):
         return self.title
