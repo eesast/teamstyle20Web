@@ -6,30 +6,38 @@
             :data="tableData"
             stripe
             style="width: 100%">
+            <el-table-column min-width="1%"></el-table-column>
             <el-table-column
             prop="filename"
             label="文件名"
-            min-width="60%">
+            align="left"
+            id="tl1"
+            min-width="55%">
             </el-table-column>
             <el-table-column
+            align="center"
             prop="download"
-            min-width="10%"
+            min-width="20%"
+            id="tl2"
             label="下载">
                 <template slot-scope="scope">
-                <a :href="scope.row.download" :download="scope.row.filename"><i class="el-icon-download"></i></a>
+                <a :href="scope.row.download" :download="scope.row.filename"><el-button size="small">Download</el-button></a>
                 </template>
             </el-table-column>
-            <el-table-column
-            min-width="30%"
+            <!-- <el-table-column
+            id="tl3"
+            min-width="25%"
             align="right">
             <template slot="header" slot-scope="scope">
                  <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
-                        <el-button size="mini" type="primary" id="downloadall"@click="handleBatchDownload()">Download All</el-button>
+                        <el-button  icon="el-icon-download" size="mini" type="primary" @click="handleBatchDownload()"><span id="downloadall">Download All</span></el-button>
                 </el-tooltip>
             </template>
-            </el-table-column>
+            </el-table-column> -->
             </el-table>
-
+             <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
+                        <el-button  icon="el-icon-download" size="mini" type="primary" @click="handleBatchDownload()" style="margin-top:15px;"><span id="downloadall">Download All</span></el-button>
+            </el-tooltip>
         </el-card>
     </el-col>
     </div>
@@ -114,17 +122,46 @@ export default {
 #file_contain
 {
     width:100%;
-    min-height:70%;
+    min-height:75%;
 }
 #file_card
 {
     margin-top:20px;
-    width:60%;
+    width:50%;
     position: relative;
-    left:20%;
+    left:25%;
 }
 #downloadall
 {
     /* background-color: rgb(158, 209, 192); */
+    /* font-size:0.8em; */
 }
+
+
+
+ @media screen and (max-width: 480px)
+ { 
+     #file_card
+    {
+        margin-top:20px;
+        width:90%;
+        position: relative;
+        left:5%;
+    }
+    #downloadall
+    {
+        /* background-color: rgb(158, 209, 192); */
+        font-size:0em;
+    }
+ }
+  @media screen and (max-width: 992px)
+ { 
+     #file_card
+    {
+        margin-top:20px;
+        width:80%;
+        position: relative;
+        left:10%;
+    }
+ }
 </style>

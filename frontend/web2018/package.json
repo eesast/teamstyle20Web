@@ -21,6 +21,7 @@
     "jszip": "^3.1.5",
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.2.1",
+    "vue-particles": "^1.0.9",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -75,6 +76,7 @@
     "url-loader": "^1.1.2",
     "vue-jest": "^1.0.2",
     "vue-loader": "^13.3.0",
+    "vue-particles": "^1.0.9",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",

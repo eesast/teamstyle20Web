@@ -5,14 +5,15 @@
       <el-menu-item index="0" id='img-submenu' >
         <img class="eesast" src="..\..\static\img\eesast.png"/>
       </el-menu-item>
-      <el-menu-item index="/" >首页</el-menu-item>
+      <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/team" >组队</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/personal" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
-      <el-menu-item v-show="navflag!=true" class="bu1"> <el-button  @click="navjump">退出登录</el-button></el-menu-item>
+      <el-menu-item index="/QR">二维码</el-menu-item>
+      <el-menu-item v-show="navflag!=true" class="bu1" index=""> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
       <el-menu-item index="/personal" v-show="navflag!=true" class="bu1"> {{name}} </el-menu-item>
     </el-menu>
   </div>
@@ -35,7 +36,10 @@ export default {
         },
         navjump(){
           this.navflag = true;
-          this.$router.push({path: '/'})
+          delCookie(token)
+          delCookie(id)
+          delCookie(username)
+          this.$router.push({path: '/empty_index'})
         }
     },
 
@@ -54,6 +58,26 @@ export default {
             )
   }
 }
+
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    }
+    return "";
+}
+
+function delCookie(name)
+{
+var exp = new Date();
+exp.setTime(exp.getTime() - 1);
+var cval=getCookie(name);
+if(cval!=null)
+document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
+}
+
 </script>
 
 <style scoped>
@@ -62,8 +86,8 @@ export default {
   height:10%;
 }
 #nav img{
-  height:60px;
-  width:60px;
+  height:40px;
+  width:40px;
 }
 
 el-menu{
@@ -73,4 +97,12 @@ el-menu{
 .bu1{
   float: right
 }
+
+
+  @media screen and (max-width:720px) {
+    /* #nav el-menu-item
+    {
+      font-size:10px;
+    } */
+  }
 </style>

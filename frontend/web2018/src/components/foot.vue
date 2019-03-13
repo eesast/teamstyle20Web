@@ -1,7 +1,7 @@
 <template>
   
   <div class="footer">
-    <div class="supporter">
+    <div class="col supporter">
       <h4>赞助商</h4>
       <div class="supporter_container">
         <a href="">
@@ -9,13 +9,12 @@
       </div>
     </div>
     
-    <div class="copyright">
-      <h4><span id="teamstyle">teamstyle20</span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-      © 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</h4>
+    <div class="col copyright">
+      <h4 id="teamstyle" class="cpr">teamstyle20</h4>
+     <h4 class="cpr">© 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</h4>
     </div>
     
-    <div class="support">
+    <div class="col support">
       <h4>技术支持</h4>
       <a href="https://www.djangoproject.com/">
         <img src="../../static/img/django.svg" /></a>
@@ -122,9 +121,10 @@ export default {
 }
 #teamstyle
 {
+  margin-right:15%;
   font-family:'Balonb';
   /* color:#303030da; */
-  font-size:26px;
+  font-size:36px;
   /* -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
   -moz-animation: neon2 1.5s ease-in-out infinite alternate;
   animation: neon2 1.5s ease-in-out infinite alternate; */
@@ -146,7 +146,8 @@ html,body
 
 .footer {
   width: 100%;
-  height: 20%;
+  height: 15%;
+  min-height:120px;
   display: flex;
   flex-direction: row;
   background: rgb(109, 191, 230,0.2);
@@ -162,11 +163,22 @@ html,body
 
 .supporter {
   order: 1;
-  width: 15%;
+  width: 10%;
   padding: 0 4%;
   vertical-align: middle;
   text-align: center;
   align-items: flex-start;
+  /* p {
+      margin: 10px;
+    }
+  a {
+    font-size: 14px;
+  }
+  h4 {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid #f0f0f0 1px;
+  } */
 }
 .supporter_container{
   margin-bottom: 12px;
@@ -175,7 +187,6 @@ html,body
   font-size: 20px;
 }
 .supporter_container img{
-
   margin: 0;
 }
 .supporter a {
@@ -206,9 +217,18 @@ h4 {
 
 .copyright
 {
+  width:70%;
   order:3;
   padding: 0;
   text-align: center;
+  vertical-align: middle;
+}
+.copyright .cpr
+{
+  display: inline;
+  top:20px;
+  position: relative;
+  /* margin-right:100px; */
 }
 .copyright a
 {
@@ -221,20 +241,76 @@ h4 {
 
 .support {
   order: 4;
-  width: 34%;
-  padding: 0;
+  width: 20%;
+  padding: 0 4%;
   text-align: center;
   align-items: flex-start;
 }
 .support h4{
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   padding-bottom: 10px;
   border-bottom: solid #f0f0f0 1px;
 }
 .support img {
-  width: 30px;
-  height: 30px;
+  max-width: 30px;
+  height: auto;
   vertical-align: middle;
-  margin: 20px 1%;
+  /* margin: 20px 1%; */
 }
+ 
+ @media screen and (max-width: 720px)
+ { 
+   .footer
+  {
+    height:8em;
+  }
+   h4
+  {
+    font-size:1em;
+  }
+  .copyright .cpr
+  {
+    display:block;
+    top:0em;
+    
+    font-size:0.8em;
+    margin-right:0px;
+    margin-top:0.8em;
+    position: relative;
+  }
+
+  .supporter
+  {
+    width:24%;
+  }
+  /* .copyright
+  {
+    width:31%;
+  } */
+  .support
+  {
+    width:45%;
+  }
+    .support img {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    margin: 0px 1%;
+  }
+   .supporter_container a {
+  font-size:1em;
+}
+
+  
+  #teamstyle
+  {
+    font-size:1.5em;
+    top:0em;
+    margin-right:0px;
+  } 
+ }
+/* @media screen and (max-width: 768px)
+{
+  
+}  */
 </style>
