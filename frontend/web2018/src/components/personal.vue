@@ -23,17 +23,17 @@
         <h4>分数曲线：</h4>
         <el-collapse v-model="activeNames" @change="handleChange">
             <el-collapse-item title="对战历史" name="2">
-                <el-table :data="tableData" style="width: 100%"  max-height="300">
-            <el-table-column prop="color" width="5">
+                <el-table :data="tableData" style="width: 100%"  max-height="300" :cell-class-name="tableStyle">
+            <el-table-column prop="color" min-width="1%" >
                 <template slot-scope="scope">
-                <div class="nothing"></div>
+                <div class="nothing" >&nbsp;</div>
                 </template>
             </el-table-column>
-            <el-table-column prop="teams" label="对战队伍">
+            <el-table-column prop="teams" label="对战队伍" min-width="25%">
             </el-table-column>
-            <el-table-column prop="result" label="对战结果">
+            <el-table-column prop="result" label="对战结果" min-width="20%">
             </el-table-column>
-            <el-table-column prop="download">
+            <el-table-column prop="download" min-width="52%">
                 <template slot-scope="scope">
                 <el-button  @click="perdownload">下载回放</el-button>
                 </template>
@@ -122,7 +122,14 @@ export default {
           this.$router.replace({
                 path: '/alter',
         })
-      }
+      },
+      tableStyle({ row, column, rowIndex, columnIndex }) {
+            if(columnIndex==0)
+            {
+                if(this.tableData[rowIndex].result=='victory')return 'statecolor'
+                else return 'statecolor2'
+            }
+        },
     },
     created:{
         function(){
@@ -135,17 +142,23 @@ export default {
 </script>
 
 <style>
-.el-table .warning-row {
+.statecolor{
+    background: red;
+}
+.statecolor2{
+    background: #909399;
+}
+#personal .el-table .warning-row {
     background: tomato;
   }
 
-  .el-table .success-row {
+#personal .el-table .success-row {
     background: greenyellow;
   }
 #personal .el-button{
     float: right;
 }
-.el-card__body{
+#personal .el-card__body{
     height: 550px;
 }
 #personal
@@ -155,27 +168,27 @@ export default {
     min-height: 70%;
     margin-bottom:50px; 
 }
-.el-table_1_column_3     is-leaf{
+#personal .el-table_1_column_3     is-leaf{
    
 }
-.el-table_1_column_1{
-    background-color: green;
+#personal .el-table_1_column_1{
+    /* background-color: green; */
 }
-.part1,.part2,.empty
+#personal .part1,#personal .part2,#personal .empty
 {
     display: inline-block;
     margin-top:30px;
 }
-.part1
+#personal .part1
 {
     width:20%;
     left:5%;
 }
-.empty
+#personal .empty
 {
     width:5%;
 }
-.part2
+#personal .part2
 {
     width:70%;
     float:top;

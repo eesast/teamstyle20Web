@@ -19,3 +19,9 @@
     font-weight: normal;  
     font-style: normal;  
   }  
+  @font-face {  
+    font-family: 'kuhei';  
+    src: url('kuhei.ttf'); 
+    font-weight: normal;  
+    font-style: normal;  
+  }  
