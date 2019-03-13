@@ -5,7 +5,7 @@
 export default 
 {
     data(){
-        window.location = 'http://127.0.0.1:8090';
+        window.location = 'http://teamstyle.eesast.com';
         return{
             empty:""
         };

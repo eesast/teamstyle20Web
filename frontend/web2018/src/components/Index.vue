@@ -8,12 +8,17 @@
       <h1 id="ph5">Teamstyle20</h1>
       </div>
       
-      <el-button @click="indexjump" v-if="flag1" type="primary">报名参加</el-button>
+      <el-button @click="indexjump" v-if="flag1" type="danger" size="small">立即报名</el-button>
     </div>
     
   </div>
 </template>
 <script>
+window.addEventListener("popstate", function(){
+    //doSomething
+    window.location = 'http://teamstyle.eesast.com';
+}, false)
+
 import nav from '@/components/nav.vue'
 import { EventBus } from "../bus.js"
 export default {
@@ -192,24 +197,26 @@ loop();
 			text-align: center;
 		}
 		h1 {
-	font-size: 100px;
+	font-size: 120px;
   /* display: inline-block; */
   /* color:azure; */
 	color: transparent;
 	position: relative;
 	background-clip: text;
 	-webkit-background-clip: text;
-	background-image: url('https://i.ibb.co/CvwWQZF/water.gif');
+	background-image: url('/static/img/water.gif');
 	background-repeat: repeat-x;
 	animation: watereffect 5s infinite normal linear;
-	-webkit-text-stroke: 1px #95E6F9;
+	-webkit-text-stroke: 1px rgb(245, 62, 62);
 }
 h1.fire-text {
 	background-size: 70% 132%;
-	background-image: url('/static/img/xx.gif');
+  background-image: url('/static/img/xx.gif');
+  font-family: 'kuhei';
+  font-weight: 100;
 	-webkit-text-stroke: unset;
   animation:unset;
-  background-position:0% 120%;
+  background-position:-5% 160%;
 }
 
 	@keyframes watereffect{
