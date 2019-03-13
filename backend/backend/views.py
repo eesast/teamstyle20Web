@@ -253,3 +253,11 @@ def modifyTeamByID(request, teamid):
                         if(query.count() == 0):
                             response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
     return response
+
+
+def listAnnouncementAPI(request):
+    return HttpResponse("", status=200)
+
+
+def viewAnnouncementAPI(request, post_id):
+    return HttpResponse("", status=200)
