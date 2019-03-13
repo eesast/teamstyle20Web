@@ -129,12 +129,16 @@ export default {
   },
   methods: {
     log_in:function(){
-      fetch("https://api.eesast.com/v1/users/login",
+      fetch("/api/auth",
       {
         method:'POST',
         headers:
         {
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+           // 'Access-Control-Allow-Origin':'https://teamstyle.eesast.com',
+            "Access-Control-Allow-Credentials":"true",
+            "Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+            "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT"
         },
         body:JSON.stringify(
             {
@@ -180,23 +184,26 @@ export default {
     },
     create:function(){
       console.log(this.form.name)
-      fetch("https://api.eesast.com/v1/users",
+      fetch("/api/users",
       {
         method:'POST',
         headers:
         {
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            //'Access-Control-Allow-Origin':'https://teamstyle.eesast.com',
+            //"Access-Control-Allow-Credentials":"true",
+            //"Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+            "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT"
         },
         body:JSON.stringify(
             {
-                "id":this.form.studentid,
                 "username":this.form.name,
                 "password":this.form.password,
-                "email":this.form.email,
-                "name":this.form.realname,
                 "phone":this.form.phone,
-                "department":this.form.department,
-                "class":this.form.class
+                "email":this.form.email,
+                "realname":this.form.realname,
+                "class":this.form.class,
+                "studentID":this.form.studentid
             }
         )
       }).then(response=>
