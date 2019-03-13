@@ -1,15 +1,16 @@
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
+import os
 
 HISTORY_LENGTH = 20
 MEMBER_ALLOWED = 3
 
 class Team(models.Model):
     teamname = models.CharField(max_length=30, null=True, verbose_name='Team name')
-    description = models.CharField(max_length=8000, null=True, verbose_name='Description')
+    description = models.TextField( null=True, verbose_name='Description')
     captain = models.CharField(max_length=50, null=True, verbose_name='Captain')
-    members = models.CharField(max_length=8000, default='[]', verbose_name='Team members',help_text="Student IDs of team members in JSON array format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
+    members = models.TextField(default='[]', verbose_name='Team members',help_text="Student IDs of team members in JSON array format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     member_num = models.IntegerField(default = 1, null=True, verbose_name='Members count')
     invitecode = models.CharField(max_length=20, null=True, verbose_name='Invitation code')
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
@@ -18,8 +19,8 @@ class Team(models.Model):
     battle_code = models.FileField(null = True, upload_to='Codes')
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True)
-    history_active = models.CharField(max_length = 8000, default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
-    history_passive = models.CharField(max_length=8000, default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
+    history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
+    history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
         return self.teamname
 
@@ -127,7 +128,7 @@ class Student(models.Model):
     student_realname = models.CharField(max_length=20,null = True)
     password = models.CharField(max_length=100, default='000', null=True)
     salt = models.CharField(max_length = 8, null = True)
-    thu_email = models.CharField(max_length=50, null=True)
+    thu_email = models.CharField(max_length=100, null=True)
     profile_photo = models.ImageField(null=True)
 
     def __str__(self):
@@ -161,6 +162,18 @@ class File(models.Model):
     def __str__(self):
         return self.title
 
+    def filename(self):
+        return os.path.basename(self.content.file.name)
+
+
+    def get_FileInfo(self):
+        output = dict()
+        output["id"] = self.pk
+        output["title"] = self.title
+        output["last_update_date"] = self.last_update_date
+        return output
+
+
 
 class GlobalSetting(models.Model):
     year = models.IntegerField()
@@ -181,12 +194,12 @@ class GlobalSetting(models.Model):
 
 class Battle(models.Model):
     id = models.AutoField(primary_key= True, verbose_name="Battle ID")
-    team_engaged = models.CharField(max_length = 1000)
+    team_engaged = models.TextField()
     request_time = models.DateTimeField(auto_now_add= True)
     start_time = models.DateTimeField(null=True)
     robot_num = models.IntegerField()
     status = models.CharField(max_length = 50)
-    result = models.CharField(max_length = 1000, null=True)
+    result = models.TextField( null=True)
     def __str__(self):
         return self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
 
