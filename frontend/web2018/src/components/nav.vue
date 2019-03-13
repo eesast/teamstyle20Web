@@ -3,7 +3,7 @@
     <el-menu class="submenu" mode="horizontal" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="0" id='img-submenu' >
-        <img class="eesast" src="..\..\static\img\eesast.png"/>
+        <img class="eesast" src="../../static/img/eesast.png"/>
       </el-menu-item>
       <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>

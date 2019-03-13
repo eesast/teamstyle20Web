@@ -1,7 +1,7 @@
 <template>
     <div id="error_contain">
     <h2>404 NOT FOUND</h2>
-    <img class="eesast" src="..\..\static\img\eesast.png"/></img><h1>温馨提示</h1>
+    <img class="eesast" src="../../static/img/eesast.png"/></img><h1>温馨提示</h1>
     <h3>访问页面错误!</h3>
     <h4>请检查网络连接是否正常，或网址是否正确</h4>
     <el-button type="primary" size="small" @click="gotoindex()">返回首页</el-button>

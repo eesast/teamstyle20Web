@@ -5,7 +5,7 @@
       <h4>赞助商</h4>
       <div class="supporter_container">
         <a href="">
-          <img src="..\..\static\img\github.svg"/>Github</a>
+          <img src="../../static/img/github.svg"/>Github</a>
       </div>
     </div>
     

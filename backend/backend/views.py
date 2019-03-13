@@ -256,6 +256,10 @@ def modifyTeamByID(request, teamid):
 
 
 def listAnnouncementAPI(request):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        query
+
     return HttpResponse("", status=200)
 
 

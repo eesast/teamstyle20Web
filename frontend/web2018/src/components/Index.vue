@@ -22,9 +22,9 @@ export default {
     return{
       flag1 : true,
       items:[
-        {id: 0, idView: require('..\\..\\static\\test\\1.jpg')},
-        {id: 1, idView: require('..\\..\\static\\test\\2.jpg')},
-        {id: 2, idView: require('..\\..\\static\\test\\4.jpg')}
+        {id: 0, idView: require('../../static/test/1.jpg')},
+        {id: 1, idView: require('../../static/test/2.jpg')},
+        {id: 2, idView: require('../../static/test/4.jpg')}
       ]
     }
   },

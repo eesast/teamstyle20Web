@@ -146,8 +146,8 @@ class Announcement(models.Model):
 
 class File(models.Model):
     title = models.CharField(max_length=50)
-    content = models.FileField()
-    last_update_date = models.DateTimeField()
+    content = models.FileField(upload_to='Files')
+    last_update_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -180,5 +180,4 @@ class Battle(models.Model):
     result = models.CharField(max_length = 1000, null=True)
     def __str__(self):
         return self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
-
 
