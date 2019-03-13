@@ -18,14 +18,15 @@
             <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
             <br/>
             <h4>发起对战</h4>
+            <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true">发起对战</el-button>
             <h5>今日对战次数:</h5>
             <h5>剩余对战次数:</h5>
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
             <el-row>
-            <el-button size="small"type="primary"icon="el-icon-view">查看代码</el-button>
-            <el-button size="small"type="success"icon="el-icon-download">点击下载</el-button>
+            <el-button size="small"type="primary"icon="el-icon-view" >查看代码</el-button>
+            <el-button size="small"type="success"icon="el-icon-download" style="margin:2px;">点击下载</el-button>
             </el-row>
         </el-card>
     </div>    
@@ -33,14 +34,14 @@
     <div class="battle_content">
         <el-card shadow="always" style="width:100%;">
             <el-table
-            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            :data="tableData"
             :default-sort = "{prop: 'teamname', order: 'descending'}"
             stripe
             style="width: 100%">
             <el-table-column
             label="#"
             min-width="10%">
-                <template slot-scope="scope">{{scope.$index+(currentPage-1)*pagesize}}</template>
+                <template slot-scope="scope">{{scope.$index}}</template>
             </el-table-column>
             <el-table-column
             prop="teamname"
@@ -60,25 +61,25 @@
             sortable
             min-width="15%">
             </el-table-column>
-            <el-table-column
-            prop="option"
-            align="center"
-            label="操作"
-            min-width="30%">
-            <template slot-scope="scope">
-                <el-button type="danger" size="mini">发起对战</el-button>
-            </template>
-            </el-table-column>
+            
             </el-table>
-             <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            background
-            layout="prev, pager, next"
-            :total=tableData.length>
-            </el-pagination>
         </el-card>
     </div>
+    <el-dialog title="选择对战队伍" :visible.sync="dialogTableVisible" id="battle_dialog">
+      <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
+      <el-row v-for="x in tableData" >
+      <el-checkbox :label="x.id" >{{x.teamname}}</el-checkbox>
+      </el-row>
+      <!-- <el-row>
+      <el-checkbox label="复选框 B"></el-checkbox>
+      </el-row>
+      <el-checkbox label="复选框 C"></el-checkbox>
+      <el-checkbox label="禁用" disabled></el-checkbox>
+      <el-checkbox label="选中且禁用" disabled></el-checkbox> -->
+     </el-checkbox-group>
+     <h2>AI数量:{{15-checkList.length}}</h2>
+     <el-button type="danger" size="small" @click="start_fight()">开始对战</el-button>
+    </el-dialog>
     <div class="empty_content"></div>
 </div>
 </template>
@@ -88,85 +89,93 @@ export default {
     name: 'battle',
     data() {
         return {
-            currentPage:1, //初始页
-            pagesize:8,    //    每页的数据
+            // currentPage:1, //初始页
+            // pagesize:100,    //    每页的数据
+            dialogTableVisible:false,
+            isIndeterminate: true,
+            checkList: [],
             tableData: [{
           teamname:'划水萌新',
           captain:'萌新1号',
+          id:0,
           score:20,
         },{
           teamname:'划水萌新2',
           captain:'萌新2号',
+          id:1,
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新3',
+          captain:'萌新3号',
+          id:3,
+          score:30,
+        },{
+          teamname:'划水萌新4',
+          captain:'萌新2号',
+          id:4,
+          score:30,
+        },{
+          teamname:'划水萌新5',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新6',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新7',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新88',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新8',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新9',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新20',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新21',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新22',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新23',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新24',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新25',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新26',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新27',
           captain:'萌新2号',
           score:30,
         },{
-          teamname:'划水萌新2',
+          teamname:'划水萌新28',
           captain:'萌新2号',
           score:30,
-        },{
-          teamname:'划水萌新2',
-          captain:'萌新2号',
-          score:30,
-        },{
-          teamname:'划水萌新2',
-          captain:'萌新2号',
-          score:30,
-        }]
+        }],
+        
         }
     },
     methods: {
@@ -191,10 +200,23 @@ export default {
             this.$refs.upload.clearFiles();
             this.$message.error('上传失败，请重新上传');
           },
-          handleCurrentChange: function(currentPage){
-                this.currentPage = currentPage;
-                // console.log(this.currentPage)  //点击第几页
-        },
+          // handleCurrentChange: function(currentPage){
+          //       this.currentPage = currentPage;
+          //       // console.log(this.currentPage)  //点击第几页
+        // },
+        handleChecked(value) {
+        let checkedCount = value.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.tableData.length;
+      },
+        start_fight()  //发起一场战斗
+        {
+          this.dialogTableVisible=false;//隐藏对话框
+          console.log(this.checkList);//勾选的队伍
+          //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
+          //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname
+
+          //以下将传送checkList这些标号的队伍，以及15-checkList.length个AI进行对战   *********************
+        }
         
     }
 }
@@ -211,20 +233,27 @@ export default {
 .code_content,.battle_content,.empty_content
 {
     display: inline-block;
+    vertical-align: top;
     position: relative;
     margin-top:30px;
 }
 .code_content
 {
-    width:18%;
+    width:22%;
+    /* min-width:250px; */
     /* min-height: 100%; */
     /* min-height:100%; */
     /* background: black; */
     /* position: relative; */
 }
+.code_content div.el-card__body
+{
+  /* min-width:250px;
+  overflow:auto; */
+}
 .empty_content
 {
-    width:9%;
+    width:5%;
 }
 .battle_content
 {
@@ -232,7 +261,20 @@ export default {
     /* height:100%; */
     /* top:; */
     width:60%;
+    left:-2%;
     /* min-height:70%; */
     /* position: relative; */
+}
+#battle_dialog
+{
+  width:50%;
+  min-width:500px;
+  position: absolute;
+  top:-10%;
+  left:25%;
+}
+#battle_dialog span.el-checkbox__label
+{
+  width:100px;
 }
 </style>

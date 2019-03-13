@@ -21,7 +21,7 @@ export default {
         gotoindex()
         {
              this.$router.replace({
-                path: '/',
+                path: '/empty_index',
              })
         }
     }

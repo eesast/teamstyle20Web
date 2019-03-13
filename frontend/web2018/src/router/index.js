@@ -11,6 +11,7 @@ import personal from '@/components/personal.vue'
 import alter from '@/components/alter.vue'
 import error from '@/components/error.vue'
 import emptyindex from '@/components/empty_index.vue'
+import QR from '@/components/QR.vue'
 
 Vue.use(Router)
 
@@ -68,6 +69,11 @@ export default new Router({
       path: '/empty_index',
       name: emptyindex,
       component: emptyindex
+    },
+    {
+      path: '/QR',
+      name: QR,
+      component: QR
     },
     {
       path: '*',
