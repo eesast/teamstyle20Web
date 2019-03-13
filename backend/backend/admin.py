@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
-admin.site.site_url = '/api'
+admin.site.site_url = '/api/'
 
 class GlobalSettingAdmin(admin.ModelAdmin):
     list_display = ('year', 'game_name', 'submission_start', 'submission_end')
@@ -15,10 +15,18 @@ class GlobalSettingAdmin(admin.ModelAdmin):
         return False
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'pub_date', 'last_update_date')
+    readonly_fields = ('last_update_date',)
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('teamname','captain','members', 'member_num','createAt')
     readonly_fields = ('member_num', 'createAt',)
+
+class FileAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'title', 'last_update_date')
+    list_display_links = ('pk','title', )
+
+
+
 
 class BattleAdmin(admin.ModelAdmin):
     list_display = ('id', 'team_engaged', 'request_time', 'status', 'robot_num','result')
@@ -34,7 +42,7 @@ class BattleAdmin(admin.ModelAdmin):
 #admin.site.register(Student)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Announcement, AnnouncementAdmin)
-admin.site.register(File)
+admin.site.register(File, FileAdmin)
 admin.site.register(GlobalSetting, GlobalSettingAdmin)
 admin.site.register(Battle,BattleAdmin)
 

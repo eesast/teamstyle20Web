@@ -65,10 +65,15 @@
             </el-table>
         </el-card>
     </div>
-    <el-dialog title="选择对战队伍" :visible.sync="dialogTableVisible" id="battle_dialog">
+    <el-dialog title="选择对战队伍" :visible.sync="dialogTableVisible" id="battle_dialog" >
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
-      <el-row v-for="x in tableData" >
-      <el-checkbox :label="x.id" >{{x.teamname}}</el-checkbox>
+      <el-row v-for="index in tableData.length" >
+      <template v-if="index%4==1">
+      <el-col :span="6"><el-checkbox :label="tableData[index-1].id" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6"v-if="index<tableData.length"><el-checkbox :label="tableData[index].id" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6"v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].id" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6"v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].id" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      </template>
       </el-row>
       <!-- <el-row>
       <el-checkbox label="复选框 B"></el-checkbox>
@@ -77,7 +82,7 @@
       <el-checkbox label="禁用" disabled></el-checkbox>
       <el-checkbox label="选中且禁用" disabled></el-checkbox> -->
      </el-checkbox-group>
-     <h2>AI数量:{{15-checkList.length}}</h2>
+     <h2>AI数量:<el-input-number v-model="AInum"  :min="0" :max="999" size="small" style="margin-left:5px;"></el-input-number></h2>
      <el-button type="danger" size="small" @click="start_fight()">开始对战</el-button>
     </el-dialog>
     <div class="empty_content"></div>
@@ -94,6 +99,7 @@ export default {
             dialogTableVisible:false,
             isIndeterminate: true,
             checkList: [],
+            AInum:0,//AI人数
             tableData: [{
           teamname:'划水萌新',
           captain:'萌新1号',
@@ -117,63 +123,78 @@ export default {
         },{
           teamname:'划水萌新5',
           captain:'萌新2号',
+          id:5,
           score:30,
         },{
           teamname:'划水萌新6',
           captain:'萌新2号',
+          id:6,
           score:30,
         },{
           teamname:'划水萌新7',
           captain:'萌新2号',
           score:30,
+          id:7,
         },{
           teamname:'划水萌新88',
           captain:'萌新2号',
           score:30,
+          id:8,
         },{
           teamname:'划水萌新8',
           captain:'萌新2号',
           score:30,
+          id:9,
         },{
           teamname:'划水萌新9',
           captain:'萌新2号',
           score:30,
+          id:10,
         },{
           teamname:'划水萌新20',
           captain:'萌新2号',
           score:30,
+          id:11,
         },{
           teamname:'划水萌新21',
           captain:'萌新2号',
           score:30,
+          id:12,
         },{
           teamname:'划水萌新22',
           captain:'萌新2号',
           score:30,
+          id:123,
         },{
           teamname:'划水萌新23',
           captain:'萌新2号',
           score:30,
+          id:14,
         },{
           teamname:'划水萌新24',
           captain:'萌新2号',
           score:30,
+          id:15,
         },{
           teamname:'划水萌新25',
           captain:'萌新2号',
           score:30,
+          id:16,
         },{
           teamname:'划水萌新26',
           captain:'萌新2号',
           score:30,
+          id:17,
         },{
           teamname:'划水萌新27',
           captain:'萌新2号',
           score:30,
+          id:18,
         },{
           teamname:'划水萌新28',
           captain:'萌新2号',
           score:30,
+          id:19
         }],
         
         }
@@ -215,7 +236,7 @@ export default {
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
           //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname
 
-          //以下将传送checkList这些标号的队伍，以及15-checkList.length个AI进行对战   *********************
+          //以下将传送checkList这些标号的队伍，以及AInum个AI进行对战   *********************
         }
         
     }
@@ -239,7 +260,7 @@ export default {
 }
 .code_content
 {
-    width:22%;
+    width:20%;
     /* min-width:250px; */
     /* min-height: 100%; */
     /* min-height:100%; */
@@ -260,18 +281,26 @@ export default {
     /* left:5%; */
     /* height:100%; */
     /* top:; */
-    width:60%;
+    width:70%;
     left:-2%;
     /* min-height:70%; */
     /* position: relative; */
 }
 #battle_dialog
 {
-  width:50%;
-  min-width:500px;
-  position: absolute;
-  top:-10%;
-  left:25%;
+  width:100%;
+  min-width:565px;
+  position: fixed;
+  top:0%;
+  left:0%;
+}
+#battle_dialog .el-dialog
+{
+  min-width:620px;
+}
+#battle_dialog .el-dialog__body,#battle_dialog .el-dialog__header
+{
+  min-width: 565px;
 }
 #battle_dialog span.el-checkbox__label
 {

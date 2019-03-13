@@ -3,7 +3,7 @@
     <el-menu class="submenu" mode="horizontal" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="0" id='img-submenu' >
-        <img class="eesast" src="..\..\static\img\eesast.png"/>
+        <img class="eesast" src="../../static/img/eesast.png"/>
       </el-menu-item>
       <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
@@ -13,8 +13,8 @@
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
       <el-menu-item index="/QR">二维码</el-menu-item>
-      <el-menu-item v-show="navflag!=true" class="bu1" index=""> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
-      <el-menu-item index="/personal" v-show="navflag!=true" class="bu1"> {{name}} </el-menu-item>
+      <el-menu-item v-show="navflag!=true" class="bu1" index="" style="float:right;"> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
+      <el-menu-item index="/personal" v-show="navflag!=true" class="bu1" style="float:right;"> {{name}} </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
         //this.navflag = this.$route.query.flag;
      //}
    // else {};
-    return this.$route.path;
+   return this.$route.path;
     }
   },
   mounted(){
@@ -95,7 +95,7 @@ el-menu{
     height:100px;
 }
 .bu1{
-  float: right
+  float: right;
 }
 
 
