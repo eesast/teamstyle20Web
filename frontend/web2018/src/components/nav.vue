@@ -46,7 +46,7 @@ export default {
         //this.navflag = this.$route.query.flag;
      //}
    // else {};
-    return this.$route.path;
+   return this.$route.path;
     }
   },
   mounted(){
