@@ -138,481 +138,754 @@
 </template>
 
 <script>
-token=getCookie('token')
-current_username=getCookie("username")
-current_id=getCookie("id")
-token_dict={"token":token}
+token = getCookie("token");
+if(token==null)
+{
+    this.$message("您尚未登录！")
+    setTimeout(() => {
+          this.$router.push({path: '/index'})
+        }, 100);
+}
+current_username = getCookie("username");
+current_id = getCookie("id");
+token_dict = { token: token };
 
 export default {
-    name: "team",
-    data(){
-        
-        // console.log(2);
-        return {
-            inteam: false, //是否在队伍中  影响“我的队伍”显示界面
-            iscaptain: true,//该成员是否为队长  影响“我的队伍”是否出现踢人选项
-            
-            dialogFormVisible: false,//创建队伍对话框
-            form: {
-            teamname: '',
-            description: '',
-            // date1: '',
-            // date2: '',
-            delivery: false,
-            // type: [],
-            // resource: '',
-            // desc: ''
-            },
-            rules:{
-                teamname:[{ required: true, message: '请输入队伍名称', trigger: 'blur' },
-                { min: 1, max: 10, message: '长度在 1 到 10 个字', trigger: 'blur' }],
-                description:[{ required: true, message: '请输入队伍简介', trigger: 'blur' },
-                { min: 1, max: 50, message: '长度在 1 到 50 个字', trigger: 'blur' }],
-            },
-            formLabelWidth: '100px',//对话框宽度
-            detailData:   //若当前用户已有队伍，则其队伍信息
-            {
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                invitecode:"1z2x3c4v",
-                description:"我们最爱划水",
-                members:['好人','萌新']
-            },
-            currentPage:1, //初始页
-            pagesize:5,    //    每页的数据
-            //加入队伍中所有队伍信息
-            // tableData: [{ 
-                //id:0,
-            //     teamname:"划水大法好",
-            //     captain:"萌新0号",
-            //     description:"我们最爱划水",
-            //     members:['好人','萌新']
-            // }, ]
-            tableData: [{ 
-                id:0,
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新']
-            }, {
-                id:0,
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            }, {   
-                id:0,
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            }, {
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            },{
-                teamname:"划水大法好",
-                captain:"萌新0号",
-                description:"我们最爱划水",
-                members:['好人','萌新','蒟蒻']
-            }]
-        }
-    },
-
-    created:function()
-    {
-        fetch("/api/teams",
-      {
-        method:'GET',
-        headers:
+  name: "team",
+  data() {
+    // console.log(2);
+    return {
+      inteam: false, //是否在队伍中  影响“我的队伍”显示界面
+      iscaptain: true, //该成员是否为队长  影响“我的队伍”是否出现踢人选项
+      team_id:null,
+      dialogFormVisible: false, //创建队伍对话框
+      form: {
+        teamname: "",
+        description: "",
+        // date1: '',
+        // date2: '',
+        delivery: false
+        // type: [],
+        // resource: '',
+        // desc: ''
+      },
+      rules: {
+        teamname: [
+          { required: true, message: "请输入队伍名称", trigger: "blur" },
+          { min: 1, max: 10, message: "长度在 1 到 10 个字", trigger: "blur" }
+        ],
+        description: [
+          { required: true, message: "请输入队伍简介", trigger: "blur" },
+          { min: 1, max: 50, message: "长度在 1 到 50 个字", trigger: "blur" }
+        ]
+      },
+      formLabelWidth: "100px", //对话框宽度
+      //若当前用户已有队伍，则其队伍信息
+      detailData: {
+        teamname: "划水大法好",
+        captain: "萌新0号",
+        invitecode: "1z2x3c4v",
+        description: "我们最爱划水",
+        members: ["好人", "萌新"]
+      },
+      currentPage: 1, //初始页
+      pagesize: 5, //    每页的数据
+      //加入队伍中所有队伍信息
+      // tableData: [{
+      //id:0,
+      //     teamname:"划水大法好",
+      //     captain:"萌新0号",
+      //     description:"我们最爱划水",
+      //     members:['好人','萌新']
+      // }, ]
+      tableData: [
         {
-            'Content-Type':'application/json',
-            'x-access-token':token_dict
+          id: 0,
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新"]
         },
-        body:JSON.stringify(
-            {
-            }
-        )
-      }).then(response=>
-      {
-        console.log(response.status)
-        if(response.ok)
         {
+          id: 0,
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          id: 0,
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        },
+        {
+          teamname: "划水大法好",
+          captain: "萌新0号",
+          description: "我们最爱划水",
+          members: ["好人", "萌新", "蒟蒻"]
+        }
+      ]
+    };
+  },
+
+  created: function() {
+    fetch("/api/teams", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token_dict
+      },
+      body: JSON.stringify({})
+    })
+      .then(response => {
+        console.log(response.status);
+        if (response.ok) {
           return response.json();
-        }
-        else if(response.status=='401')
-        {
+        } else if (response.status == "401") {
           this.$message.error("token失效，请重新登录！");
-        }
-        else
-        {
+        } else {
           this.$message.error("获取队伍信息失败！");
         }
-      }).then(res=>
-      {
-        this.tableData=res
-        for(i=0;i<tableData.length;i++)
-        {
-            if (current_id==tableData[i].captain) 
-            {
-                this.iscaptain=true
-                this.inteam=true
-                this.detailData.teamname=tableData[i].teamname
-                this.detailData.captain=tableData[i].captain
-                this.detailData.invitecode=tableData[i].invitecode
-                this.detailData.description=tableData[i].description
-                this.detailData.memebers=tableData[i].members
-            }
-            else 
-            {
-                for(j=0;j<tableData[i].members.length;j++) 
-                {
-                    if (current_id==tableData[i].members[j])
-                    {
-                        this.inteam=true
-                        this.detailData.teamname=tableData[i].teamname
-                        this.detailData.captain=tableData[i].captain
-                        this.detailData.invitecode=tableData[i].invitecode
-                        this.detailData.description=tableData[i].description
-                        this.detailData.memebers=tableData[i].members
-                    }
-                }
-            }
-        }
       })
+      .then(res => {
+        this.tableData = res;
+        for (i = 0; i < tableData.length; i++) {
+          if (current_id == tableData[i].captain) {
+            this.iscaptain = true;
+            this.inteam = true;
+            this.detailData.teamname = tableData[i].teamname;
+            this.detailData.captain = tableData[i].captain;
+            this.detailData.invitecode = tableData[i].invitecode;
+            this.detailData.description = tableData[i].description;
+            this.detailData.memebers = tableData[i].members;
+            this.team_id=tableData[i].teamid
 
+          } else {
+            for (j = 0; j < tableData[i].members.length; j++) {
+              if (current_id == tableData[i].members[j]) {
+                this.inteam = true;
+                this.detailData.teamname = tableData[i].teamname;
+                this.detailData.captain = tableData[i].captain;
+                this.detailData.invitecode = tableData[i].invitecode;
+                this.detailData.description = tableData[i].description;
+                this.detailData.memebers = tableData[i].members;
+                this.team_id=tableData[i].teamid
+              }
+            }
+          }
+        }
+      });
+  },
+
+  methods: {
+    createDialog() {
+      this.dialogFormVisible = true;
+      this.form.teamname = "";
+      this.form.description = "";
     },
-
-    methods: {
-        createDialog()
-        {
-            this.dialogFormVisible = true;
-            this.form.teamname='';
-            this.form.description='';
-        },
-        createTeam()
-        {
-            // console.log(this.form['teamname']);
-            // console.log(this.form['description']);
-            if(this.form['teamname'].length<=10&&this.form['teamname'].length>0)//
-            {
-                if(this.form['description'].length<=50&&this.form['description'].length>0)
+    createTeam() {
+      // console.log(this.form['teamname']);
+      // console.log(this.form['description']);
+      if (
+        this.form["teamname"].length <= 10 &&
+        this.form["teamname"].length > 0
+      ) {
+        //
+        if (
+          this.form["description"].length <= 50 &&
+          this.form["description"].length > 0
+        ) {
+          fetch("/api/teams", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": token_dict
+            },
+            body: JSON.stringify({
+                "teamname":this.form["teamname"],
+                "description":this.form["description"]
+            })
+          })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效，请重新登录！");
+                if(token!=null)
                 {
-                    //***************上传数据 */
-                    this.$message.success('创建队伍成功');//写在回调函数中
-                    this.dialogFormVisible = false;
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
                 }
-                else if(this.form['description'].length==0)
-                {
-                    this.$message.error('请输入队伍简介');
-                }
-                else
-                {
-                    this.$message.error('队伍简介过长');
-                }
-            }
-            else if(this.form['teamname'].length==0)//显示‘请输入队伍名称’
-            {
-                this.$message.error('请输入队伍名称');
-            }
-            else//显示‘队伍名称过长’
-            {
-                this.$message.error('队伍名称过长');
-            }
-        },
-        onCopy()
-        {
-            
-            this.$message.success('复制成功');
-        },
-        onError()
-        {
-            this.$message.error('复制失败');
-        },
-        dropOut(index)//踢出id为index的队员
-        {
-             this.$confirm('是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">'+this.detailData.members[index]+'</span>&nbsp;&nbsp;&nbsp;请出队伍?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                dangerouslyUseHTMLString: true ,
-                type: 'warning'
-                }).then(() => {
-                    //****************发送命令将队员从队伍中删除 */
-                    // fetch()
-                this.$message({
-                    type: 'success',
-                    message: '操作成功!'
-                });
-                }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
-                });
-        },
-        joinTeam(index)//加入第几个队伍
-        {
-            // console.log(index);
-            //this.tableData[index].id//为加入队伍的标号
-            var teamid=this.tableData[index].id;//获取队伍标号
-
-            this.$prompt('请输入邀请码', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-            // inputErrorMessage: '邮箱格式不正确'
-            }).then(({ value }) => {
-            //传入value作为teamid队伍的邀请码
-            // fetch('',()=>
-            // {
-
-            // }).then(response=>({
-            //     if(ok)
-            //     {
-            //           this.$message({
-            //                 type: 'success',
-            //                 message: '加入队伍成功'
-            //             });
-            //     }
-            //     else if(no)
-            //     {
-            //         this.$message({
-            //                 type: 'error',
-            //                 message: '加入队伍失败'
-            //         });
-            //     }
-            // }))    
-
-
-            }).catch(() => {
-            // this.$message({
-            //     type: 'info',
-            //     message: '取消加入队伍'
-            // });       
+              } else if (response.status == "409"){
+                this.$message.error("您已加入本队伍或队伍名冲突！");
+              } else if (response.status == "422"){
+                  this.$message.error("队伍信息重要字段缺失！")
+              } else {
+                  this.$message.error("创建队伍失败！")
+              }
+            })
+            .then(res => {
+              this.detailData.invitecode = res["invitecode"]
+              this.iscaptain=true
+              this.inteam=true
+              this.$message.success("创建队伍成功!")
             });
-        },
-        clearTeam()//队长解散队伍
+            this.dialogFormVisible = false;
+        } else if (this.form["description"].length == 0) {
+          this.$message.error("请输入队伍简介");
+        } else {
+          this.$message.error("队伍简介过长");
+        }
+      } else if (this.form["teamname"].length == 0) {
+        //显示‘请输入队伍名称’
+        this.$message.error("请输入队伍名称");
+      } //显示‘队伍名称过长’
+      else {
+        this.$message.error("队伍名称过长");
+      }
+    },
+    onCopy() {
+      this.$message.success("复制成功");
+    },
+    onError() {
+      this.$message.error("复制失败");
+    },
+    dropOut(index) {
+      if(iscaptain==true)
+      {
+          this.$confirm(
+        '是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +
+          this.detailData.members[index] +
+          "</span>&nbsp;&nbsp;&nbsp;请出队伍?",
+        "提示",
         {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          dangerouslyUseHTMLString: true,
+          type: "warning"
+        }
+      )
+        .then(() => {
+            FETCH_URL="/api/teams/:"+this.team_id+"memebers/:"+index
+            fetch(FETCH_URL, {
+            method: "DELETE",
+            headers: {
+              "x-access-token": token_dict
+            },
+            body: JSON.stringify({
+            })
+         })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                }
+              } else if (response.status == "404"){
+                this.$message.error("队伍或成员不存在！");
+              } else if (response.status == "400"){
+                this.$message.error("不能踢出自己！");
+              } else {
+                this.$message.error("踢出成员失败！")
+              }
+            })
+            .then(res => {
+              this.$message.success("踢出成员成功!因队伍信息改变，请您重新登录！")
+              iscaptain=false
+              inteam=false
+              team_id=null
+              token=null
+              current_username=null
+              current_id=null
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100);
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+      }
+      else 
+      {
+          this.$message.error("您不是队长，无权进行此操作！")
+      }
+    },
+    joinTeam(
+      index //加入第几个队伍
+    ) {
+      // console.log(index);
+      //this.tableData[index].id//为加入队伍的标号
+      var want_teamid = this.tableData[index].id; //获取队伍标号
 
-        },
-        exitTeam()//队员退出队伍
+      this.$prompt("请输入邀请码", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      })
+        .then(({ value }) => {
+            FETCH_URL="/api/teams/:"+want_teamid+"memebers"
+            fetch(FETCH_URL, {
+            method: "POST",
+            headers: {
+                "x-access-token": token_dict
+            },
+            body: JSON.stringify({
+                "invitecode":value
+            })
+         })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                }
+              } else if (response.status == "422"){
+                this.$message.error("缺少邀请码字段！");
+              } else if (response.status == "403"){
+                this.$message.error("邀请码错误！");
+              } else if (response.status == "409"){
+                this.$message.error("队伍人数超过上限或您已经在队伍中！");
+              } else if (response.status == "404"){
+                this.$message.error("队伍不存在！");
+              } else {
+                this.$message.error("加入队伍失败！")
+              }
+            })
+            .then(res => {
+              this.$message.success("加入队伍!因个人信息改变，请您重新登录！")
+              iscaptain=false
+              inteam=true
+              team_id=null
+              token=null
+              current_username=null
+              current_id=null
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100);
+            })
+        })
+        .catch(() => {
+          this.$message({
+               type: 'info',
+               message: '取消加入队伍'
+           });
+        });
+    },
+    clearTeam() {
+        if(iscaptain==true)
         {
-
-        },
-        edit_description()//修改队伍简介
+            this.$message({
+                type: 'info',
+                message: '您正在解散队伍，请谨慎操作！'
+            });
+            FETCH_URL="/api/teams/:"+this.team_id
+            fetch(FETCH_URL, {
+            method: "DELETE",
+            headers: {
+              "x-access-token": token_dict
+            },
+            body: JSON.stringify({
+            })
+          })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                }
+              } else if (response.status == "404"){
+                this.$message.error("队伍不存在！");
+              } else {
+                  this.$message.error("创建队伍失败！")
+              }
+            })
+            .then(res => {
+              this.$message.success("删除队伍成功!因个人信息改变，请您重新登录！")
+              iscaptain=false
+              inteam=false
+              team_id=null
+              token=null
+              current_username=null
+              current_id=null
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100);
+            });
+        }
+        else{
+            this.$message.error("您不是队长，没有解散队伍的权限！")
+        }
+    }, 
+    exitTeam() {
+        if(inteam==true&&iscaptain==false)
         {
-
-        },
-        handleCurrentChange: function(currentPage){
-                this.currentPage = currentPage;
-                // console.log(this.currentPage)  //点击第几页
-        },
+            this.$message({
+                type: 'info',
+                message: '您正在退出队伍，请谨慎操作！'
+            });
+            if(this.team)
+            FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.current_id
+            fetch(FETCH_URL, {
+            method: "DELETE",
+            headers: {
+              "x-access-token": token_dict
+            },
+            body: JSON.stringify({
+            })
+          })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                }
+              } else if (response.status == "404"){
+                this.$message.error("队伍或队伍成员不存在！");
+              } else if (response.status == "400"){
+                this.$message.error("不能试图删除队长");
+              } else {
+                  this.$message.error("退出队伍失败！")
+              }
+            })
+            .then(res => {
+              this.$message.success("退出队伍成功!因个人信息改变，请您重新登录！")
+              iscaptain=false
+              inteam=false
+              team_id=null
+              token=null
+              current_username=null
+              current_id=null
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100);
+            });
+        }
+        else if(inteam==true&&iscaptain==true){
+            this.$message.error("您是队长，不可退出自己的队伍，请选择解散队伍或删除队伍成员！")
+        }
+        else if(inteam==false)
+        {
+            this.$message.error("您尚且未加入队伍中，请先加入队伍！")
+        }
+    }, 
+    edit_description() {
+        if(iscaptain==true)
+        {
+            FETCH_URL="/api/teams/:"+this.team_id+"memebers"
+            fetch(FETCH_URL, {
+            method: "PUT",
+            headers: {
+                "x-access-token": token_dict,
+                "content-type": application/json
+            },
+            body: JSON.stringify({
+                "description":this.detailData["description"]
+            })
+         })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                }
+              } else if (response.status == "400"){
+                this.$message.error("您不是队长或权限不足！");
+              } else if (response.status == "404"){
+                this.$message.error("队伍不存在！");
+              } else {
+                this.$message.error("加入队伍失败！")
+              }
+            })
+            .then(res => {
+              this.$message.success("成功更改队伍信息!因个人信息改变，请您重新登录！")
+              iscaptain=false
+              inteam=true
+              team_id=null
+              token=null
+              current_username=null
+              current_id=null
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100);
+            })
+        }
+        else{
+            this.$message.error("您不是队长，没有权限")
+        }
+    }, 
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
+      // console.log(this.currentPage)  //点击第几页
     }
+  }
+};
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
 
-function getCookie(cname){
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
-    }
-    return "";
+function delCookie(name)
+{
+var exp = new Date();
+exp.setTime(exp.getTime() - 1);
+var cval=getCookie(name);
+if(cval!=null)
+document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
-
-
 
 </script>
 
 <style>
-.svg
-{
-    position: relative;
-    padding-right:12px; 
-    top:3px;
-    width:20px;
-    height:20px;
-    /* padding: 12px; */
+.svg {
+  position: relative;
+  padding-right: 12px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  /* padding: 12px; */
 }
-#team_contain
-{
-    width:100%;
-    min-height:70%;
-    margin-bottom:50px; 
+#team_contain {
+  width: 100%;
+  min-height: 70%;
+  margin-bottom: 50px;
 }
-#team_card
-{
-    position: relative;
-    width:70%;
-    left:15%;
-    margin-top:2%;
+#team_card {
+  position: relative;
+  width: 70%;
+  left: 15%;
+  margin-top: 2%;
 }
-#create_team
-{
-    width:100%;
-    position: relative;
-    /* padding:20px; */
+#create_team {
+  width: 100%;
+  position: relative;
+  /* padding:20px; */
 }
-.create_team
-{
-    position: relative;
-    margin-top:20px;
+.create_team {
+  position: relative;
+  margin-top: 20px;
 }
-#create_team_dialog
-{
-    width:100%;
-    /* position: relative; */
+#create_team_dialog {
+  width: 100%;
+  /* position: relative; */
 }
-#detail_table
-{
-    padding: 12px 0;
-    min-width: 0;
-    width:100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-    position: relative;
-    text-align: left;
-    color: #909399;
-    border-collapse: collapse;
+#detail_table {
+  padding: 12px 0;
+  min-width: 0;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  color: #909399;
+  border-collapse: collapse;
 }
-#detail_table .el-button
-{
-    width:90px;
-    margin-right:5px;
+#detail_table .el-button {
+  width: 90px;
+  margin-right: 5px;
 }
-#detail_table tr
-{
-    /* border:1px solid red; */
-    width:100%;
-    padding:12px;
-    border-bottom: 1px solid #f5f7fa;
+#detail_table tr {
+  /* border:1px solid red; */
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid #f5f7fa;
 }
-#detail_table tr th
-{
-    padding:12px;
+#detail_table tr th {
+  padding: 12px;
 }
-#detail_table tr th i
-{
-    padding-right:12px;
+#detail_table tr th i {
+  padding-right: 12px;
 }
-#detail_table tr td
-{
-    position: relative;
-    /* padding:12px; */
-    vertical-align: middle;
-    color:black;
-    /* left:200px; */
+#detail_table tr td {
+  position: relative;
+  /* padding:12px; */
+  vertical-align: middle;
+  color: black;
+  /* left:200px; */
 }
-.table_th2
-{
-    background-color: #f5f7fa;
+.table_th2 {
+  background-color: #f5f7fa;
 }
-.table_th1
-{
-    background-color:white;
+.table_th1 {
+  background-color: white;
 }
-#members_table
-{
-    width:100%;
+#members_table {
+  width: 100%;
 }
-#members_table .table_th2
-{
-    background-color: #f5f7fa;
-    padding-top:10px;
-    height:50px;
-    position: relative;
+#members_table .table_th2 {
+  background-color: #f5f7fa;
+  padding-top: 10px;
+  height: 50px;
+  position: relative;
 }
-#members_table .table_th1
-{
-    background-color:white;
-    padding-top:10px;
-    height:50px;
-    position: relative;
+#members_table .table_th1 {
+  background-color: white;
+  padding-top: 10px;
+  height: 50px;
+  position: relative;
 }
-#copyinvitecode
-{
-    position: relative;
-    /* left:50px; */
-    float:right;
-    /* text-align: right; */
+#copyinvitecode {
+  position: relative;
+  /* left:50px; */
+  float: right;
+  /* text-align: right; */
 }
-.dropout
-{
-    position: relative;
-    /* left:50%; */
-    float:right;
+.dropout {
+  position: relative;
+  /* left:50%; */
+  float: right;
 }
 </style>

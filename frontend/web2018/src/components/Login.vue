@@ -127,6 +127,14 @@ export default {
         }
       }
   },
+
+  created:function()
+  {
+    setCookie("usename",null)
+    setCookie("id",null)
+    setCookie("token",null)
+  },
+
   methods: {
     log_in:function(){
       fetch("/api/auth",
