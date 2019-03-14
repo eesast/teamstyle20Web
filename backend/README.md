@@ -551,8 +551,17 @@
     ```
     401 Unauthorized: You are not in this team.
     ```
+
+    如果不在系统开放时间内，返回状态码403
+    返回文本：
+
+    ```
+    403 Forbidden: System is closed for upload.
+    ```
+
 * /api/codes/teams/:id    GET
     返回相应id队伍的文件路径（下载地址）
+
     * header
     | key | value |
     |-------|------|
