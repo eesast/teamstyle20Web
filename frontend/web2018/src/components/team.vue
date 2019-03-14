@@ -109,7 +109,7 @@
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
-                        <span v-for="(x,index) in scope.row.members" style="border-bottom:0.5px solid ;text-align:center;">
+                        <span v-for="(x,index) in scope.row.members"      style="border-bottom:0.5px solid ;text-align:center;">
                             {{x}}<br/>
                         </span>
                     <!-- </table> -->
@@ -138,7 +138,18 @@
 </template>
 
 <script>
-token = getCookie("token");
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+var token = getCookie("token");
 if(token==null)
 {
     this.$message("您尚未登录！")
@@ -146,9 +157,9 @@ if(token==null)
           this.$router.push({path: '/index'})
         }, 100);
 }
-current_username = getCookie("username");
-current_id = getCookie("id");
-token_dict = { token: token };
+var current_username = getCookie("username");
+var current_id = getCookie("id");
+var token_dict = {"token":token};
 
 export default {
   name: "team",
@@ -345,23 +356,23 @@ export default {
           if (current_id == tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;
-            this.detailData.teamname = tableData[i].teamname;
-            this.detailData.captain = tableData[i].captain;
-            this.detailData.invitecode = tableData[i].invitecode;
-            this.detailData.description = tableData[i].description;
-            this.detailData.memebers = tableData[i].members;
-            this.team_id=tableData[i].teamid
+            this.detailData["teamname"] = tableData[i]["teamname"];
+            this.detailData["captain"]= tableData[i]["captain"];
+            this.detailData["invitecode"] = tableData[i]["invitecode"];
+            this.detailData["description"] = tableData[i]["description"];
+            this.detailData["memebers"] = tableData[i]["members"];
+            this.team_id=tableData[i]["teamid"]
 
           } else {
             for (j = 0; j < tableData[i].members.length; j++) {
               if (current_id == tableData[i].members[j]) {
                 this.inteam = true;
-                this.detailData.teamname = tableData[i].teamname;
-                this.detailData.captain = tableData[i].captain;
-                this.detailData.invitecode = tableData[i].invitecode;
-                this.detailData.description = tableData[i].description;
-                this.detailData.memebers = tableData[i].members;
-                this.team_id=tableData[i].teamid
+                this.detailData["teamname"] = tableData[i]["teamname"];
+                this.detailData["captain"] = tableData[i]["captain"];
+                this.detailData["invitecode"] = tableData[i]["invitecode"];
+                this.detailData["description"] = tableData[i]["description"];
+                this.detailData["memebers"] = tableData[i]["members"];
+                this.team_id=tableData[i]["teamid"]
               }
             }
           }
@@ -409,6 +420,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "409"){
                 this.$message.error("您已加入本队伍或队伍名冲突！");
@@ -445,7 +459,7 @@ export default {
       this.$message.error("复制失败");
     },
     dropOut(index) {
-      if(iscaptain==true)
+      if(this.iscaptain==true)
       {
           this.$confirm(
         '是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +
@@ -460,7 +474,7 @@ export default {
         }
       )
         .then(() => {
-            FETCH_URL="/api/teams/:"+this.team_id+"memebers/:"+index
+            var FETCH_URL="/api/teams/:"+this.team_id+"memebers/:"+index
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -480,6 +494,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或成员不存在！");
@@ -491,9 +508,9 @@ export default {
             })
             .then(res => {
               this.$message.success("踢出成员成功!因队伍信息改变，请您重新登录！")
-              iscaptain=false
-              inteam=false
-              team_id=null
+              this.iscaptain=false
+              this.inteam=false
+              this.team_id=null
               token=null
               current_username=null
               current_id=null
@@ -531,7 +548,7 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
-            FETCH_URL="/api/teams/:"+want_teamid+"memebers"
+            var FETCH_URL="/api/teams/:"+want_teamid+"memebers"
             fetch(FETCH_URL, {
             method: "POST",
             headers: {
@@ -552,6 +569,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "422"){
                 this.$message.error("缺少邀请码字段！");
@@ -567,9 +587,9 @@ export default {
             })
             .then(res => {
               this.$message.success("加入队伍!因个人信息改变，请您重新登录！")
-              iscaptain=false
-              inteam=true
-              team_id=null
+              this.iscaptain=false
+              this.inteam=true
+              this.team_id=null
               token=null
               current_username=null
               current_id=null
@@ -589,13 +609,13 @@ export default {
         });
     },
     clearTeam() {
-        if(iscaptain==true)
+        if(this.iscaptain==true)
         {
             this.$message({
                 type: 'info',
                 message: '您正在解散队伍，请谨慎操作！'
             });
-            FETCH_URL="/api/teams/:"+this.team_id
+            var FETCH_URL="/api/teams/:"+this.team_id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -615,6 +635,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
@@ -624,9 +647,9 @@ export default {
             })
             .then(res => {
               this.$message.success("删除队伍成功!因个人信息改变，请您重新登录！")
-              iscaptain=false
-              inteam=false
-              team_id=null
+              this.iscaptain=false
+              this.inteam=false
+              this.team_id=null
               token=null
               current_username=null
               current_id=null
@@ -643,14 +666,14 @@ export default {
         }
     }, 
     exitTeam() {
-        if(inteam==true&&iscaptain==false)
+        if(this.inteam==true&&this.iscaptain==false)
         {
             this.$message({
                 type: 'info',
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.current_id
+            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.current_id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -670,6 +693,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或队伍成员不存在！");
@@ -681,9 +707,9 @@ export default {
             })
             .then(res => {
               this.$message.success("退出队伍成功!因个人信息改变，请您重新登录！")
-              iscaptain=false
-              inteam=false
-              team_id=null
+              this.iscaptain=false
+              this.inteam=false
+              this.team_id=null
               token=null
               current_username=null
               current_id=null
@@ -695,18 +721,18 @@ export default {
               }, 100);
             });
         }
-        else if(inteam==true&&iscaptain==true){
+        else if(this.inteam==true&&iscaptain==true){
             this.$message.error("您是队长，不可退出自己的队伍，请选择解散队伍或删除队伍成员！")
         }
-        else if(inteam==false)
+        else if(this.inteam==false)
         {
             this.$message.error("您尚且未加入队伍中，请先加入队伍！")
         }
     }, 
     edit_description() {
-        if(iscaptain==true)
+        if(this.iscaptain==true)
         {
-            FETCH_URL="/api/teams/:"+this.team_id+"memebers"
+            var FETCH_URL="/api/teams/:"+this.team_id+"memebers"
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
@@ -728,6 +754,9 @@ export default {
                     delCookie("token")
                     delCookie("id")
                     delCookie("username")
+                    token=null
+                    current_username=null
+                    current_id=null
                 }
               } else if (response.status == "400"){
                 this.$message.error("您不是队长或权限不足！");
@@ -739,9 +768,9 @@ export default {
             })
             .then(res => {
               this.$message.success("成功更改队伍信息!因个人信息改变，请您重新登录！")
-              iscaptain=false
-              inteam=true
-              team_id=null
+              this.iscaptain=false
+              this.inteam=true
+              this.team_id=null
               token=null
               current_username=null
               current_id=null
@@ -764,17 +793,6 @@ export default {
   }
 };
 
-function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i].trim();
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 
 function delCookie(name)
 {

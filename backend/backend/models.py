@@ -184,6 +184,14 @@ class GlobalSetting(models.Model):
     def __str__(self):
         return str(self.year)
 
+    def get_globalSetting(self):
+        output = dict()
+        output["year"] = self.year
+        output["game_name"] = self.game_name
+        output["submission_start"] = self.submission_start
+        output["submission_end"] = self.submission_end
+        return output
+
     def save(self, *args, **kwargs):
         if GlobalSetting.objects.exists() and not self.pk:
             raise ValidationError('Only one Global Settings allowed.')
