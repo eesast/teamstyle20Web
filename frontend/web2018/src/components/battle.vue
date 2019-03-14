@@ -70,9 +70,9 @@
       <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
       <el-col :span="6"><el-checkbox :label="tableData[index-1].id" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6"v-if="index<tableData.length"><el-checkbox :label="tableData[index].id" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
-      <el-col :span="6"v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].id" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6"v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].id" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index<tableData.length"><el-checkbox :label="tableData[index].id" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].id" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].id" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
       </template>
       </el-row>
       <!-- <el-row>

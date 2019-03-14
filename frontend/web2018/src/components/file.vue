@@ -69,7 +69,7 @@ export default {
             tableData:
             [{
                 filename:'大赛文件.pdf',
-                download:'/大赛文件.pdf'
+                download:'../static/files/大赛文件.pdf'
             },{
                 filename:'大赛文件2.pdf',
                 download:'/大赛文件2.pdf'
@@ -114,8 +114,62 @@ export default {
                 })
             })
         },
+    },
+
+    created:function(){
+            FETCH_URL="/api/file/list"
+            fetch(FETCH_URL, {
+            method: "GET",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+            })
+          })
+            .then(response => {
+              console.log(response.status);
+              if (response.ok) {
+                return response.json();
+              } else {
+                  this.$message.error("获取文件列表失败，建议联系开发者gsy反馈bug :)")
+              }
+            })
+            .then(res => {
+              file_from_backend=res
+              for (var i in file_from_backend)
+              {
+                  var single_file=new Object()
+                  single_file["filename"]=file_from_backend[i]["title"]
+                  single_file["id"]=file_from_backend[i]["id"]
+                  single_file["last_update_date"]=file_from_backend[i]["last_update_date"]
+                  FETCH_URL1="/api/file/download/"+single_file["id"]
+                  fetch(FETCH_URL1, {
+                    method: "GET",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                    })
+                  })
+                  .then(response => {
+                    console.log(response.status);
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        this.$message.error("获取文件"+ single_file["filename"]+"失败")
+                    }
+                  })
+                  .then(res => {
+                    pass
+                });
+                file_display= new Object()
+                file_display["filename"]=single_file["filename"]
+                file_diaplay["download"]=hhhhh
+                tableData.push(file_display)
+              }
+            });
+        }
     }
-}
 </script>
 
 <style>

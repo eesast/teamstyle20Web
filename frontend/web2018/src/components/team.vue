@@ -109,7 +109,7 @@
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
-                        <span v-for="(x,index) in scope.row.members" style="border-bottom:0.5px solid ;text-align:center;">
+                        <span v-for="(x,index) in scope.row.members"      style="border-bottom:0.5px solid ;text-align:center;">
                             {{x}}<br/>
                         </span>
                     <!-- </table> -->
@@ -345,23 +345,23 @@ export default {
           if (current_id == tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;
-            this.detailData.teamname = tableData[i].teamname;
-            this.detailData.captain = tableData[i].captain;
-            this.detailData.invitecode = tableData[i].invitecode;
-            this.detailData.description = tableData[i].description;
-            this.detailData.memebers = tableData[i].members;
-            this.team_id=tableData[i].teamid
+            this.detailData["teamname"] = tableData[i]["teamname"];
+            this.detailData["captain"]= tableData[i]["captain"];
+            this.detailData["invitecode"] = tableData[i]["invitecode"];
+            this.detailData["description"] = tableData[i]["description"];
+            this.detailData["memebers"] = tableData[i]["members"];
+            this.team_id=tableData[i]["teamid"]
 
           } else {
             for (j = 0; j < tableData[i].members.length; j++) {
               if (current_id == tableData[i].members[j]) {
                 this.inteam = true;
-                this.detailData.teamname = tableData[i].teamname;
-                this.detailData.captain = tableData[i].captain;
-                this.detailData.invitecode = tableData[i].invitecode;
-                this.detailData.description = tableData[i].description;
-                this.detailData.memebers = tableData[i].members;
-                this.team_id=tableData[i].teamid
+                this.detailData["teamname"] = tableData[i]["teamname"];
+                this.detailData["captain"] = tableData[i]["captain"];
+                this.detailData["invitecode"] = tableData[i]["invitecode"];
+                this.detailData["description"] = tableData[i]["description"];
+                this.detailData["memebers"] = tableData[i]["members"];
+                this.team_id=tableData[i]["teamid"]
               }
             }
           }
