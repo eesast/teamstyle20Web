@@ -1,4 +1,5 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
+from django.utils.http import urlquote
 from .models import *
 from django.shortcuts import render,get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -6,6 +7,7 @@ from django.template import *
 import requests
 import hashlib, uuid
 from django.db.models import Q
+from django.conf import settings
 # Create your views here.
 
 
@@ -252,6 +254,17 @@ def modifyTeamByID(request, teamid):
                         response = JsonResponse(output, status=200, safe= False)
                         if(query.count() == 0):
                             response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    elif request.method == 'DELETE':
+        if 'HTTP_X_ACCESS_TOKEN' in request.META:
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+            x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+            if type(x_access_token) is dict:
+                if 'auth' in x_access_token and 'token' in x_access_token:
+                    if x_access_token["auth"] == True:
+                        pass
+        return response
+    elif request.method == 'PUT':
+        return response
     return response
 
 
@@ -275,5 +288,29 @@ def viewAnnouncementAPI(request, post_id):
             output.append(query.get_AnnouncementInfo(1))
             response = JsonResponse(output, status=200, safe=False)
         except Announcement.DoesNotExist:
+            response = HttpResponse("404 Not found.", status = 404)
+    return response
+
+
+def listFileAPI(request):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        query = File.objects.all()
+        output = list()
+        for file in query:
+            output.append(file.get_FileInfo())
+        response = JsonResponse(output, status=200, safe=False)
+    return response
+
+
+def downloadFileAPI(request, file_id):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        try:
+            query = File.objects.get(pk=file_id)
+            response = FileResponse(open(query.content.path, 'rb'), status=200)
+            response['Content-Type'] = 'application/octet-stream'
+            response['Content-Disposition'] = 'attachment;filename = ' + urlquote(query.filename())
+        except File.DoesNotExist:
             response = HttpResponse("404 Not found.", status = 404)
     return response

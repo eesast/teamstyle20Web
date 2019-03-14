@@ -4,7 +4,7 @@
 ### · 队伍系统(team)
 ### · 代码部分(code)
 ### · 公告部分(announcement)
-### · 文件部分(file)  (待定)
+### · 文件部分(file) 
 
 ##### 注:凡涉及到因token失效而返回401的，建议同时返回JSON文本:
 ```
@@ -565,10 +565,38 @@
 
 
     若找不到公告，返回状态码404和文本:
-
+    
     404 Not found.
 
+## 文件部分
 
+| route                  | http verb | content                                    |
+| ---------------------- | --------- | ------------------------------------------ |
+| /api/file/list         | GET       | 获取全部的文件信息(ID、标题、最后更新时间) |
+| /api/file/download/:id | GET       | 获取对应id的文件(以文件下载型式传送)       |
+
+- /api/file/list  GET
+  获取全部的文件信息(ID、标题、最后更新时间)
+
+  - response
+    请求成功，返回状态码200和JSON文本(数组):
+
+  ```
+  [
+  	{
+  		"last_update_date": "2019-03-13T17:00:32.490Z",
+  		"title": "\u898f\u5247", 
+  		"id": 1
+  	}
+  ]
+  ```
+
+- /api/announce/view/:id  GET
+  获取对应id的文件(以文件下载型式传送)
+
+  - response
+    - application/octet-stream
+    - filename：原始文件名
 
 
 
