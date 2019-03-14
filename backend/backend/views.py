@@ -326,6 +326,137 @@ def modifyTeamByID(request, teamid):
         return response
     return response
 
+@csrf_exempt
+def modifyTeamMembersByID(request, teamid):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        try:
+            targetTeam = Team.objects.get(pk = teamid)
+            response = JsonResponse(targetTeam.get_member(), status=200, safe=False)
+        except Team.DoesNotExist:
+            response = HttpResponse("404 Not Found: Team does not exist.", status=404)
+        pass
+    elif request.method == 'POST':
+        try:
+            targetTeam = Team.objects.get(pk = teamid)
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+            if 'HTTP_X_ACCESS_TOKEN' in request.META:
+                x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+                if type(x_access_token) is dict:
+                    if 'auth' in x_access_token and 'token' in x_access_token:
+                        if x_access_token["auth"] == True:
+                            addInfo = is_json(request.body)
+                            error = 1
+                            if type(addInfo) is dict:
+                                if "invitecode" in addInfo:
+                                    error = 0
+                            if error:
+                                response = HttpResponse("422 Unprocessable Entity: Missing essential post data.", status=422)
+                            else:
+                                if(targetTeam.member_num >= targetTeam.get_member_limit()):
+                                    error = 1
+                                    response = HttpResponse("409 Conflict: The number of members exceeds.", status=409)
+                                if(targetTeam.invitecode != addInfo["invitecode"]):
+                                    error = 1
+                                    response = HttpResponse("403 Forbidden: Incorrect invite code.", status=403)
+                                query = Team.objects.filter(Q(members__contains=x_access_token['id']))
+                                for team in query:
+                                    if team.memberInTeam(x_access_token["id"]):
+                                        error =1
+                                        response = HttpResponse("409 Conflict: User is already in a team.", status=409)
+                            if not error:
+                                targetTeam.add_member(x_access_token["id"])
+                                response = HttpResponse("201 Operation Successful", status=201)
+        except Team.DoesNotExist:
+            response = HttpResponse("404 Not Found: Team does not exist.", status=404)
+        pass
+    elif request.method == 'DELETE':
+        try:
+            targetTeam = Team.objects.get(pk=teamid)
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+            if 'HTTP_X_ACCESS_TOKEN' in request.META:
+                x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+                if type(x_access_token) is dict:
+                    if 'auth' in x_access_token and 'token' in x_access_token:
+                        if x_access_token["auth"] == True:
+                            error = 0
+                            has_permission = 0
+                            if (str(targetTeam.captain) == str(x_access_token["id"])):
+                                error = 1
+                                response = HttpResponse("400 Bad Request: Captain cannot be deleted.", status=400)
+                            if (not targetTeam.memberInTeam(x_access_token["id"])):
+                                error = 1
+                                response = HttpResponse("404 Not Found: Member does not exist.", status=404)
+                            if not error:
+                                targetTeam.delete_member(x_access_token["id"])
+                                response = HttpResponse("204 Operation Successful.", status=204)
+        except Team.DoesNotExist:
+            response = HttpResponse("404 Not found: Team does not exist.", status= 404)
+
+    return response
+
+@csrf_exempt
+def deleteTeamMembers(request, teamid, deleteid):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'DELETE':
+        try:
+            targetTeam = Team.objects.get(pk=teamid)
+            if(not targetTeam.memberInTeam(deleteid)):
+                response = HttpResponse("404 Not Found: Member does not exist.", status=404)
+            elif (str(targetTeam.captain) == str(deleteid)):
+                response = HttpResponse("400 Bad Request: Captain cannot be deleted.", status=400)
+            else:
+                response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+                if 'HTTP_X_ACCESS_TOKEN' in request.META:
+                    x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+                    if type(x_access_token) is dict:
+                        if 'auth' in x_access_token and 'token' in x_access_token:
+                            if x_access_token["auth"] == True:
+                                targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                                head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                                query_response = requests.get(targetURL, headers=head)
+                                userInfo = is_json(query_response.content)
+                                has_permission = 0;
+                                response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
+                                if type(userInfo) is dict:
+                                    if userInfo["group"] == 'admin':
+                                        has_permission = 1
+                                    if str(targetTeam.captain) == str(userInfo["id"]):
+                                        has_permission = 1
+                                if has_permission:
+                                    targetTeam.delete_member(x_access_token["id"])
+                                    response = HttpResponse("204 Operation Successful.", status=204)
+        except Team.DoesNotExist:
+            response = HttpResponse("404 Not found: Team does not exist.", status= 404)
+    return response
+
+
+import datetime
+query = GlobalSetting.objects.all()
+submission = dict()
+if query.count()==1:
+    submission["start"] = query[0].submission_start
+    submission["end"] = query[0].submission_end
+else:
+    submission = False
+def systemOpen():
+    now = datetime.datetime.now()
+    if datetime.datetime.now() < submission["start"] or datetime.datetime.now() > submission["end"]:
+        return False
+    else:
+        return True
+
+@csrf_exempt
+def modifyTeamCodes(request, teamid):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'POST':
+        if (not systemOpen()):
+            response = HttpResponse("403 Forbidden: System is closed for upload.", status=403)
+        else:
+            response = HttpResponse("200 OK: Ready for upload.", status=200)
+    return response
+
+
 
 def listAnnouncementAPI(request):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)

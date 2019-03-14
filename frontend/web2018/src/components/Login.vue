@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import nav from '@/components/nav.vue'
 export default {
   name: 'Register',
   props: ['realname','name','password','classx','realname','studentid','phone','email','department'],
@@ -95,6 +96,7 @@ export default {
           realname:"",
           name:"",
           password:"",
+          password1:"",
           classx:"",
           studentid:"",
           phone:"",
@@ -190,6 +192,7 @@ export default {
         this.form.token=res['token']
         this.form.id=res['id']
         this.$message.success('登录成功！');
+        nav.navflag=false
         setCookie("token",this.form.token)
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
@@ -199,7 +202,14 @@ export default {
       })
     },
     create:function(){
-      console.log(this.form.name)
+      // console.log(this.form.name)
+      console.log(this.form.password);
+      console.log(this.form.password1);
+      if(this.form.password!=this.form.password1)
+      {
+        this.$message.error('两次输入的密码不一样!');
+        return ;
+      }
       fetch("/api/users",
       {
         method:'POST',
@@ -217,9 +227,10 @@ export default {
                 "password":this.form.password,
                 "phone":this.form.phone,
                 "email":this.form.email,
-                "realname":this.form.realname,
-                "classx":this.form.classx,
-                "studentID":this.form.studentid
+                "name":this.form.realname,
+                "classx":this.form.class,
+                "id":this.form.studentid,
+                "department":this.form.department
             }
         )
       }).then(response=>
@@ -244,8 +255,10 @@ export default {
         }
       }).then(res=>
       {
+        console.log(res)
         this.form.token=res['token']
         this.$message.success('注册成功，请登录开始您的挑战！');
+        nav.navflag=false
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setCookie("token",token)

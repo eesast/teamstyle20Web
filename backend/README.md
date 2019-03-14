@@ -257,7 +257,8 @@
 | /api/teams/:id | DELETE | 删除对应id的队伍|
 | /api/teams/:id/members | GET | 获取相应id队伍的成员|
 | /api/teams/:id/members | POST | 加入相应队伍 |
-| /api/teams/:id/members/:uid | DELETE | 删除相应id队伍中相应uid成员|
+| /api/teams/:id/members      | DELETE    | 将自己自队伍移除                    |
+| /api/teams/:id/members/:uid | DELETE    | 删除相应id队伍中相应uid成员         |
 | /api/teams/:id/fight/:uid | POST | 对应id的队伍向对应uid的队伍发起对战 |
 
 
@@ -405,7 +406,7 @@
     ```
     若token失效或非法，返回状态码401
 
-* /api/teams/:id/members PUT
+* /api/teams/:id/ PUT
     修改相应id的队伍的信息，仅队长或管理员可以操作
 
     * header 
@@ -462,8 +463,8 @@
     400 Bad Request: The user is neither the captain of the team nor the admin.
     ```
 
-* /api/teams/:id/members/:uid DELETE
-    删除相应id的队伍中的uid成员，队长可以删除本队成员，队员可以自己退出队伍
+* /api/teams/:id/members/ DELETE
+    将自己从相应id的队伍中退出
 
     * header 
         | key | value |
@@ -483,8 +484,35 @@
     400 Bad Request: Captain cannot be deleted.
     ```
 
+* /api/teams/:id/members/:uid DELETE
+    删除相应id的队伍中的uid成员，队长可以删除本队成员，队员可以自己退出队伍
+
+    - header 
+
+      | key            | value     |
+      | -------------- | --------- |
+      | x-access-token | 用户token |
+
+    - response
+      若删除成功，返回状态码204
+      若token失效、非法或权限不足，返回状态码401
+      若队伍不存在或成员不存在，返回状态码404和JSON文本:
+
+    ```
+    404 Not Found: Team does not exist.
+    或
+    404 Not Found: Member does not exist.
+    ```
+
+    若试图删除队长，则返回状态码400和JSON文本:
+
+    ```
+    400 Bad Request: Captain cannot be deleted.
+    ```
+
 * /api/teams/:id/fight/:uid POST
     对应id的队伍向对应uid的队伍发起一次作战（后端需要记录对应id的history-active和对应uid的history-passive）
+
     * header 
         | key | value |
         |-------|------|
@@ -523,8 +551,17 @@
     ```
     401 Unauthorized: You are not in this team.
     ```
+
+    如果不在系统开放时间内，返回状态码403
+    返回文本：
+
+    ```
+    403 Forbidden: System is closed for upload.
+    ```
+
 * /api/codes/teams/:id    GET
     返回相应id队伍的文件路径（下载地址）
+
     * header
     | key | value |
     |-------|------|
