@@ -3,7 +3,7 @@
     <el-alert
     center
     style="width:80%;left:10%;color:#409EFF;background-color:#ecf5ff;"
-    title="提示:本界面注册的账号还可以用于登陆电子系科协的其他网站"
+    title="提示:本界面注册的账号还可以用于登录电子系科协的其他网站"
     type="info"
     show-icon>
     </el-alert>
@@ -13,8 +13,8 @@
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
        </el-form-item>
-       <el-form-item prop="password" label="密码">
-         <el-input v-model="form.password"></el-input>
+       <el-form-item  prop="password" label="密码">
+         <el-input type="password" v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item>
          <el-button type="primary" @click="log_in">登录</el-button> 
@@ -27,16 +27,16 @@
          <el-input v-model="form.name"></el-input>
        </el-form-item>
        <el-form-item prop="password" label="密码">
-         <el-input v-model="form.password"></el-input>
+         <el-input v-model="form.password" type="password"></el-input>
        </el-form-item>
        <el-form-item prop="password" label="确认密码">
-         <el-input v-model="form.password1"></el-input>
+         <el-input v-model="form.password1" type="password"></el-input>
        </el-form-item>
         <el-form-item prop="realname" label="真实姓名">
          <el-input v-model="form.realname"></el-input>
        </el-form-item>
-       <el-form-item prop="class" label="班级">
-        <el-input v-model="form.class"></el-input>
+       <el-form-item prop="classx" label="班级">
+        <el-input v-model="form.classx"></el-input>
       </el-form-item>
       <el-form-item prop="studentid" label="学号">
         <el-input v-model="form.studentid"></el-input>
@@ -63,8 +63,8 @@
         <el-form-item prop="realname" label="真实姓名">
          <el-input v-model="form.realname"></el-input>
        </el-form-item>
-       <el-form-item prop="class" label="班级">
-        <el-input v-model="form.class"></el-input>
+       <el-form-item prop="classx" label="班级">
+        <el-input v-model="form.classx"></el-input>
       </el-form-item>
       <el-form-item prop="studentid" label="学号">
         <el-input v-model="form.studentid"></el-input>
@@ -87,7 +87,7 @@
 <script>
 export default {
   name: 'Register',
-  props: ['realname','name','password','class','realname','studentid','phone','email','department'],
+  props: ['realname','name','password','classx','realname','studentid','phone','email','department'],
   data(){
       return {
         activeName:"login",
@@ -95,7 +95,7 @@ export default {
           realname:"",
           name:"",
           password:"",
-          class:"",
+          classx:"",
           studentid:"",
           phone:"",
           email:"",
@@ -107,7 +107,7 @@ export default {
           realname: [
             {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
-          class: [
+          classx: [
             {required: true, message: '请输入班级', trigger: 'blur'}
           ],
           sex: [
@@ -218,7 +218,7 @@ export default {
                 "phone":this.form.phone,
                 "email":this.form.email,
                 "realname":this.form.realname,
-                "class":this.form.class,
+                "classx":this.form.classx,
                 "studentID":this.form.studentid
             }
         )

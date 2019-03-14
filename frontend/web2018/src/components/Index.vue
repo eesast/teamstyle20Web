@@ -191,7 +191,7 @@ loop();
 .water-effect{
 			text-align: center;
 		}
-		h1 {
+.index		h1 {
 	font-size: 120px;
   /* display: inline-block; */
   /* color:azure; */

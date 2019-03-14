@@ -83,16 +83,16 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 <style scoped>
 #nav
 {
-  height:10%;
+  height:60px;
 }
 #nav img{
   height:40px;
   width:40px;
 }
 
-el-menu{
+.el-menu{
     top:0px;
-    height:100px;
+    height:100%;
 }
 .bu1{
   float: right;
