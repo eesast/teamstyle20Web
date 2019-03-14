@@ -197,7 +197,7 @@ export default {
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setTimeout(() => {
-          this.$router.push({path: '/Index',query: { flag: true } })
+          this.$router.push({path: '/',query: { flag: true } })
         }, 100);
       })
     },
@@ -262,6 +262,9 @@ export default {
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setCookie("token",token)
+        setTimeout(() => {
+          this.$router.push({path: '/',query: { flag: true } })
+        }, 100);
       })
     },
     find:function(){
