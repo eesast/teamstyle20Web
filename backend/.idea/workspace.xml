@@ -74,7 +74,7 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
+            <state relative-caret-position="198">
               <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
@@ -95,8 +95,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="297" column="89" selection-start-line="297" selection-start-column="89" selection-end-line="297" selection-end-column="89" />
+            <state relative-caret-position="733">
+              <caret line="313" column="23" selection-start-line="313" selection-start-column="23" selection-end-line="313" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -255,10 +255,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3126294" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3126294" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Python Console" order="11" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32712215" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32712215" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1549681" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" visible="true" weight="0.16226071" />
@@ -630,7 +630,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
+        <state relative-caret-position="198">
           <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -640,8 +640,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="297" column="89" selection-start-line="297" selection-start-column="89" selection-end-line="297" selection-end-column="89" />
+        <state relative-caret-position="733">
+          <caret line="313" column="23" selection-start-line="313" selection-start-column="23" selection-end-line="313" selection-end-column="23" />
         </state>
       </provider>
     </entry>
