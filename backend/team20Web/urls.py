@@ -33,4 +33,5 @@ urlpatterns = [
     path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
     path('api/file/list', views.listFileAPI),
     path('api/file/download/<int:file_id>', views.downloadFileAPI),
+    path('api/global', views.getGlobalSettings),
 ]
