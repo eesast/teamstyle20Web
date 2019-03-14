@@ -26,7 +26,7 @@ export default {
     data() {
       return {
         // navflag: true
-       navflag: false,
+       navflag: true,
        name : "test"
       }
     },
