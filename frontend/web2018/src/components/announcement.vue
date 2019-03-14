@@ -92,15 +92,7 @@ export default {
                 "title":"这也是一个公告",
                 "pub_date":"Dec. 1,2018,8:38 p.m.",
                 "last_update_date":"Dec. 1,2018,8:38 p.m."
-            },{
-                "title":"这也是一个公告",
-                "pub_date":"Dec. 1,2018,8:38 p.m.",
-                "last_update_date":"Dec. 1,2018,8:38 p.m."
-            },{
-                "title":"这也是一个公告",
-                "pub_date":"Dec. 1,2018,8:38 p.m.",
-                "last_update_date":"Dec. 1,2018,8:38 p.m."
-            }],
+            },],
             detailData:
             {
                 "title":"这是一个公告",
@@ -123,9 +115,56 @@ export default {
             this.index=1;//面包屑上显示公告详情
             this.detail=1;
             //*************api获取当前新闻内容并修改给detailData
-
+            fetch("/api/announce/view/"+idx,
+            {
+                method:'GET',
+                headers:
+                {
+                    'Content-Type':'application/json',
+                },
+            }).then(response=>
+            {
+                console.log(response.status)
+                if(response.ok)
+                {
+                    return response.json();
+                }
+                else
+                {
+                    this.$message.error("获取公告失败");
+                }
+            }).then(res=>
+                {
+                    if (res==undefined) return
+                    this.detailData=res
+                })
         }
 
+    },
+    created:function(){
+    fetch("/api/announce/list",
+      {
+        method:'GET',
+        headers:
+        {
+            'Content-Type':'application/json',
+        },
+      }).then(response=>
+      {
+        console.log(response)
+        if(response.ok)
+        {
+          return response.json();
+        }
+        else
+        {
+          this.$message.error("获取公告失败");
+        }
+      }).then(res=>
+      {
+        if (res==undefined) return
+        this.tableData.push(res)
+      })
     }
 }
 

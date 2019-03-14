@@ -314,3 +314,13 @@ def downloadFileAPI(request, file_id):
         except File.DoesNotExist:
             response = HttpResponse("404 Not found.", status = 404)
     return response
+
+def getGlobalSettings(request):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'GET':
+        query = GlobalSetting.objects.all()
+        if query.count()==1:
+            response = JsonResponse(query[0].get_globalSetting(), status=200)
+        else:
+            response = HttpResponse("404 Not found: Global Settings of this event are not yet configured.", status=404)
+    return response

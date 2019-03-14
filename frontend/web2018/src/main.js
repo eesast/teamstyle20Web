@@ -13,6 +13,13 @@ Vue.use(VueClipboard)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+setCookie("token",null)
+setCookie("username",null)
+setCookie("id",null)
+
+function setCookie(cname,cvalue){
+      document.cookie = cname+"="+cvalue+";path=/";
+    }
 
 /* eslint-disable no-new */
 new Vue({
@@ -21,3 +28,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
