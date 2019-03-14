@@ -156,7 +156,7 @@ export default {
         )
       }).then(response=>
       {
-        console.log(response.status)
+        console.log(response)
         if(response.ok)
         {
           return response.json();
@@ -179,6 +179,7 @@ export default {
         }
       }).then(res=>
       {
+        if (res==undefined) return
         this.form.token=res['token']
         this.form.id=res['id']
         this.$message.success('登录成功！');
@@ -236,7 +237,7 @@ export default {
         }
       }).then(res=>
       {
-        token=res['token']
+        this.form.token=res['token']
         this.$message.success('注册成功，请登录开始您的挑战！');
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
@@ -248,7 +249,6 @@ export default {
     },
     submit(){
         this.$router.push({path: '/',query: {flag : false,ifnull : true}})
-
     },
     handleClick(tab, event) {
         console.log(tab, event);

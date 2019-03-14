@@ -117,21 +117,19 @@ export default {
     },
 
     created:function(){
-            FETCH_URL="/api/file/list"
+            var FETCH_URL="/api/file/list"
             fetch(FETCH_URL, {
             method: "GET",
             headers: {
               "content-type": "application/json"
-            },
-            body: JSON.stringify({
-            })
+            }
           })
             .then(response => {
               console.log(response.status);
               if (response.ok) {
                 return response.json();
               } else {
-                  this.$message.error("获取文件列表失败，建议联系开发者gsy反馈bug :)")
+                  this.$message.error("获取文件列表失败!")
               }
             })
             .then(res => {
@@ -142,7 +140,7 @@ export default {
                   single_file["filename"]=file_from_backend[i]["title"]
                   single_file["id"]=file_from_backend[i]["id"]
                   single_file["last_update_date"]=file_from_backend[i]["last_update_date"]
-                  FETCH_URL1="/api/file/download/"+single_file["id"]
+                  var FETCH_URL1="/api/file/download/"+single_file["id"]
                   fetch(FETCH_URL1, {
                     method: "GET",
                     headers: {
@@ -162,7 +160,7 @@ export default {
                   .then(res => {
                     pass
                 });
-                file_display= new Object()
+                var file_display= new Object()
                 file_display["filename"]=single_file["filename"]
                 file_diaplay["download"]=hhhhh
                 tableData.push(file_display)
