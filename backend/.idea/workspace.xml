@@ -17,10 +17,9 @@
       <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gunicorn.conf.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team20Web/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team20Web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/team20Web/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teams/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/teams/admin.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/teams/apps.py" beforeDir="false" />
@@ -173,9 +172,9 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-14" />
-    <option name="y" value="-14" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="70" />
+    <option name="y" value="320" />
     <option name="width" value="1946" />
     <option name="height" value="1036" />
   </component>
@@ -258,7 +257,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1111" height="591" extended-state="6" />
+    <frame x="-7" y="-7" width="1111" height="591" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
