@@ -406,17 +406,19 @@
     若token失效或非法，返回状态码401
 
 * /api/teams/:id/members PUT
-    修改相应id的队伍的信息
+    修改相应id的队伍的信息，仅队长或管理员可以操作
+
     * header 
         | key | value |
         |-------|------|
         | x-access-token |用户token|
         | content-type | application/json |
     * body
-    只需要写出需要修改的字段。邀请码不能修改（默认只修改队伍描述）
+    只需要写出需要修改的字段。邀请码不能修改（默认只能修改队名及/或队伍描述）
     ```
     {
-        "description":"description"
+        "title":"myNewName"
+        "description":"myNewDescription"
     }
     ```
     * response
@@ -426,15 +428,14 @@
     ```
     404 Not Found: Team does not exist.
     ```
-    若不是队长或权限不足(该成员不在队伍中)，返回状态码400和JSON文本:
+    若不是该队队长亦非管理员，返回状态码400和JSON文本:
     ```
-    400 Bad Request: Invalid members.
-    或
-    400 Bad Request: Captain is not a member of the team.
+    400 Bad Request: The user is neither the captain of the team nor the admin.
     ```
 
 * /api/teams/:id DELETE
     删除相应id的队伍，仅队长可以操作
+
     * header 
         | key | value |
         |-------|------|
@@ -444,11 +445,18 @@
     若token失效或非法或权限不足，返回401
     若队伍不存在，返回404和JSON文本:
     ```
-    404 Not Found: Team does not exist.
+    404 Not Found: No such team.
+    ```
+
+    ​	若不是该队队长亦非管理员，返回状态码400和JSON文本:
+
+    ```
+    400 Bad Request: The user is neither the captain of the team nor the admin.
     ```
 
 * /api/teams/:id/members/:uid DELETE
     删除相应id的队伍中的uid成员，队长可以删除本队成员，队员可以自己退出队伍
+
     * header 
         | key | value |
         |-------|------|

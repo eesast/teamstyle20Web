@@ -261,9 +261,56 @@ def modifyTeamByID(request, teamid):
             if type(x_access_token) is dict:
                 if 'auth' in x_access_token and 'token' in x_access_token:
                     if x_access_token["auth"] == True:
-                        pass
+                        targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                        head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                        query_response = requests.get(targetURL, headers=head)
+                        userInfo = json.loads(query_response.content)
+                        has_permission = 0;
+                        response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
+                        if type(userInfo) is dict:
+                            if userInfo["group"] == 'admin':
+                                has_permission = 1
+                            else:
+                                query = Team.objects.filter(captain= x_access_token["id"])
+                                if(query.count()>0):
+                                    for team in query:
+                                        if team.pk == teamid:
+                                            has_permission = 1
+                        if has_permission:
+                            try:
+                                Team.objects.get(pk=teamid).delete()
+                                response = HttpResponse("204 Deleted.", status = 204)
+                            except Team.DoesNotExist:
+                                response = HttpResponse("404 Not found: No such team.", status=404)
         return response
     elif request.method == 'PUT':
+        if 'HTTP_X_ACCESS_TOKEN' in request.META:
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+            x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+            if type(x_access_token) is dict:
+                if 'auth' in x_access_token and 'token' in x_access_token:
+                    if x_access_token["auth"] == True:
+                        targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                        head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                        query_response = requests.get(targetURL, headers=head)
+                        userInfo = json.loads(query_response.content)
+                        has_permission = 0;
+                        response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
+                        if type(userInfo) is dict:
+                            if userInfo["group"] == 'admin':
+                                has_permission = 1
+                            else:
+                                query = Team.objects.filter(captain= x_access_token["id"])
+                                if(query.count()>0):
+                                    for team in query:
+                                        if team.pk == teamid:
+                                            has_permission = 1
+                        if has_permission:
+                            try:
+                                Team.objects.get(pk=teamid).delete()
+                                response = HttpResponse("OK", status = 200)
+                            except Team.DoesNotExist:
+                                response = HttpResponse("404 Not found: No such team.", status=404)
         return response
     return response
 

@@ -16,9 +16,9 @@ class Team(models.Model):
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
     score = models.IntegerField(default = -1)
     rank = models.IntegerField(default = 999999)
-    battle_code = models.FileField(null = True, upload_to='Codes')
+    battle_code = models.FileField(null = True, blank = True, upload_to='Codes')
     battle_time = models.IntegerField(default = 1)
-    codes = models.TextField(null=True)
+    codes = models.TextField(null=True, blank = True)
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
