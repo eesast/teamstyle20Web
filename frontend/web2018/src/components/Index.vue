@@ -16,7 +16,7 @@
 <script>
 window.addEventListener("popstate", function(){
     //doSomething
-    window.location = 'http://teamstyle.eesast.com';
+    window.location = 'https://teamstyle.eesast.com';
 }, false)
 
 import nav from '@/components/nav.vue'
