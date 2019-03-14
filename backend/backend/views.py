@@ -257,17 +257,16 @@ def modifyTeamByID(request, teamid):
     elif request.method == 'DELETE':
         try:
             targetTeam = Team.objects.get(pk=teamid)
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
             if 'HTTP_X_ACCESS_TOKEN' in request.META:
-                response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
                 x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
                 if type(x_access_token) is dict:
                     if 'auth' in x_access_token and 'token' in x_access_token:
                         if x_access_token["auth"] == True:
-                            targetURL = 'https://api.eesast.com/v1/users/' + str(
-                                x_access_token["id"]) + "?detailInfo=True"
+                            targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
                             head = {'Authorization': 'Bearer ' + x_access_token["token"]}
                             query_response = requests.get(targetURL, headers=head)
-                            userInfo = json.loads(query_response.content)
+                            userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
@@ -286,17 +285,16 @@ def modifyTeamByID(request, teamid):
     elif request.method == 'PUT':
         try:
             targetTeam = Team.objects.get(pk=teamid)
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
             if 'HTTP_X_ACCESS_TOKEN' in request.META:
-                response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
                 x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
                 if type(x_access_token) is dict:
                     if 'auth' in x_access_token and 'token' in x_access_token:
                         if x_access_token["auth"] == True:
-                            targetURL = 'https://api.eesast.com/v1/users/' + str(
-                                x_access_token["id"]) + "?detailInfo=True"
+                            targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
                             head = {'Authorization': 'Bearer ' + x_access_token["token"]}
                             query_response = requests.get(targetURL, headers=head)
-                            userInfo = json.loads(query_response.content)
+                            userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
@@ -304,9 +302,23 @@ def modifyTeamByID(request, teamid):
                                     has_permission = 1
                                 if str(targetTeam.captain) == str(userInfo["id"]):
                                     has_permission = 1
+                            add_captain_err = 0
                             if has_permission:
-                                targetTeam.delete()
-                                response = HttpResponse("204 Deleted.", status=204)
+                                contentToUpdate = is_json(request.body)
+                                if type(contentToUpdate) is dict:
+                                    if "teamname" in contentToUpdate:
+                                        targetTeam.teamname = contentToUpdate["teamname"]
+                                    if "description" in contentToUpdate:
+                                        targetTeam.description = contentToUpdate["description"]
+                                    if "captain" in contentToUpdate:
+                                        if targetTeam.memberInTeam(contentToUpdate["captain"]):
+                                            targetTeam.captain = contentToUpdate["captain"]
+                                        else:
+                                            add_captain_err = 1
+                                    targetTeam.save()
+                                response = HttpResponse("204 Successful Operation.", status=204)
+                                if add_captain_err:
+                                    response = HttpResponse("400 Bad Request: New captain is NOT a member in this team.", status=400)
                             else:
                                 response = HttpResponse("400 Bad Request: The user is neither the captain of the team nor the admin.", status=400)
         except Team.DoesNotExist:
