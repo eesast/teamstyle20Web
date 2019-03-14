@@ -8,7 +8,7 @@
       <h1 id="ph5">Teamstyle20</h1>
       </div>
       
-      <el-button @click="indexjump" v-if="flag1" type="danger" size="small">立即报名</el-button>
+      <el-button @click="indexjump" v-if="flag" type="danger" size="small">立即报名</el-button>
     </div>
     
   </div>
@@ -25,7 +25,7 @@ export default {
   name:"index",
   data (){
     return{
-      flag1 : true
+      flag : true
     }
   },
   methods:{
@@ -36,7 +36,7 @@ export default {
   },
   computed:{
     show(){
-      flag1 = nav.navflag;
+      flag = nav.navflag;
     },
     
   },
@@ -191,7 +191,7 @@ loop();
 .water-effect{
 			text-align: center;
 		}
-		h1 {
+.index		h1 {
 	font-size: 120px;
   /* display: inline-block; */
   /* color:azure; */
