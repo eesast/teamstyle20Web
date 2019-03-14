@@ -19,7 +19,7 @@
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team20Web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/team20Web/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/team20Web/settings.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/team20Web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/team20Web/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/teams/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/teams/admin.py" beforeDir="false" />
@@ -107,8 +107,8 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/team20Web/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+            <state relative-caret-position="127">
+              <caret line="81" column="15" selection-start-line="81" selection-start-column="15" selection-end-line="81" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -173,7 +173,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-14" />
     <option name="y" value="-14" />
     <option name="width" value="1946" />
@@ -679,8 +679,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/team20Web/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+        <state relative-caret-position="127">
+          <caret line="81" column="15" selection-start-line="81" selection-start-column="15" selection-end-line="81" selection-end-column="15" />
         </state>
       </provider>
     </entry>
