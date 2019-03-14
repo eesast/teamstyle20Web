@@ -266,7 +266,7 @@ def modifyTeamByID(request, teamid):
                             targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
                             head = {'Authorization': 'Bearer ' + x_access_token["token"]}
                             query_response = requests.get(targetURL, headers=head)
-                            userInfo = json.loads(query_response.content)
+                            userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
@@ -294,7 +294,7 @@ def modifyTeamByID(request, teamid):
                             targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
                             head = {'Authorization': 'Bearer ' + x_access_token["token"]}
                             query_response = requests.get(targetURL, headers=head)
-                            userInfo = json.loads(query_response.content)
+                            userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
