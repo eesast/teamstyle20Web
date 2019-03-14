@@ -86,8 +86,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="31" column="70" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="70" />
+            <state relative-caret-position="183">
+              <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -95,8 +95,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="430" column="66" selection-start-line="430" selection-start-column="66" selection-end-line="430" selection-end-column="66" />
+            <state relative-caret-position="1445">
+              <caret line="473" column="44" selection-start-line="473" selection-start-column="44" selection-end-line="473" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -133,10 +133,10 @@
       <find>static</find>
       <find>memberin</find>
       <find>contain</find>
-      <find>Team</find>
       <find>json.loads</find>
-      <find>Q(</find>
       <find>captain</find>
+      <find>Q(</find>
+      <find>Team</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -151,8 +151,8 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/905c7193-6a97-4dc7-8192-9bdbfd230b80/console.sql" />
         <option value="$PROJECT_DIR$/team20Web/settings.py" />
         <option value="$PROJECT_DIR$/backend/admin.py" />
-        <option value="$PROJECT_DIR$/team20Web/urls.py" />
         <option value="$PROJECT_DIR$/backend/models.py" />
+        <option value="$PROJECT_DIR$/team20Web/urls.py" />
         <option value="$PROJECT_DIR$/backend/views.py" />
       </list>
     </option>
@@ -633,6 +633,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/905c7193-6a97-4dc7-8192-9bdbfd230b80/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -647,27 +657,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="31" column="70" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="70" />
+        <state relative-caret-position="183">
+          <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="430" column="66" selection-start-line="430" selection-start-column="66" selection-end-line="430" selection-end-column="66" />
+        <state relative-caret-position="1445">
+          <caret line="473" column="44" selection-start-line="473" selection-start-column="44" selection-end-line="473" selection-end-column="44" />
         </state>
       </provider>
     </entry>
