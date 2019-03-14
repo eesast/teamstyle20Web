@@ -74,8 +74,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
+            <state relative-caret-position="-44">
+              <caret line="14" column="51" lean-forward="true" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -86,8 +86,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
+            <state relative-caret-position="682">
+              <caret line="33" column="47" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -95,8 +95,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1445">
-              <caret line="473" column="44" selection-start-line="473" selection-start-column="44" selection-end-line="473" selection-end-column="44" />
+            <state relative-caret-position="44">
+              <caret line="437" column="51" selection-start-line="437" selection-start-column="51" selection-end-line="437" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -135,8 +135,10 @@
       <find>contain</find>
       <find>json.loads</find>
       <find>captain</find>
-      <find>Q(</find>
+      <find>delete_member</find>
       <find>Team</find>
+      <find>Q(</find>
+      <find>dele</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -633,16 +635,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/905c7193-6a97-4dc7-8192-9bdbfd230b80/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -659,15 +651,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
+        <state relative-caret-position="682">
+          <caret line="33" column="47" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-44">
+          <caret line="14" column="51" lean-forward="true" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1445">
-          <caret line="473" column="44" selection-start-line="473" selection-start-column="44" selection-end-line="473" selection-end-column="44" />
+        <state relative-caret-position="44">
+          <caret line="437" column="51" selection-start-line="437" selection-start-column="51" selection-end-line="437" selection-end-column="51" />
         </state>
       </provider>
     </entry>

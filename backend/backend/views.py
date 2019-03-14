@@ -430,6 +430,34 @@ def deleteTeamMembers(request, teamid, deleteid):
             response = HttpResponse("404 Not found: Team does not exist.", status= 404)
     return response
 
+
+import datetime
+query = GlobalSetting.objects.all()
+submission = dict()
+if query.count()==1:
+    submission["start"] = query[0].submission_start
+    submission["end"] = query[0].submission_end
+else:
+    submission = False
+def systemOpen():
+    now = datetime.datetime.now()
+    if datetime.datetime.now() < submission["start"] or datetime.datetime.now() > submission["end"]:
+        return False
+    else:
+        return True
+
+@csrf_exempt
+def modifyTeamCodes(request, teamid):
+    response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
+    if request.method == 'POST':
+        if (not systemOpen()):
+            response = HttpResponse("403 Forbidden: System is closed for upload.", status=403)
+        else:
+            response = HttpResponse("200 OK: Ready for upload.", status=200)
+    return response
+
+
+
 def listAnnouncementAPI(request):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
     if request.method == 'GET':
