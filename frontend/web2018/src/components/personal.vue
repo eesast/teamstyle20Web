@@ -48,6 +48,14 @@
 </template>
     
 <script>
+var token=getCookie("token")
+var current_username=getCookie("username")
+var current_id=getCookie("id")
+if(token==null)
+{
+    this.$message.error("您尚未登录，请先登录，再查看个人中心！")
+    this.$router.replace({path: '/Login'})
+}
 export default {
     name: 'personal',
     data() {
@@ -136,9 +144,32 @@ export default {
             let cur1 = document.querySelectorAll("div[class='part2']");
             let cur2 = document.querySelectorAll("div[class='part2']");
             cur2.height=cur1.height;
+
         }
     }
 }
+
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    }
+    return "";
+}
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+    document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
+}
+function setCookie(cname,cvalue){
+      document.cookie = cname+"="+cvalue+";path=/";
+    }
+
 </script>
 
 <style>
