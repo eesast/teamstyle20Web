@@ -6,6 +6,8 @@
 ### · 公告部分(announcement)
 ### · 文件部分(file) 
 
+### · 全域设定读取(globalsettings) 
+
 ##### 注:凡涉及到因token失效而返回401的，建议同时返回JSON文本:
 ```
 401:Invalid or expired token.
@@ -598,5 +600,23 @@
     - application/octet-stream
     - filename：原始文件名
 
+## 全域设定读取
 
+| route       | http verb | content                                                      |
+| ----------- | --------- | ------------------------------------------------------------ |
+| /api/global | GET       | 获取全部的全域设定(活动年度、竞赛主题、代码提交的开始与截止时间) |
 
+- /api/global  GET
+  获取全部的全域设定(活动年度、竞赛主题、代码提交的开始与截止时间)
+
+  - response
+    请求成功，返回状态码200和JSON文本(数组):
+
+  ```
+  {
+      "year": 2019,
+      "game_name": "槍林彈雨",
+      "submission_start": "2019-03-14T04:00:00Z",
+      "submission_end": "2019-04-18T04:00:00Z"
+  }
+  ```
