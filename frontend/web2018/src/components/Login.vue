@@ -197,7 +197,7 @@ export default {
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setTimeout(() => {
-          this.$router.push({path: '/index',query: { flag: true } })
+          this.$router.push({path: '/Index',query: { flag: true } })
         }, 100);
       })
     },
