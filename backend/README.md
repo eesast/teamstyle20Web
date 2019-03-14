@@ -414,11 +414,12 @@
         | x-access-token |用户token|
         | content-type | application/json |
     * body
-    只需要写出需要修改的字段。邀请码不能修改（默认只能修改队名及/或队伍描述）
+    只需要写出需要修改的字段。邀请码不能修改（默认只能修改队名、队伍描述及队长，新队长必须为队员）
     ```
     {
-        "title":"myNewName"
-        "description":"myNewDescription"
+        "teamname":"myNewName",
+        "description":"myNewDescription",
+        "captain": 2019001001
     }
     ```
     * response
@@ -428,7 +429,14 @@
     ```
     404 Not Found: Team does not exist.
     ```
-    若不是该队队长亦非管理员，返回状态码400和JSON文本:
+    若新队长不是原队队员，返回状态码400和文本:
+
+    ```
+    400 Bad Request: New captain is NOT a member in this team.
+    ```
+
+    若不是该队队长亦非管理员，返回状态码400和文本:
+
     ```
     400 Bad Request: The user is neither the captain of the team nor the admin.
     ```
