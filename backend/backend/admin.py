@@ -6,6 +6,7 @@ admin.site.site_url = '/api/'
 
 class GlobalSettingAdmin(admin.ModelAdmin):
     list_display = ('year', 'game_name', 'submission_start', 'submission_end')
+    list_display_links = ('year', 'game_name',)
     def has_add_permission(self, request):
         if self.model.objects.count() > 0:
             return False
@@ -18,9 +19,9 @@ class AnnouncementAdmin(admin.ModelAdmin):
     readonly_fields = ('last_update_date',)
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('teamname','captain','members', 'member_num','createAt')
-    readonly_fields = ('member_num', 'createAt',)
-
+    list_display = ('pk','teamname','captain','members', 'member_num','createAt')
+    readonly_fields = ('pk','member_num', 'createAt',)
+    list_display_links = ('pk', 'teamname')
 class FileAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'last_update_date')
     list_display_links = ('pk','title', )

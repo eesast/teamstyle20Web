@@ -1,5 +1,12 @@
 <template>
   <div id="login">
+    <el-alert
+    center
+    style="width:80%;left:10%;color:#409EFF;background-color:#ecf5ff;"
+    title="提示:本界面注册的账号还可以用于登陆电子系科协的其他网站"
+    type="info"
+    show-icon>
+    </el-alert>
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="登录" name="login" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
@@ -267,6 +274,11 @@ function setCookie(cname,cvalue){
 {
   min-height: 70%;
   margin-bottom:50px;
+}
+
+#login div.el-alert__content .el-alert__description
+{
+  color:red;
 }
   .el-form-item{
     width:40%;

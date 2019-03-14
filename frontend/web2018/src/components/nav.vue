@@ -8,7 +8,7 @@
       <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/team" >组队</el-menu-item>
-      <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item>
+      <!-- <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item> -->
       <el-menu-item v-show="navflag!=true" index="/personal" >个人中心</el-menu-item>
       <el-menu-item index="/file" >文件</el-menu-item>
       <el-menu-item index="/announcement">公告</el-menu-item>
