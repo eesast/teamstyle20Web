@@ -24,6 +24,9 @@ class Team(models.Model):
     def __str__(self):
         return self.teamname
 
+    def get_member_limit(self):
+        return MEMBER_ALLOWED
+
     def get_member(self):
         return json.loads(self.members)
 

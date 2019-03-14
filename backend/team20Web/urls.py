@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/teams', views.teams),
     path('api/teams/', views.teams),
     path('api/teams/<int:teamid>', views.modifyTeamByID),
+    path('api/teams/<int:teamid>/members', views.modifyTeamMembersByID),
     path('api/announce/list', views.listAnnouncementAPI),
     path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
     path('api/file/list', views.listFileAPI),
