@@ -68,21 +68,11 @@ export default {
         return {
             tableData:
             [{
-                filename:'大赛文件.pdf',
-                download:'../static/files/大赛文件.pdf'
+                filename:'ts20-0.1alpha.zip',
+                download:'../../static/files/ts20-0.1alpha.zip'
             },{
-                filename:'大赛文件2.pdf',
-                download:'/大赛文件2.pdf'
-            },{
-                filename:'大赛文件.pdf',
-                download:'/大赛文件.pdf'
-            },{
-                filename:'大赛文件2.pdf',
-                download:'/大赛文件2.pdf'
-            },
-            {
-                filename:'大赛文件2.pdf',
-                download:'/大赛文件2.pdf'
+                filename:'README.MD',
+                download:'../../static/files/README.MD'
             }]
         }
     },

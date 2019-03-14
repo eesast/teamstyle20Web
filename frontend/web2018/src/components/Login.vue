@@ -271,7 +271,20 @@ export default {
         this.$router.push({path: '/',query: {flag : false,ifnull : true}})
     },
     handleClick(tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
+        //init所有formdata
+        // form:{
+          this.form.realname=""
+          this.form.name=""
+          this.form.password=""
+          this.form.password1=""
+          this.form.classx=""
+          this.form.studentid=""
+          this.form.phone=""
+          this.form.email=""
+          this.form.department=""
+          
+        // },
       },
   }
 }

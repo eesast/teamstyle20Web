@@ -9,6 +9,7 @@
         <el-card shadow="always">
         
         <el-table
+        empty-text="暂无公告"
         v-if="detail==0"
         :data="tableData"
         stripe
@@ -83,16 +84,16 @@ export default {
         return {
             index: 0,
             detail:0,
-            tableData:
-            [{
-                "title":"这是一个公告",
-                "pub_date":"Dec. 1,2018,8:38 p.m.",
-                "last_update_date":"Dec. 1,2018,8:38 p.m."
-            }, {
-                "title":"这也是一个公告",
-                "pub_date":"Dec. 1,2018,8:38 p.m.",
-                "last_update_date":"Dec. 1,2018,8:38 p.m."
-            },],
+            tableData:[],
+            // [{
+            //     "title":"这是一个公告",
+            //     "pub_date":"Dec. 1,2018,8:38 p.m.",
+            //     "last_update_date":"Dec. 1,2018,8:38 p.m."
+            // }, {
+            //     "title":"这也是一个公告",
+            //     "pub_date":"Dec. 1,2018,8:38 p.m.",
+            //     "last_update_date":"Dec. 1,2018,8:38 p.m."
+            // },],
             detailData:
             {
                 "title":"这是一个公告",
