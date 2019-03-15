@@ -5,7 +5,8 @@
       <h4>赞助商</h4>
       <div class="supporter_container">
         <a href="">
-          <img src="../../static/img/github.svg"/>Github</a>
+          <img src="../../static/img/eesast.png"/><span style="color:#409EFF;">eesast</span>
+          </a>
       </div>
     </div>
     
@@ -262,7 +263,7 @@ h4 {
  { 
    .footer
   {
-    height:8em;
+    height:6em;
   }
    h4
   {
@@ -309,8 +310,20 @@ h4 {
     margin-right:0px;
   } 
  }
-/* @media screen and (max-width: 768px)
+@media screen and (max-width: 768px)
 {
-  
-}  */
+  .copyright
+  {
+    display:none;
+  }
+  .supporter
+  {
+    width:30%;
+
+  }
+  .support
+  {
+    width:70%;
+  }
+} 
 </style>

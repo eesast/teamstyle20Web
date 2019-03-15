@@ -8,7 +8,7 @@
       <h1 id="ph5">Teamstyle20</h1>
       </div>
       
-      <el-button @click="indexjump" v-if="flag" type="danger" size="small">立即报名</el-button>
+      <el-button @click="indexjump" v-if="flag" type="danger" size="medium" id="joinus">立即报名</el-button>
     </div>
     
   </div>
@@ -265,8 +265,21 @@ h1.fire-text {
     .intro #ph5
     {
       font-family: 'Balonb'; 
-      font-size:20px;
+      font-size:10vw;
       margin-top:0px;
+      position: relative;
+      top:-15vh;
+    }
+    h1.fire-text
+    {
+      font-size:20vw;
+      position: relative;
+      top:-10vh;
+    }
+    #joinus
+    {
+      position: relative;
+      top:-15vh;
     }
   }
 </style>

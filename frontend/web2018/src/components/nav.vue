@@ -1,6 +1,8 @@
 <template>
   <div id="nav">
-    <el-menu class="submenu" mode="horizontal" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
+    <i class="el-icon-menu" id="menuicon" @click="Showmenu()" style="font-size: 6vh;"><span style="font-size:4.5vh;left:5vw;position:relative;">Teamstyle20</span></i>
+    
+    <el-menu v-show="showmenu"class="submenu" :mode="whatmode" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="#" id='img-submenu' >
         <img class="eesast" src="../../static/img/eesast.png"/>
@@ -27,7 +29,9 @@ export default {
       return {
         // navflag: true
        navflag: true,
-       name : "test"
+       name : "test",
+       showmenu:true,
+       whatmode:"horizontal",
       }
     },
   methods: {
@@ -40,6 +44,10 @@ export default {
           delCookie(id)
           delCookie(username)
           this.$router.push({path: '/empty_index'})
+        },
+        Showmenu()
+        {
+          this.showmenu=!this.showmenu;
         }
     },
 
@@ -56,6 +64,13 @@ export default {
             EventBus.$on("send-msg", ({flag}) => {
                 this.navflag =flag;}
             )
+            var width=window.screen.width;
+            // console.log(width);
+            if(width<768)
+            {
+              this.showmenu=false;
+              this.whatmode="vertical";
+            }
   }
 }
 
@@ -81,6 +96,10 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 </script>
 
 <style scoped>
+#menuicon
+{
+  display: none;
+}
 #nav
 {
   height:60px;
@@ -97,12 +116,62 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 .bu1{
   float: right;
 }
-
-
+.submenu
+{
+  z-index:2000;
+}
   @media screen and (max-width:720px) {
-    /* #nav el-menu-item
+     #nav .el-menu {
+        position: fixed;
+        /* top: 8vh; */
+        height: 100vh;
+        width: 30vw!important;
+        z-index: 2000;
+        background-color: #EBEEF5;
+        border: none;
+        /* border-right: solid 1px #fefefe; */
+    }
+    #nav .el-menu-item {
+      font-size:2vh;
+      top:8vh;
+      height:8vh;
+      width:100%;
+    }
+     #nav .el-menu-item.is-active {
+      background: #FFFFFF;
+    }
+    #nav
     {
-      font-size:10px;
+       display: block;
+        width: 100%;
+        height: 8vh;
+        position: fixed;
+        top: 0;
+        z-index: 2010;
+        background-color: #EBEEF5;
+        border-bottom: solid 1px #fefefe;
+    }
+    #menuicon
+    {
+      display: block;
+      position: absolute;
+      height: 8vh;
+      top:1vh;
+      left:6vw;
+      z-index: 2011;
+    }
+    /* #nav {
+        display: block;
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        z-index: 2010;
+        background-color: rgba(250, 250, 250, 0.9);
+    } */
+    /* .el-menu-item-group{
+        background-color: #f4f4f4;
+        width: 200px;
     } */
   }
 </style>

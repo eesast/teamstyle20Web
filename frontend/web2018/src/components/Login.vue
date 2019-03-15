@@ -9,7 +9,7 @@
     </el-alert>
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="登录" name="login" align="center">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+      <el-form :model="form" :rules="rules" ref="form" label-width="60px" >
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
        </el-form-item>
@@ -17,12 +17,12 @@
          <el-input type="password" v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item>
-         <el-button type="primary" @click="log_in">登录</el-button> 
+         <el-button type="primary" @click="log_in" style="position:relative;margin-left:-60px;">登录</el-button> 
          </el-form-item>
     </el-form>
     </el-tab-pane>
       <el-tab-pane label="注册" name="register" align="center">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+      <el-form :model="form" :rules="rules" ref="form" label-width="80px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
        </el-form-item>
@@ -51,12 +51,12 @@
         <el-input v-model="form.email"></el-input>
       </el-form-item>
       <el-form-item>
-      <el-button type="primary" @click="create">提交</el-button> 
+      <el-button type="primary" @click="create" style="position:relative;margin-left:-60px;">提交</el-button> 
       </el-form-item>
     </el-form>
     </el-tab-pane>
     <el-tab-pane label="帮助" name="help" align="center">
-      <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+      <el-form :model="form" :rules="rules" ref="form" label-width="80px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
         </el-form-item>
@@ -76,7 +76,7 @@
         <el-input v-model="form.email"></el-input>
       </el-form-item>
       <el-form-item>
-      <el-button type="primary" @click="find">找回账号</el-button> 
+      <el-button type="primary" @click="find" style="position:relative;margin-left:-60px;">找回账号</el-button> 
       </el-form-item>
     </el-form>
     </el-tab-pane>
@@ -309,18 +309,39 @@ function setCookie(cname,cvalue){
 {
   color:red;
 }
-  .el-form-item{
+#login  .el-form-item{
     width:40%;
     position: relative;
     /* left:10%; */
   }
-  .el-input{
+#login  .el-input{
     display: inline-block;
   }
-  .el-tabs{
+ #login .el-tabs{
     width:80%;
     position: relative;
     left:10%;
     top:30px;
   }
+@media screen and (max-width: 768px)
+{
+  #login{
+    top:9vh;
+    position: relative;
+    min-height:77%;
+    margin-bottom:18vh;
+    /* width:100%; */
+  }
+  #login .el-tabs{
+    width:90%;
+    position: relative;
+    left:5%;
+    top:30px;
+  }
+  #login  .el-form-item{
+    width:100%;
+    position: relative;
+    /* left:10%; */
+  }
+}  
 </style>

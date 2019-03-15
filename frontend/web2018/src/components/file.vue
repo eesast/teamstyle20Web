@@ -5,7 +5,7 @@
             <el-table
             :data="tableData"
             stripe
-            style="width: 100%">
+            style="width: 100%;font-size:2.2vh;min-height:60vh;">
             <el-table-column min-width="1%"></el-table-column>
             <el-table-column
             prop="filename"
@@ -17,7 +17,7 @@
             <el-table-column
             align="center"
             prop="download"
-            min-width="20%"
+            min-width="40%"
             id="tl2"
             label="下载">
                 <template slot-scope="scope">
@@ -36,7 +36,7 @@
             </el-table-column> -->
             </el-table>
              <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
-                        <el-button  icon="el-icon-download" size="mini" type="primary" @click="handleBatchDownload()" style="margin-top:15px;"><span id="downloadall">Download All</span></el-button>
+                        <el-button  icon="el-icon-download" size="mini" type="primary" @click="handleBatchDownload()" style="margin-top:15px;">Download All</el-button>
             </el-tooltip>
         </el-card>
     </el-col>
@@ -164,7 +164,7 @@ export default {
 #file_contain
 {
     width:100%;
-    min-height:75%;
+    min-height:77%;
 }
 #file_card
 {
@@ -181,22 +181,26 @@ export default {
 
 
 
- @media screen and (max-width: 480px)
+ @media screen and (max-width: 720px)
  { 
+     #file_contain
+    {
+        width:100%;
+        position: relative;
+        top:8vh;
+        min-height:90vh;
+        font-size:2vh;
+    }
      #file_card
     {
         margin-top:20px;
         width:90%;
         position: relative;
         left:5%;
-    }
-    #downloadall
-    {
-        /* background-color: rgb(158, 209, 192); */
-        font-size:0em;
+        font-size:2vh;
     }
  }
-  @media screen and (max-width: 992px)
+  /* @media screen and (max-width: 992px)
  { 
      #file_card
     {
@@ -205,5 +209,5 @@ export default {
         position: relative;
         left:10%;
     }
- }
+ } */
 </style>
