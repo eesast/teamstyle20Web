@@ -306,4 +306,23 @@ export default {
 {
   width:100px;
 }
+@media screen and (max-width:720px) {
+.code_content,.battle_content,.empty_content
+{
+    display: block;
+}
+.code_content{
+  width:100%;
+}
+.battle_content
+{
+    /* left:5%; */
+    /* height:100%; */
+    /* top:; */
+    width:100%;
+    left:0%;
+    /* min-height:70%; */
+    /* position: relative; */
+}
+}
 </style>

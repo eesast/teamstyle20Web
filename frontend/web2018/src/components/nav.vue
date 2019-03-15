@@ -27,8 +27,8 @@ export default {
     name: "navbar",
     data() {
       return {
-        // navflag: true
-       navflag: true,
+        navflag: true,
+      //  navflag: false,
        name : "test",
        showmenu:true,
        whatmode:"horizontal",
@@ -66,10 +66,12 @@ export default {
             )
             var width=window.screen.width;
             // console.log(width);
-            if(width<768)
+            if(width<720)
             {
               this.showmenu=false;
-              this.whatmode="vertical";
+              this.whatmode="vertical";     
+              // plus.screen.lockOrientation("portrait-primary"); 
+              
             }
   }
 }

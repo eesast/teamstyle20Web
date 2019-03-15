@@ -19,6 +19,9 @@ window.addEventListener("popstate", function(){
     window.location = 'https://teamstyle.eesast.com';
 }, false)
 
+
+
+
 import nav from '@/components/nav.vue'
 import { EventBus } from "../bus.js"
 export default {
@@ -40,21 +43,27 @@ export default {
     },
     
   },
-  created:function()
+ 
+  mounted:function()
   {
+    // EventBus.$on("send-msg", ({newx}) => {
+    //   console.log(newx);
+    //             window.location="http://127.0.0.1:8090";
+    //             }
+    //         )
+
+
     window.onload=function(){
-
-
-const canvas = document.getElementById("can");
-const ctx = canvas.getContext("2d");
-const points = [];
-const fov = 100;
-const dist = 100;
-const opacity = 0.5;
-const particleSize = 2;
-const maxAmplitude = 1500; // Best results with values > 500
-const sideLength = 50; // How many particles per side
-const spacing = 200; // Particle distance from each other
+    const canvas = document.getElementById("can");
+    const ctx = canvas.getContext("2d");
+    const points = [];
+    const fov = 100;
+    const dist = 100;
+    const opacity = 0.5;
+    const particleSize = 2;
+    const maxAmplitude = 1500; // Best results with values > 500
+    const sideLength = 50; // How many particles per side
+    const spacing = 200; // Particle distance from each other
 
 let rotXCounter = 0;
 let rotYCounter = 0;
@@ -140,10 +149,10 @@ function loop() {
 
   window.requestAnimationFrame(loop);
 };
-loop();
-  
+    loop();
+    }
 }
-}
+
 }
 // console.log(this.$route.path);
 

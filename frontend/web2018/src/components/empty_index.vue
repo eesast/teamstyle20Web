@@ -5,7 +5,11 @@
 export default 
 {
     data(){
-        window.location = 'http://teamstyle.eesast.com';
+        // window.location = 'http://teamstyle.eesast.com';
+        this.$router.replace({
+                path: '/',
+                // query: {newx : true},
+        })
         return{
             empty:""
         };

@@ -1,10 +1,10 @@
 <template>
   <div id="login">
-   <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+   <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-        <el-button id="al-bu1">获取验证码</el-button>
+        
         <el-form-item prop="code" label="验证码">
-         <el-input v-model="form.name"></el-input>
+         <el-input v-model="form.name"></el-input><el-button id="al-bu1">获取验证码</el-button>
        </el-form-item>
        <el-form-item prop="password" label="密码">
          <el-input v-model="form.password"></el-input>
@@ -13,7 +13,7 @@
          <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item>
-         <el-button type="primary" @click="submit">提交</el-button> 
+         <el-button type="primary" @click="submit" style="margin-left:-60px;position:relative;">提交</el-button> 
          </el-form-item>
     </el-form>
     </el-tabs>
@@ -56,21 +56,37 @@ export default {
   min-height: 70%;
   margin-bottom:50px;
 }
-  .el-form-item{
+ #login .el-form-item{
     width:40%;
     position: relative;
-    left:10%;
+    /* left:10%; */
   }
-  .el-input{
+ #login .el-input{
     display: inline-block;
   }
-  .el-tabs{
+ #login .el-tabs{
     width:80%;
     position: relative;
     left:10%;
     top:30px;
   }
   #al-bu1{
-    float: right
+  float: left;
+  margin-top:2vh;
+}
+  @media screen and (max-width:720px) {
+      #login
+      {
+        min-height: 80vh;
+        position: relative;
+        top:10vh;
+        margin-bottom:50px;
+      }
+       #login .el-form-item{
+        width:100%;
+        position: relative;
+        left:0%;
+      }
+       
   }
 </style>
