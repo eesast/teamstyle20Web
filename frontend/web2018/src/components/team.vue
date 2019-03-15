@@ -90,7 +90,7 @@
             <el-table-column
             prop="teamname"
             label="队伍名称"
-            min-width="13%">
+            min-width="20%">
             </el-table-column>
             <el-table-column
             prop="captain"
@@ -100,12 +100,15 @@
             <el-table-column
             prop="description"
             label="队伍简介"
-            min-width="30%">
+            min-width="30%"
+            v-if="mobile==false"
+            >
             </el-table-column>
             <el-table-column
             prop="members"
             min-width="10%"
             align="center"
+            v-if="mobile==false"
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
@@ -116,7 +119,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-            min-width="30%"
+            min-width="25%"
             align="center"
             label="操作">
                 <template slot-scope="scope">
@@ -169,6 +172,7 @@ export default {
       inteam: false, //是否在队伍中  影响“我的队伍”显示界面
       iscaptain: true, //该成员是否为队长  影响“我的队伍”是否出现踢人选项
       team_id:null,
+      mobile:false,
       dialogFormVisible: false, //创建队伍对话框
       form: {
         teamname: "",
@@ -332,6 +336,11 @@ export default {
   },
 
   created: function() {
+    if(window.screen.width<768)
+    {
+      this.mobile=true;
+      this.pagesize=7;
+    }
     fetch("/api/teams", {
       method: "GET",
       headers: {
@@ -905,5 +914,29 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
   position: relative;
   /* left:50%; */
   float: right;
+}
+@media screen and (max-width:720px) {
+#team_contain {
+  width: 100%;
+  min-height: 80vh;
+  margin-bottom: 50px;
+}
+#team_card {
+  position: relative;
+  width: 90%;
+  left: 5%;
+  margin-top: 12vh;
+}
+#team_contain .el-dialog
+{
+  width:100%;
+}
+.el-message-box
+{
+  position: fixed;
+  /* display: block; */
+  top:40vh;
+  left:0;
+}
 }
 </style>

@@ -11,7 +11,17 @@ import navbar from './components/nav'
 import foot from './components/foot'
 export default {
   name: 'App',
-  components:{navbar, foot}
+  components:{navbar, foot},
+   watch:{
+  $route(to,from){
+    console.log(to.path);
+    if(to.path=="/")
+    {
+      // 跳转到首页
+      window.location="http://teamstyle.eesast.com";
+    }
+  }
+  },
 }
 
 </script>
