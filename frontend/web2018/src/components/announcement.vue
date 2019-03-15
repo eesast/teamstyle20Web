@@ -13,41 +13,44 @@
         v-if="detail==0"
         :data="tableData"
         stripe
-        style="width: 100%">
+        style="width: 100%;font-size:2vh;height:60vh;">
             <el-table-column
             prop="title"
             label="标题"
-            min-width="40%">
+            min-width="60%">
                 <template slot-scope="scope">
-                <el-badge v-if="scope.$index==0" value="new" class="announcement-item">
+                <el-badge v-if="scope.$index==-1" value="new" class="announcement-item">
                         <!-- <div slot="reference" class="name-wrapper"> -->
-                        <el-button size="medium" @click="announcement_detail(scope.$index)">{{ scope.row.title }}</el-button>
+                        <div  @click="announcement_detail(scope.$index)">{{ scope.row.title }}</div>
                         <!-- </div> -->
                 </el-badge>    
-                 <el-button v-else size="medium" @click="announcement_detail(scope.$index)">{{ scope.row.title }}</el-button>
+                 <div v-else  @click="announcement_detail(scope.$index)">{{ scope.row.title }}</div>
                 </template>
             </el-table-column>
             
-            <el-table-column
+            <!-- <el-table-column
             prop="pub_date"
             label="发布时间"
-            min-width="30%">
+            align="right"
+            min-width="25%">
                 <template slot-scope="scope">
                 <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.pub_date }}</span>
+                <span style="margin-left: 10px;">{{ scope.row.pub_date }}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             
             <el-table-column
             prop="last_update_date"
             label="最后更新时间"
-            min-width="30%"
+            min-width="40%"
+             align="center"
             >
                 <template slot-scope="scope">
                 <i class="el-icon-time"></i>
                 <span style="margin-left: 10px">{{ scope.row.last_update_date }}</span>
                 </template>
             </el-table-column>
+            <el-table-column min-width="1%"></el-table-column>
         </el-table>
 
 
@@ -177,6 +180,7 @@ export default {
     /* margin-bottom:20px; */
     width:100%;
     min-height:70%;
+    /* height:70%; */
     margin-bottom: 50px;
 }
 #announcement_card
@@ -252,6 +256,20 @@ export default {
 {
     position: relative;
     top:20px;
+}
+@media screen and (max-width:720px) {
+    #announcement_card
+    {
+        width:100%;
+        left:0%;
+        top:7vh;
+        min-height:60vh;
+        /* height:60vh; */
+    }
+    #announcement_contain
+    {
+        height:80vh;
+    }
 }
 </style>
 

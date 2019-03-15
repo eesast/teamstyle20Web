@@ -20,12 +20,25 @@ export default {
 
 <style>
 #QR_contain{
-    height:75%;
+    height:80%;
     margin-bottom: 5px;
 }
 #QR_contain img{
     width:auto;
     height:100%;
 }
+@media screen and (max-width: 720px)
+ { 
+     #QR_contain{
+    height:90vh;
+    margin-bottom: 5px;
+    }
+     #QR_contain img{
+    width:auto;
+    height:78%;
+    position: relative;
+    top:15%;
+}
+ }
 
 </style>

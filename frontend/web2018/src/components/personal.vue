@@ -23,19 +23,34 @@
         <h4>分数曲线：</h4>
         <el-collapse v-model="activeNames" @change="handleChange">
             <el-collapse-item title="对战历史" name="2">
-                <el-table :data="tableData" style="width: 100%"  max-height="300" :cell-class-name="tableStyle">
+                <el-table :data="tableData" style="width: 100%"  max-height="300" :cell-class-name="tableStyle"
+                empty-text="暂无对战历史"
+                >
             <el-table-column prop="color" min-width="1%" >
                 <template slot-scope="scope">
                 <div class="nothing" >&nbsp;</div>
                 </template>
             </el-table-column>
-            <el-table-column prop="teams" label="对战队伍" min-width="25%">
+            <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
+                <!-- <template slot-scope="scope">
+                    <span v-for="(x,index) in scope.row.teams">{{x}}|</span>
+                    AI:{{scope.row.ainum}}
+                </template> -->
             </el-table-column>
-            <el-table-column prop="result" label="对战结果" min-width="20%">
+            <el-table-column prop="rank" label="队伍排名" min-width="20%">
             </el-table-column>
-            <el-table-column prop="download" min-width="52%">
+            <el-table-column prop="score" label="得分" min-width="20%">
+            </el-table-column>
+            <el-table-column prop="state" label="状态" min-width="20%">
                 <template slot-scope="scope">
-                <el-button  @click="perdownload">下载回放</el-button>
+                    <span v-if="scope.row.state"><i class="el-icon-loading"></i>对战中</span>
+                    <span v-else>对战结束</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="download" min-width="40%">
+                <template slot-scope="scope">
+                <el-button  size="small" @click="perdownload" :disabled="scope.row.state">下载回放</el-button>
+                <el-button  size="small" @click="perdownload" :disabled="scope.row.state">查看详情</el-button>
                 </template>
             </el-table-column>
             </el-table>
@@ -69,48 +84,54 @@ export default {
             mail: "123456789@163.com",
             score: 100,
             rank: 5,
-            tableData:[
-                {
-                    teams: "team1",
-                    result: "victory"
-                },
-                {
-                    teams: "team2",
-                    result: "fail"
-                },
-                {
-                    teams: "team3",
-                    result: "fail"
-                },
-                {
-                    teams: "team4",
-                    result: "victory"
-                },
-                {
-                    teams: "team2",
-                    result: "fail"
-                },
-                {
-                    teams: "team3",
-                    result: "fail"
-                },
-                {
-                    teams: "team4",
-                    result: "victory"
-                },
-                {
-                    teams: "team2",
-                    result: "fail"
-                },
-                {
-                    teams: "team3",
-                    result: "fail"
-                },
-                {
-                    teams: "team4",
-                    result: "victory"
-                }
-            ]
+            tableData:[],
+            //     {
+            //         teams: ["team1","team2","team3"],//对战队伍
+            //         ainum:0,//AI人数
+            //         winner:'team1',//吃鸡队伍
+            //         rank: 1,//当前队伍排名
+            //         score:1,//当前队伍得分
+            //         state:false,//对战是否结束       是或否
+            //         download:'',//回放下载路径
+            //     },
+            //     {
+            //         teams: "team2",
+            //         result: "fail",
+            //         state:true,//对战是否结束       是或否
+            //     },
+            //     {
+            //         teams: "team3",
+            //         result: "fail"
+            //     },
+            //     {
+            //         teams: "team4",
+            //         result: "victory"
+            //     },
+            //     {
+            //         teams: "team2",
+            //         result: "fail"
+            //     },
+            //     {
+            //         teams: "team3",
+            //         result: "fail"
+            //     },
+            //     {
+            //         teams: "team4",
+            //         result: "victory"
+            //     },
+            //     {
+            //         teams: "team2",
+            //         result: "fail"
+            //     },
+            //     {
+            //         teams: "team3",
+            //         result: "fail"
+            //     },
+            //     {
+            //         teams: "team4",
+            //         result: "victory"
+            //     }
+            // ]
         }
     },
     methods: {
@@ -223,5 +244,28 @@ function setCookie(cname,cvalue){
 {
     width:70%;
     float:top;
+}
+
+@media screen and (max-width:720px) {
+    #personal .part1,#personal .part2,#personal .empty
+    {
+        display: block;
+        /* margin-top:30px; */
+        top:8vh;
+    }
+    #personal .part1
+    {
+        position: relative;
+        width:100%;
+        left:0%;
+    }
+    #personal .part2
+    {
+        width:100%;
+        position: relative;
+        left:0%;
+        float:top;
+        margin-bottom:8vh;
+    }
 }
 </style>
