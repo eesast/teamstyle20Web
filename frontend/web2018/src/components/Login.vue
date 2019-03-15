@@ -165,7 +165,7 @@ export default {
         )
       }).then(response=>
       {
-        console.log(response)
+        // console.log(response)
         if(response.ok)
         {
           return response.json();
@@ -197,14 +197,14 @@ export default {
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setTimeout(() => {
-          this.$router.push({path: '/empty_index',query: { flag: true } })
+          this.$router.push({path: '/empty_index'})
         }, 100);
       })
     },
     create:function(){
       // console.log(this.form.name)
-      console.log(this.form.password);
-      console.log(this.form.password1);
+      // console.log(this.form.password);
+      // console.log(this.form.password1);
       if(this.form.password!=this.form.password1)
       {
         this.$message.error('两次输入的密码不一样!');
@@ -235,8 +235,8 @@ export default {
         )
       }).then(response=>
       {
-        console.log(response.status)
-        console.log(response)
+        // console.log(response.status)
+        // console.log(response)
         if(response.status=='201')
         {
           return response.json();
@@ -255,7 +255,7 @@ export default {
         }
       }).then(res=>
       {
-        console.log(res)
+        // console.log(res)
         this.form.token=res['token']
         this.$message.success('注册成功，请登录开始您的挑战！');
         nav.navflag=false
@@ -263,7 +263,7 @@ export default {
         setCookie("username",this.form.username)
         setCookie("token",token)
         setTimeout(() => {
-          this.$router.push({path: '/empty_index',query: { flag: true } })
+          this.$router.push({path: '/empty_index' })
         }, 100);
       })
     },
