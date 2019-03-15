@@ -123,7 +123,7 @@ export default {
               }
             })
             .then(res => {
-              file_from_backend=res
+              var file_from_backend=res
               for (var i in file_from_backend)
               {
                   var single_file=new Object()
