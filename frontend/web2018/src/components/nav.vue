@@ -44,7 +44,7 @@ export default {
     //   window.location="http://teamstyle.eesast.com";
     // }
     console.log(getCookie('token'));
-    if(getCookie('token')!=null)
+    if(getCookie('token')!='null'&&getCookie('token')!=null)
     {
       this.navflag=false;
       console.log(1);

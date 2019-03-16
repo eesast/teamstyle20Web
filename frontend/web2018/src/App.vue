@@ -31,7 +31,7 @@ import navbar from './components/nav'
 import foot from './components/foot'
 
 console.log(getCookie('token'));
-if(getCookie('token')!=null)
+if(getCookie('token')!='null'&& getCookie('token')!=null)
 {
   navbar.navflag=false;
 }
@@ -50,7 +50,7 @@ export default {
        
     }
     console.log(getCookie('token'));
-    if(getCookie('token')!=null)
+   if(getCookie('token')!='null'&&getCookie('token')!=null)
     {
       navbar.navflag=false;
     }
@@ -60,7 +60,7 @@ export default {
   mounted:function()
   {
     console.log(getCookie('token'));
-    if(getCookie('token')!=null)
+    if(getCookie('token')!='null'&&getCookie('token')!=null)
     {
       navbar.navflag=false;
     }
