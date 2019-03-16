@@ -80,9 +80,17 @@ export default {
     }
   },
   mounted(){
-            EventBus.$on("send-msg", ({flag}) => {
-                this.navflag =flag;}
-            )
+            console.log(getCookie('token'));
+            if(getCookie('token')!='null'&&getCookie('token')!=null)
+            {
+              this.navflag=false;
+              this.name=getCookie('username');
+              console.log(1);
+            }
+            else this.navflag=true;
+            // EventBus.$on("send-msg", ({flag}) => {
+            //     this.navflag =flag;}
+            // )
             var width=window.screen.width;
             // console.log(width);
             if(width<720)
