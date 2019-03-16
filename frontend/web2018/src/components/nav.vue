@@ -44,7 +44,7 @@ export default {
     //   window.location="http://teamstyle.eesast.com";
     // }
     console.log(getCookie('token'));
-    if(getCookie('token')!='null'&&getCookie('token')!=null)
+    if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
     {
       this.navflag=false;
       this.name=getCookie('username');
@@ -81,7 +81,7 @@ export default {
   },
   mounted(){
             console.log(getCookie('token'));
-            if(getCookie('token')!='null'&&getCookie('token')!=null)
+           if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
             {
               this.navflag=false;
               this.name=getCookie('username');
