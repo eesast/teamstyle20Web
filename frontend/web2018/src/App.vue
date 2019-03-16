@@ -46,7 +46,7 @@ export default {
     if(to.path=="/")
     {
       // 跳转到首页
-      window.location="http://teamstyle.eesast.com";
+      // window.location="http://teamstyle.eesast.com";
        
     }
     console.log(getCookie('token'));
