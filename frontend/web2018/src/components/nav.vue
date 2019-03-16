@@ -43,9 +43,11 @@ export default {
     //   // 跳转到首页
     //   window.location="http://teamstyle.eesast.com";
     // }
+    console.log(getCookie('token'));
     if(getCookie('token')!=null)
     {
       this.navflag=false;
+      console.log(1);
     }
     else this.navflag=true;
   }
