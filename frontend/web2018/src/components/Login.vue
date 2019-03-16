@@ -139,9 +139,10 @@ export default {
 
   created:function()
   {
-    setCookie("usename",null)
-    setCookie("id",null)
-    setCookie("token",null)
+    // setCookie("usename",null)
+    // setCookie("id",null)
+    // setCookie("token",null)
+    //不重新设置，过期就过期
     // this.$router.push({path: '/',query: {flag : false}})
   },
 
