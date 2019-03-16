@@ -193,6 +193,7 @@ export default {
         if (res==undefined) return
         this.form.token=res['token']
         this.form.id=res['id']
+        this.form.username=res['username']
         this.$message.success('登录成功！');
         nav.navflag=false
         setCookie("token",this.form.token)
