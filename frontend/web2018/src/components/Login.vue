@@ -142,7 +142,7 @@ export default {
     setCookie("usename",null)
     setCookie("id",null)
     setCookie("token",null)
-    
+    // this.$router.push({path: '/',query: {flag : false}})
   },
 
   methods: {
