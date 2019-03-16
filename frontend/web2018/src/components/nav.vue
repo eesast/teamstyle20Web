@@ -47,6 +47,7 @@ export default {
     if(getCookie('token')!='null'&&getCookie('token')!=null)
     {
       this.navflag=false;
+      this.name=getCookie('username');
       console.log(1);
     }
     else this.navflag=true;
