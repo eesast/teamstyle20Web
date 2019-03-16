@@ -19,12 +19,14 @@ export default {
     {
       // 跳转到首页
       window.location="http://teamstyle.eesast.com";
-       if(getCookie('token')!=null)
-        {
-          navbar.navflag=false;
-        }
-        else navbar.navflag=true;
+       
     }
+    console.log(getCookie('token'));
+    if(getCookie('token')!=null)
+    {
+      navbar.navflag=false;
+    }
+    else navbar.navflag=true;
   }
   },
 }
