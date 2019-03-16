@@ -59,9 +59,9 @@ export default {
         },
         navjump(){
           this.navflag = true;
-          delCookie(token)
-          delCookie(id)
-          delCookie(username)
+          delCookie('token')
+          delCookie('id')
+          delCookie('username')
           this.$router.push({path: '/empty_index'})
         },
         Showmenu()
