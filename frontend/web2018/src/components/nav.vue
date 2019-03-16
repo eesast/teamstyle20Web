@@ -22,6 +22,7 @@
 </template>
 
 <script>
+
 import { EventBus } from "../bus.js"
 export default {
     name: "navbar",
@@ -34,6 +35,21 @@ export default {
        whatmode:"horizontal",
       }
     },
+     watch:{
+  $route(to,from){
+    console.log(to.path);
+    // if(to.path=="/")
+    // {
+    //   // 跳转到首页
+    //   window.location="http://teamstyle.eesast.com";
+    // }
+    if(getCookie('token')!=null)
+    {
+      this.navflag=false;
+    }
+    else this.navflag=true;
+  }
+  },
   methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
