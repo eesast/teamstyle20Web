@@ -9,6 +9,14 @@
 <script>
 import navbar from './components/nav'
 import foot from './components/foot'
+
+console.log(getCookie('token'));
+if(getCookie('token')!=null)
+{
+  navbar.navflag=false;
+}
+else navbar.navflag=true;
+
 export default {
   name: 'App',
   components:{navbar, foot},
@@ -29,6 +37,15 @@ export default {
     else navbar.navflag=true;
   }
   },
+  mounted:function()
+  {
+    console.log(getCookie('token'));
+    if(getCookie('token')!=null)
+    {
+      navbar.navflag=false;
+    }
+    else navbar.navflag=true;
+  }
 }
 
 </script>
