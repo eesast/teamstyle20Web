@@ -13,9 +13,10 @@ Vue.use(VueClipboard)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-setCookie("token",null)
-setCookie("username",null)
-setCookie("id",null)
+// setCookie("token",null)
+// setCookie("username",null)
+// setCookie("id",null)
+//为什么要设置为空，这会在每次刷新的时候挂掉
 
 function setCookie(cname,cvalue){
       document.cookie = cname+"="+cvalue+";path=/";
