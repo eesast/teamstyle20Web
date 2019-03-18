@@ -346,8 +346,7 @@ export default {
       headers: {
         "Content-Type": "application/json",
         "x-access-token": token_dict
-      },
-      body: JSON.stringify({})
+      }
     })
       .then(response => {
         console.log(response.status);

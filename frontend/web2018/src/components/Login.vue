@@ -153,11 +153,11 @@ export default {
         method:'POST',
         headers:
         {
-            'Content-Type':'application/json',
+            'Content-Type':'application/json'
            // 'Access-Control-Allow-Origin':'https://teamstyle.eesast.com',
-            "Access-Control-Allow-Credentials":"true",
-            "Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
-            "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT"
+            //"Access-Control-Allow-Credentials":"true",
+            //"Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Origin,Accept,// X-Requested-With, Content-Type, Access-Control-Request-Method, //Access-Control-Request-Headers",
+            //"Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT"
         },
         body:JSON.stringify(
             {
@@ -264,7 +264,7 @@ export default {
         nav.navflag=false
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
-        setCookie("token",token)
+        setCookie("token",this.form.token)
         setTimeout(() => {
           this.$router.push({path: '/',query: {flag : false} })
         }, 100);
