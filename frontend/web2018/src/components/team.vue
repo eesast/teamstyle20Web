@@ -57,7 +57,7 @@
                         </td>
                         <td v-if="iscaptain">
                           <el-button v-if="isediting==true" size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button>
-                          <el-button v-else size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button>
+                          <el-button v-else size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">保存修改</el-button>
                         </td>
                     </tr>      
                     <tr class='table_th1'>
@@ -590,6 +590,7 @@ export default {
             })
             })
             .then(response => {
+              console.log(response);
               console.log(response.status);
               if (response.ok) {
                 return response.json();
