@@ -55,9 +55,9 @@ def auth(request):
                         x_access_token["id"] = -1
                         if user_response.status_code == 200:
                             for user in user_response.json():
-                                if user["username"] == login_credentials["username"]:
-                                    x_access_token["id"] = user["id"]
-                                    break
+                                #if user["username"] == login_credentials["username"]:
+                                x_access_token["id"] = user["id"]
+                                break
                         elif user_response.status_code == 401:
                             x_access_token["id"] = "401:Invalid or expired token or permission denied."
                         response = JsonResponse(x_access_token, status=200)
