@@ -364,27 +364,27 @@ export default {
       })
       .then(res => {
         this.tableData = res;
-        for (var i = 0; i < tableData.length; i++) {
-          if (current_id == tableData[i].captain) {
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (current_id == this.tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;
-            this.detailData["teamname"] = tableData[i]["teamname"];
-            this.detailData["captain"]= tableData[i]["captain"];
-            this.detailData["invitecode"] = tableData[i]["invitecode"];
-            this.detailData["description"] = tableData[i]["description"];
-            this.detailData["memebers"] = tableData[i]["members"];
-            this.team_id=tableData[i]["teamid"]
+            this.detailData["teamname"] = this.tableData[i]["teamname"];
+            this.detailData["captain"]= this.tableData[i]["captain"];
+            this.detailData["invitecode"] = this.tableData[i]["invitecode"];
+            this.detailData["description"] = this.tableData[i]["description"];
+            this.detailData["memebers"] = this.tableData[i]["members"];
+            this.team_id=this.tableData[i]["teamid"]
 
           } else {
-            for (j = 0; j < tableData[i].members.length; j++) {
-              if (current_id == tableData[i].members[j]) {
+            for (j = 0; j < this.tableData[i].members.length; j++) {
+              if (current_id ==this.tableData[i].members[j]) {
                 this.inteam = true;
-                this.detailData["teamname"] = tableData[i]["teamname"];
-                this.detailData["captain"] = tableData[i]["captain"];
-                this.detailData["invitecode"] = tableData[i]["invitecode"];
-                this.detailData["description"] = tableData[i]["description"];
-                this.detailData["memebers"] = tableData[i]["members"];
-                this.team_id=tableData[i]["teamid"]
+                this.detailData["teamname"] = this.tableData[i]["teamname"];
+                this.detailData["captain"] = this.tableData[i]["captain"];
+                this.detailData["invitecode"] =this.tableData[i]["invitecode"];
+                this.detailData["description"] = this.tableData[i]["description"];
+                this.detailData["memebers"] = this.tableData[i]["members"];
+                this.team_id=this.tableData[i]["teamid"]
               }
             }
           }
