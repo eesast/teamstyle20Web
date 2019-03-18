@@ -198,6 +198,7 @@ export default {
         nav.navflag=false
         setCookie("token",this.form.token)
         setCookie("id",this.form.id)
+        setCookie("auth",true)
         setCookie("username",this.form.username)
         setTimeout(() => {
           this.$router.push({path: '/',query: {flag : false}})
@@ -265,6 +266,7 @@ export default {
         setCookie("id",this.form.id)
         setCookie("username",this.form.username)
         setCookie("token",this.form.token)
+        setCookie("auth",true)
         setTimeout(() => {
           this.$router.push({path: '/',query: {flag : false} })
         }, 100);

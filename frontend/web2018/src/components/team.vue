@@ -160,9 +160,8 @@ if(token==null)
           this.$router.push({path: '/index'})
         }, 100);
 }
-var current_username = getCookie("username");
-var current_id = getCookie("id");
-var token_dict = {"token":token};
+var username = getCookie("username");
+var id = getCookie("id");
 
 export default {
   name: "team",
@@ -345,7 +344,12 @@ export default {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": token_dict
+        "x-access-token":{
+          "token":token,
+          "id":id,
+          "username":username,
+          "auth":true
+        }
       }
     })
       .then(response => {
@@ -406,12 +410,16 @@ export default {
           this.form["description"].length <= 50 &&
           this.form["description"].length > 0
         ) {
-          fetch("/api/teams", {
+          fetch("/api/teams",{
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token_dict
-            },
+            "Content-Type": "application/json",
+            "x-access-token":{
+            "token":token,
+            "id":id,
+            "username":username,
+            "auth":true
+            }},
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
@@ -486,11 +494,16 @@ export default {
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
-              "x-access-token": token_dict
-            },
+              "Content-Type": "application/json",
+              "x-access-token":{
+              "token":token,
+              "id":id,
+              "username":username,
+              "auth":true
+            }},
             body: JSON.stringify({
             })
-         })
+          })
             .then(response => {
               console.log(response.status);
               if (response.ok) {
@@ -560,12 +573,17 @@ export default {
             fetch(FETCH_URL, {
             method: "POST",
             headers: {
-                "x-access-token": token_dict
-            },
+              "Content-Type": "application/json",
+              "x-access-token":{
+              "token":token,
+              "id":id,
+              "username":username,
+              "auth":true
+            }},
             body: JSON.stringify({
                 "invitecode":value
             })
-         })
+            })
             .then(response => {
               console.log(response.status);
               if (response.ok) {
@@ -627,8 +645,13 @@ export default {
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
-              "x-access-token": token_dict
-            },
+            "Content-Type": "application/json",
+            "x-access-token":{
+            "token":token,
+            "id":id,
+            "username":username,
+            "auth":true
+            }},
             body: JSON.stringify({
             })
           })
@@ -685,8 +708,13 @@ export default {
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
-              "x-access-token": token_dict
-            },
+            "Content-Type": "application/json",
+            "x-access-token":{
+            "token":token,
+            "id":id,
+            "username":username,
+            "auth":true
+            }},
             body: JSON.stringify({
             })
           })
@@ -744,9 +772,13 @@ export default {
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
-                "x-access-token": token_dict,
-                "content-type": application/json
-            },
+            "Content-Type": "application/json",
+            "x-access-token":{
+            "token":token,
+            "id":id,
+            "username":username,
+            "auth":true
+            }},
             body: JSON.stringify({
                 "description":this.detailData["description"]
             })
