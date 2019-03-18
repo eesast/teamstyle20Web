@@ -372,7 +372,7 @@ export default {
             this.detailData["captain"]= this.tableData[i]["captain"];
             this.detailData["invitecode"] = this.tableData[i]["invitecode"];
             this.detailData["description"] = this.tableData[i]["description"];
-            this.detailData["memebers"] = this.tableData[i]["members"];
+            this.detailData["members"] = this.tableData[i]["members"];
             this.team_id=this.tableData[i]["teamid"]
 
           } else {
@@ -383,7 +383,7 @@ export default {
                 this.detailData["captain"] = this.tableData[i]["captain"];
                 this.detailData["invitecode"] =this.tableData[i]["invitecode"];
                 this.detailData["description"] = this.tableData[i]["description"];
-                this.detailData["memebers"] = this.tableData[i]["members"];
+                this.detailData["members"] = this.tableData[i]["members"];
                 this.team_id=this.tableData[i]["teamid"]
               }
             }
