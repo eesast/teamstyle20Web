@@ -349,7 +349,7 @@ export default {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token":json.parse({"token":token,"id":id,"username":username,"auth":true})
+        "x-access-token":JSON.parse({"token":token,"id":id,"username":username,"auth":true})
       }
     })
       .then(response => {
@@ -414,12 +414,12 @@ export default {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":{
+            "x-access-token":JSON.parse({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            }},
+            })},
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
@@ -495,12 +495,12 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":{
+              "x-access-token":JSON.parse({
               "token":token,
               "id":id,
               "username":username,
               "auth":true
-            }},
+            })},
             body: JSON.stringify({
             })
           })
@@ -574,12 +574,12 @@ export default {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":{
+              "x-access-token":JSON.parse({
               "token":token,
               "id":id,
               "username":username,
               "auth":true
-            }},
+            })},
             body: JSON.stringify({
                 "invitecode":value
             })
@@ -646,12 +646,12 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":{
+            "x-access-token":JSON.parse({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            }},
+            })},
             body: JSON.stringify({
             })
           })
@@ -709,12 +709,12 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":{
+            "x-access-token":JSON.parse({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            }},
+            })},
             body: JSON.stringify({
             })
           })
@@ -773,12 +773,12 @@ export default {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":{
+            "x-access-token":JSON.parse({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            }},
+            })},
             body: JSON.stringify({
                 "description":this.detailData["description"]
             })
