@@ -365,7 +365,7 @@ export default {
       .then(res => {
         this.tableData = res;
         for (var i = 0; i < this.tableData.length; i++) {
-          if (current_id == this.tableData[i].captain) {
+          if (id == this.tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;
             this.detailData["teamname"] = this.tableData[i]["teamname"];
@@ -377,7 +377,7 @@ export default {
 
           } else {
             for (j = 0; j < this.tableData[i].members.length; j++) {
-              if (current_id ==this.tableData[i].members[j]) {
+              if (id ==this.tableData[i].members[j]) {
                 this.inteam = true;
                 this.detailData["teamname"] = this.tableData[i]["teamname"];
                 this.detailData["captain"] = this.tableData[i]["captain"];
@@ -437,8 +437,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "409"){
                 this.$message.error("您已加入本队伍或队伍名冲突！");
@@ -516,8 +516,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或成员不存在！");
@@ -533,8 +533,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -596,8 +596,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "422"){
                 this.$message.error("缺少邀请码字段！");
@@ -617,8 +617,8 @@ export default {
               this.inteam=true
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -667,8 +667,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
@@ -682,8 +682,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -704,7 +704,7 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.current_id
+            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -730,8 +730,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或队伍成员不存在！");
@@ -747,8 +747,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -795,8 +795,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "400"){
                 this.$message.error("您不是队长或权限不足！");
@@ -812,8 +812,8 @@ export default {
               this.inteam=true
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
