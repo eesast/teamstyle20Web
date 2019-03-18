@@ -349,11 +349,6 @@ export default {
       this.mobile=true;
       this.pagesize=7;
     }
-    var HEADERS={
-        "Content-Type": "application/json",
-        "x-access-token":{"token":token,"id":id,"username":username,"auth":true}
-    }
-    console.log(HEADERS)
     fetch("/api/teams", {
       method: "GET",
       headers: {
@@ -421,14 +416,15 @@ export default {
         ) {
           fetch("/api/teams",{
             method: "POST",
-            headers: {
+            headers: JSON.stringify({
             "Content-Type": "application/json",
             "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            })},
+            })
+            }),
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
