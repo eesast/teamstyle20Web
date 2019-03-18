@@ -340,6 +340,11 @@ export default {
       this.mobile=true;
       this.pagesize=7;
     }
+    var HEADERS={
+        "Content-Type": "application/json",
+        "x-access-token":{"token":token,"id":id,"username":username,"auth":true}
+    }
+    console.log(HEADERS)
     fetch("/api/teams", {
       method: "GET",
       headers: {
