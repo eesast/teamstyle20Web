@@ -59,7 +59,7 @@
                         <td colspan="2">
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
-                                    <td valign="middle">{{detailData.members[index]}}
+                                    <td v-if="detailData.members[index]!=idx"align="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
                                     
@@ -173,6 +173,7 @@ export default {
       team_id:null,
       mobile:false,
       dialogFormVisible: false, //创建队伍对话框
+      idx:null,//自己的学号
       form: {
         teamname: "",
         description: "",
@@ -335,6 +336,7 @@ export default {
   },
 
   created: function() {
+    this.idx=id;
     if(window.screen.width<768)
     {
       this.mobile=true;
