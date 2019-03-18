@@ -488,7 +488,7 @@ export default {
         }
       )
         .then(() => {
-            var FETCH_URL="/api/teams/:"+this.team_id+"memebers/:"+index
+            var FETCH_URL="/api/teams/"+this.team_id+"/memebers/"+index
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -567,7 +567,7 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
-            var FETCH_URL="/api/teams/:"+want_teamid+"memebers"
+            var FETCH_URL="/api/teams/"+want_teamid+"/memebers"
             fetch(FETCH_URL, {
             method: "POST",
             headers: {
@@ -639,7 +639,7 @@ export default {
                 type: 'info',
                 message: '您正在解散队伍，请谨慎操作！'
             });
-            var FETCH_URL="/api/teams/:"+this.team_id
+            var FETCH_URL="/api/teams/"+this.team_id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -702,7 +702,7 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.id
+            var FETCH_URL="/api/teams/"+this.team_id+"/memebers/"+this.id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -766,7 +766,7 @@ export default {
     edit_description() {
         if(this.iscaptain==true)
         {
-            var FETCH_URL="/api/teams/:"+this.team_id+"memebers"
+            var FETCH_URL="/api/teams/"+this.team_id+"/memebers"
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
