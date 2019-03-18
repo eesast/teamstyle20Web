@@ -340,16 +340,11 @@ export default {
       this.mobile=true;
       this.pagesize=7;
     }
-    var HEADERS={
-        "Content-Type": "application/json",
-        "x-access-token":{"token":token,"id":id,"username":username,"auth":true}
-    }
-    console.log(HEADERS)
     fetch("/api/teams", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token":JSON.parse({"token":token,"id":id,"username":username,"auth":true})
+        "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
       }
     })
       .then(response => {
@@ -412,14 +407,14 @@ export default {
         ) {
           fetch("/api/teams",{
             method: "POST",
-            headers: {
+            headers: JSON.stringify({
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":{
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            })},
+            }}),
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
@@ -495,7 +490,7 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":JSON.parse({
+              "x-access-token":JSON.stringify({
               "token":token,
               "id":id,
               "username":username,
@@ -574,7 +569,7 @@ export default {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":JSON.parse({
+              "x-access-token":JSON.stringify({
               "token":token,
               "id":id,
               "username":username,
@@ -646,7 +641,7 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
@@ -709,7 +704,7 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
@@ -773,7 +768,7 @@ export default {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
