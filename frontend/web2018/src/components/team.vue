@@ -59,7 +59,7 @@
                         <td colspan="2">
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
-                                    <td valign="middle">{{detailData.members[index]}}
+                                    <td v-if="detailData.members[index]!=idx"align="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
                                     
@@ -173,6 +173,7 @@ export default {
       team_id:null,
       mobile:false,
       dialogFormVisible: false, //创建队伍对话框
+      idx:null,//自己的学号
       form: {
         teamname: "",
         description: "",
@@ -335,6 +336,7 @@ export default {
   },
 
   created: function() {
+    this.idx=id;
     if(window.screen.width<768)
     {
       this.mobile=true;
@@ -359,27 +361,27 @@ export default {
       })
       .then(res => {
         this.tableData = res;
-        for (var i = 0; i < tableData.length; i++) {
-          if (current_id == tableData[i].captain) {
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (id == this.tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;
-            this.detailData["teamname"] = tableData[i]["teamname"];
-            this.detailData["captain"]= tableData[i]["captain"];
-            this.detailData["invitecode"] = tableData[i]["invitecode"];
-            this.detailData["description"] = tableData[i]["description"];
-            this.detailData["memebers"] = tableData[i]["members"];
-            this.team_id=tableData[i]["teamid"]
+            this.detailData["teamname"] = this.tableData[i]["teamname"];
+            this.detailData["captain"]= this.tableData[i]["captain"];
+            this.detailData["invitecode"] = this.tableData[i]["invitecode"];
+            this.detailData["description"] = this.tableData[i]["description"];
+            this.detailData["members"] = this.tableData[i]["members"];
+            this.team_id=this.tableData[i]["teamid"]
 
           } else {
-            for (j = 0; j < tableData[i].members.length; j++) {
-              if (current_id == tableData[i].members[j]) {
+            for (var j = 0; j < this.tableData[i].members.length; j++) {
+              if (id ==this.tableData[i].members[j]) {
                 this.inteam = true;
-                this.detailData["teamname"] = tableData[i]["teamname"];
-                this.detailData["captain"] = tableData[i]["captain"];
-                this.detailData["invitecode"] = tableData[i]["invitecode"];
-                this.detailData["description"] = tableData[i]["description"];
-                this.detailData["memebers"] = tableData[i]["members"];
-                this.team_id=tableData[i]["teamid"]
+                this.detailData["teamname"] = this.tableData[i]["teamname"];
+                this.detailData["captain"] = this.tableData[i]["captain"];
+                this.detailData["invitecode"] =this.tableData[i]["invitecode"];
+                this.detailData["description"] = this.tableData[i]["description"];
+                this.detailData["members"] = this.tableData[i]["members"];
+                this.team_id=this.tableData[i]["teamid"]
               }
             }
           }
@@ -409,12 +411,13 @@ export default {
             method: "POST",
             headers: JSON.stringify({
             "Content-Type": "application/json",
-            "x-access-token":{
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
             "auth":true
-            }}),
+            })
+            }),
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
@@ -432,8 +435,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "409"){
                 this.$message.error("您已加入本队伍或队伍名冲突！");
@@ -511,8 +514,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或成员不存在！");
@@ -528,8 +531,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -591,8 +594,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "422"){
                 this.$message.error("缺少邀请码字段！");
@@ -612,8 +615,8 @@ export default {
               this.inteam=true
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -662,8 +665,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
@@ -677,8 +680,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -699,7 +702,7 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.current_id
+            var FETCH_URL="/api/teams/:"+this.team_id+"/memebers/:"+this.id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -725,8 +728,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或队伍成员不存在！");
@@ -742,8 +745,8 @@ export default {
               this.inteam=false
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
@@ -790,8 +793,8 @@ export default {
                     delCookie("id")
                     delCookie("username")
                     token=null
-                    current_username=null
-                    current_id=null
+                    username=null
+                    id=null
                 }
               } else if (response.status == "400"){
                 this.$message.error("您不是队长或权限不足！");
@@ -807,8 +810,8 @@ export default {
               this.inteam=true
               this.team_id=null
               token=null
-              current_username=null
-              current_id=null
+              username=null
+              id=null
               delCookie("token")
               delCookie("username")
               delCookie("id")
