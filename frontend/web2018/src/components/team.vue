@@ -349,7 +349,7 @@ export default {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token":{"token":token,"id":id,"username":username,"auth":true}
+        "x-access-token":json.parse({"token":token,"id":id,"username":username,"auth":true})
       }
     })
       .then(response => {
