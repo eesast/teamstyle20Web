@@ -349,7 +349,7 @@ export default {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token":JSON.parse({"token":token,"id":id,"username":username,"auth":true})
+        "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
       }
     })
       .then(response => {
@@ -414,7 +414,7 @@ export default {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
@@ -495,7 +495,7 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":JSON.parse({
+              "x-access-token":JSON.stringify({
               "token":token,
               "id":id,
               "username":username,
@@ -574,7 +574,7 @@ export default {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "x-access-token":JSON.parse({
+              "x-access-token":JSON.stringify({
               "token":token,
               "id":id,
               "username":username,
@@ -646,7 +646,7 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
@@ -709,7 +709,7 @@ export default {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
@@ -773,7 +773,7 @@ export default {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.parse({
+            "x-access-token":JSON.stringify({
             "token":token,
             "id":id,
             "username":username,
