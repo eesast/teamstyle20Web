@@ -344,12 +344,7 @@ export default {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token":{
-          "token":token,
-          "id":id,
-          "username":username,
-          "auth":true
-        }
+        "x-access-token":{"token":token,"id":id,"username":username,"auth":true}
       }
     })
       .then(response => {
@@ -364,7 +359,7 @@ export default {
       })
       .then(res => {
         this.tableData = res;
-        for (i = 0; i < tableData.length; i++) {
+        for (var i = 0; i < tableData.length; i++) {
           if (current_id == tableData[i].captain) {
             this.iscaptain = true;
             this.inteam = true;

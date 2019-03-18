@@ -136,8 +136,6 @@ export default {
                     headers: {
                         "content-type": "application/json"
                     },
-                    body: JSON.stringify({
-                    })
                   })
                   .then(response => {
                     console.log(response.status);
@@ -152,7 +150,6 @@ export default {
                 });
                 var file_display= new Object()
                 file_display["filename"]=single_file["filename"]
-                file_diaplay["download"]=hhhhh
                 tableData.push(file_display)
               }
             });
