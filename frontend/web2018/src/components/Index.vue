@@ -3,7 +3,7 @@
     <canvas id="can"></canvas>
     <div class="intro">
       <div class="water-effect">
-      
+      <img src="../../static/img/digit_no_chinese.png"></img>
       <h1 class="fire-text">枪林弹雨</h1>
       <h1 id="ph5">Teamstyle20</h1>
       </div>
@@ -200,6 +200,15 @@ function loop() {
 .water-effect{
 			text-align: center;
 		}
+.water-effect img
+{
+  width:20vw;
+  height:12vh;
+  top:5vh;
+  left:40vw;
+  position: absolute;
+  display:none;
+}
 .index		h1 {
 	font-size: 120px;
   /* display: inline-block; */
