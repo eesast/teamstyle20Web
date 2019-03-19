@@ -417,15 +417,10 @@ export default {
         ) {
           fetch("/api/teams",{
             method: "POST",
-            headers: JSON.stringify({
+            headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.stringify({
-            "token":token,
-            "id":id,
-            "username":username,
-            "auth":true
-            })
-            }),
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
             body: JSON.stringify({
                 "teamname":this.form["teamname"],
                 "description":this.form["description"]
@@ -450,9 +445,12 @@ export default {
                 this.$message.error("您已加入本队伍或队伍名冲突！");
               } else if (response.status == "422"){
                   this.$message.error("队伍信息重要字段缺失！")
-              } else {
-                  this.$message.error("创建队伍失败！")
-              }
+              } else if (response.status == "500"){
+                  this.$message.error("500服务器故障！")
+              } 
+            },error=>
+            {
+              this.$message.error("创建队伍失败！")
             })
             .then(res => {
               this.detailData.invitecode = res["invitecode"]
@@ -496,19 +494,13 @@ export default {
         }
       )
         .then(() => {
-            var FETCH_URL="/api/teams/"+this.team_id+"/memebers/"+index
+            var FETCH_URL="/api/teams/:"+this.team_id+"/members/:"+index
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
-              "Content-Type": "application/json",
-              "x-access-token":JSON.stringify({
-              "token":token,
-              "id":id,
-              "username":username,
-              "auth":true
-            })},
-            body: JSON.stringify({
-            })
+            "Content-Type": "application/json",
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
           })
             .then(response => {
               console.log(response.status);
@@ -529,9 +521,11 @@ export default {
                 this.$message.error("队伍或成员不存在！");
               } else if (response.status == "400"){
                 this.$message.error("不能踢出自己！");
-              } else {
-                this.$message.error("踢出成员失败！")
-              }
+              } else if (response.status == "500"){
+                this.$message.error("Internal proxy error!");
+              } 
+            },error=>{
+              this.$message.error("踢出成员失败！")
             })
             .then(res => {
               this.$message.success("踢出成员成功!因队伍信息改变，请您重新登录！")
@@ -575,17 +569,13 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
-            var FETCH_URL="/api/teams/"+want_teamid+"/memebers"
+            var FETCH_URL="/api/teams/:"+want_teamid+"/members"
             fetch(FETCH_URL, {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
-              "x-access-token":JSON.stringify({
-              "token":token,
-              "id":id,
-              "username":username,
-              "auth":true
-            })},
+            "Content-Type": "application/json",
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
             body: JSON.stringify({
                 "invitecode":value
             })
@@ -649,19 +639,13 @@ export default {
                 type: 'info',
                 message: '您正在解散队伍，请谨慎操作！'
             });
-            var FETCH_URL="/api/teams/"+this.team_id
+            var FETCH_URL="/api/teams/:"+this.team_id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.stringify({
-            "token":token,
-            "id":id,
-            "username":username,
-            "auth":true
-            })},
-            body: JSON.stringify({
-            })
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            }
           })
             .then(response => {
               console.log(response.status);
@@ -680,9 +664,13 @@ export default {
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
-              } else {
-                  this.$message.error("创建队伍失败！")
               }
+              else if (response.status == "500"){
+                this.$message.error("Internal proxy error！");
+              }
+            },error=>
+            {
+              this.$message.error("创建队伍失败！")
             })
             .then(res => {
               this.$message.success("删除队伍成功!因个人信息改变，请您重新登录！")
@@ -712,19 +700,13 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/"+this.team_id+"/memebers/"+this.id
+            var FETCH_URL="/api/teams/:"+this.team_id+"/members/:"+this.id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.stringify({
-            "token":token,
-            "id":id,
-            "username":username,
-            "auth":true
-            })},
-            body: JSON.stringify({
-            })
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            }
           })
             .then(response => {
               console.log(response.status);
@@ -745,9 +727,12 @@ export default {
                 this.$message.error("队伍或队伍成员不存在！");
               } else if (response.status == "400"){
                 this.$message.error("不能试图删除队长");
-              } else {
-                  this.$message.error("退出队伍失败！")
+              } else if (response.status == "500"){
+                this.$message.error("Internal proxy error!");
               }
+            },error=>
+            {
+              this.$message.error("退出队伍失败！")
             })
             .then(res => {
               this.$message.success("退出队伍成功!因个人信息改变，请您重新登录！")
@@ -781,17 +766,13 @@ export default {
         }
         if(this.iscaptain==true)
         {
-            var FETCH_URL="/api/teams/"+this.team_id
+            var FETCH_URL="/api/teams/:"+this.team_id+"/members"
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
-            "x-access-token":JSON.stringify({
-            "token":token,
-            "id":id,
-            "username":username,
-            "auth":true
-            })},
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
             body: JSON.stringify({
                 "description":this.detailData["description"]
             })
@@ -815,9 +796,11 @@ export default {
                 this.$message.error("您不是队长或权限不足！");
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
-              } else {
-                this.$message.error("加入队伍失败！")
-              }
+              } else if (response.status == "500"){
+                this.$message.error("Internal proxy error!");
+              } 
+            },error=>{
+              this.$message.error("加入队伍失败！")
             })
             .then(res => {
               this.$message.success("成功更改队伍信息!因个人信息改变，请您重新登录！")
