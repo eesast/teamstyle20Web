@@ -355,9 +355,10 @@ export default {
           return response.json();
         } else if (response.status == "401") {
           this.$message.error("token失效，请重新登录！");
-        } else {
-          this.$message.error("获取队伍信息失败！");
         }
+      },error=>
+      {
+        this.$message.error("获取队伍信息失败！")
       })
       .then(res => {
         this.tableData = res;
@@ -605,9 +606,10 @@ export default {
                 this.$message.error("队伍人数超过上限或您已经在队伍中！");
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
-              } else {
-                this.$message.error("加入队伍失败！")
               }
+            },error=>
+            {
+               this.$message.error("加入队伍失败！")
             })
             .then(res => {
               this.$message.success("加入队伍!因个人信息改变，请您重新登录！")
