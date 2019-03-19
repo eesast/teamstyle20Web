@@ -528,7 +528,6 @@ export default {
               this.$message.error("踢出成员失败！")
             })
             .then(res => {
-              this.$message.success("踢出成员成功!因队伍信息改变，请您重新登录！")
               this.iscaptain=false
               this.inteam=false
               this.team_id=null
@@ -558,10 +557,7 @@ export default {
     joinTeam(
       index //加入第几个队伍
     ) {
-      // console.log(index);
-      //this.tableData[index].id//为加入队伍的标号
-      var want_teamid = this.tableData[index].id; //获取队伍标号
-
+      console.log(this.tableData[index].id)//为加入队伍的标号
       this.$prompt("请输入邀请码", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
@@ -569,6 +565,7 @@ export default {
         // inputErrorMessage: '邮箱格式不正确'
       })
         .then(({ value }) => {
+            var want_teamid = this.tableData[index].id
             var FETCH_URL="/api/teams/:"+want_teamid+"/members"
             fetch(FETCH_URL, {
             method: "POST",
@@ -610,7 +607,6 @@ export default {
                this.$message.error("加入队伍失败！")
             })
             .then(res => {
-              this.$message.success("加入队伍!因个人信息改变，请您重新登录！")
               this.iscaptain=false
               this.inteam=true
               this.team_id=null
@@ -651,7 +647,8 @@ export default {
               console.log(response.status);
               if (response.ok) {
                 return response.json();
-              } else if (response.status == "401") {
+              } 
+              else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
                 if(token!=null)
                 {
@@ -662,7 +659,8 @@ export default {
                     username=null
                     id=null
                 }
-              } else if (response.status == "404"){
+              } 
+              else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
               }
               else if (response.status == "500"){
@@ -670,10 +668,9 @@ export default {
               }
             },error=>
             {
-              this.$message.error("创建队伍失败！")
+              this.$message.error("删除队伍失败！")
             })
             .then(res => {
-              this.$message.success("删除队伍成功!因个人信息改变，请您重新登录！")
               this.iscaptain=false
               this.inteam=false
               this.team_id=null
@@ -735,7 +732,6 @@ export default {
               this.$message.error("退出队伍失败！")
             })
             .then(res => {
-              this.$message.success("退出队伍成功!因个人信息改变，请您重新登录！")
               this.iscaptain=false
               this.inteam=false
               this.team_id=null
@@ -803,7 +799,6 @@ export default {
               this.$message.error("加入队伍失败！")
             })
             .then(res => {
-              this.$message.success("成功更改队伍信息!因个人信息改变，请您重新登录！")
               this.iscaptain=false
               this.inteam=true
               this.team_id=null
