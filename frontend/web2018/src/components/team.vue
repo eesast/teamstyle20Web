@@ -354,6 +354,12 @@ export default {
               this.iscaptain=true
               this.inteam=true
               this.$message.success("创建队伍成功!")
+              delCookie("token")
+              delCookie("username")
+              delCookie("id")
+              setTimeout(() => {
+                this.$router.push({path: '/Login'})
+              }, 100)
             });
             this.dialogFormVisible = false;
         } else if (this.form["description"].length == 0) {
