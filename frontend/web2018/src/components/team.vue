@@ -234,37 +234,6 @@ export default {
           captain: "萌新0号",
           description: "我们最爱划水",
           members: ["好人", "萌新", "蒟蒻"]
-        },
-        {
-          teamid: 0,
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
-        },
-        {
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
-        },
-        {
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
-        },
-        {
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
-        },
-        {
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
         }
       ]
     };
