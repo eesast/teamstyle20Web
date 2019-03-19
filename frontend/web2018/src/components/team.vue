@@ -494,7 +494,7 @@ export default {
         }
       )
         .then(() => {
-            var FETCH_URL="/api/teams/:"+this.team_id+"/members/:"+index
+            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+index
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -566,7 +566,7 @@ export default {
       })
         .then(({ value }) => {
             var want_teamid = this.tableData[index].id
-            var FETCH_URL="/api/teams/:"+want_teamid+"/members"
+            var FETCH_URL="/api/teams/"+want_teamid+"/members"
             fetch(FETCH_URL, {
             method: "POST",
             headers: {
@@ -635,7 +635,7 @@ export default {
                 type: 'info',
                 message: '您正在解散队伍，请谨慎操作！'
             });
-            var FETCH_URL="/api/teams/:"+this.team_id
+            var FETCH_URL="/api/teams/"+this.team_id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -697,7 +697,7 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/:"+this.team_id+"/members/:"+this.id
+            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.id
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
@@ -762,7 +762,7 @@ export default {
         }
         if(this.iscaptain==true)
         {
-            var FETCH_URL="/api/teams/:"+this.team_id+"/members"
+            var FETCH_URL="/api/teams/"+this.team_id+"/members"
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
