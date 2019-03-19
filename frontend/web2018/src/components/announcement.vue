@@ -169,6 +169,8 @@ export default {
         if (res==undefined) return
         console.log(res)
         this.tableData.push(JSON.stringify(res))
+        console.log(JSON.stringify(res))
+        console.log(this.tableData)
       })
     }
 }

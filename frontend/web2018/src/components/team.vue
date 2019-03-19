@@ -222,21 +222,21 @@ export default {
       // }, ]
       tableData: [
         {
-          id: 0,
+          teamid: 0,
           teamname: "划水大法好",
           captain: "萌新0号",
           description: "我们最爱划水",
           members: ["好人", "萌新"]
         },
         {
-          id: 0,
+          teamid: 0,
           teamname: "划水大法好",
           captain: "萌新0号",
           description: "我们最爱划水",
           members: ["好人", "萌新", "蒟蒻"]
         },
         {
-          id: 0,
+          teamid: 0,
           teamname: "划水大法好",
           captain: "萌新0号",
           description: "我们最爱划水",
@@ -482,9 +482,8 @@ export default {
           this.$message.error("您不是队长，无权进行此操作！")
       }
     },
-    joinTeam(
-      index //加入第几个队伍
-    ) {
+    joinTeam(index)//加入第几个队伍 
+      {
       console.log(this.tableData[index].teamid)//为加入队伍的标号
       this.$prompt("请输入邀请码", "提示", {
         confirmButtonText: "确定",
