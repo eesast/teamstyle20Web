@@ -5,7 +5,7 @@
     <el-menu v-show="showmenu"class="submenu" :mode="whatmode" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="#" id='img-submenu' >
-        <img class="eesast" src="../../static/img/eesast.png"/>
+        <img class="eesast" src="../../static/img/digit_no_chinese.png"/>
       </el-menu-item>
       <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
@@ -134,8 +134,8 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
   height:60px;
 }
 #nav img{
-  height:40px;
-  width:40px;
+  height:8vh;
+  width:10vw;
 }
 
 .el-menu{
@@ -169,6 +169,12 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
      #nav .el-menu-item.is-active {
       background: #FFFFFF;
     }
+    #nav img{
+   height: 8vh;
+    width: 30vw;
+    left: -8vw;
+    position: relative;
+  }
     #nav
     {
        display: block;

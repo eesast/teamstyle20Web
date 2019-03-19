@@ -52,7 +52,13 @@
                     </tr>
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/edit-square.svg" class="svg"></img>队伍简介</th>
-                        <td colspan="1"><el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input></td><td><el-button size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button></td>
+                        <td colspan="1">
+                          <el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" readonly></el-input>
+                        </td>
+                        <td v-if="iscaptain">
+                          <el-button v-if="isediting==true" size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button>
+                          <el-button v-else size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">保存修改</el-button>
+                        </td>
                     </tr>      
                     <tr class='table_th1'>
                         <th ><img src="../../static/img/team.svg"  class="svg"></img>队伍成员</th>
@@ -174,6 +180,7 @@ export default {
       mobile:false,
       dialogFormVisible: false, //创建队伍对话框
       idx:null,//自己的学号
+      isediting:true,//是否正在修改
       form: {
         teamname: "",
         description: "",
@@ -584,6 +591,7 @@ export default {
             })
             })
             .then(response => {
+              console.log(response);
               console.log(response.status);
               if (response.ok) {
                 return response.json();
@@ -766,9 +774,14 @@ export default {
         }
     }, 
     edit_description() {
+        if(this.isediting==true)
+        {
+          this.isediting=false;
+          return ;
+        }
         if(this.iscaptain==true)
         {
-            var FETCH_URL="/api/teams/"+this.team_id+"/memebers"
+            var FETCH_URL="/api/teams/"+this.team_id
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
@@ -814,6 +827,7 @@ export default {
               token=null
               username=null
               id=null
+              this.isediting=true;
               delCookie("token")
               delCookie("username")
               delCookie("id")
