@@ -81,7 +81,6 @@
 </div>
 </template>
 <script>
-var response_data=null
 export default {
     name: "announcement",
     data(){
@@ -173,7 +172,6 @@ export default {
       {
         if (res==undefined) return
         res=JSON.stringify(res)
-        response_data=res
         for (var i = 0; i < response_data.length; i++) 
         {
             var ann= new Object()
@@ -181,9 +179,8 @@ export default {
             ann["pub_date"]=res[i]["pub_date"]
             ann["last_update_date"]=res[i]["last_update_date"]
             this.tableData.push(ann)
-            console.log(ann)
         }
-        console.log(tableData)
+        console.log(this.tableData)
     })
     }
 }
