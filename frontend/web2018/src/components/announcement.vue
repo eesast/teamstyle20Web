@@ -167,11 +167,16 @@ export default {
       }).then(res=>
       {
         if (res==undefined) return
-        console.log(res)
-        this.tableData.push(JSON.stringify(res))
-        console.log(JSON.stringify(res))
-        console.log(this.tableData)
-      })
+        res=JSON.stringify(res)
+        for (var i = 0; i < res.length; i++) 
+        {
+            var ann= new Object()
+            ann["title"]=res[i]["title"]
+            ann["pub_date"]=res[i]["pub_date"]
+            ann["last_update_date"]=res[i]["last_update_date"]
+            this.tableData.push(ann)
+        }
+    })
     }
 }
 
