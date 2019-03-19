@@ -167,7 +167,8 @@ export default {
       }).then(res=>
       {
         if (res==undefined) return
-        this.tableData.push(res)
+        this.tableData.push(JSON.parse(res))
+        console.log(JSON.parse(res))
       })
     }
 }
