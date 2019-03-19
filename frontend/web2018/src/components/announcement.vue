@@ -140,7 +140,11 @@ export default {
             }).then(res=>
                 {
                     if (res==undefined) return
-                    this.detailData=res
+                    res=JSON.stringify(res)
+                    this.detailData["title"]=res["title"]
+                    this.detailData["pub_date"]=res["pub_date"]
+                    this.detailData["last_update_date"]=res["last_update_date"]
+                    this.detailData["content"]=res["content"]
                 })
         }
 
