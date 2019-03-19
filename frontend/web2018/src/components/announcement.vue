@@ -179,7 +179,9 @@ export default {
             ann["pub_date"]=res[i]["pub_date"]
             ann["last_update_date"]=res[i]["last_update_date"]
             this.tableData.push(ann)
+            console.log(ann)
         }
+        console.log(detailData)
     })
     }
 }
