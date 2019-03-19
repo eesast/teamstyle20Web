@@ -150,7 +150,7 @@ export default {
                 });
                 var file_display= new Object()
                 file_display["filename"]=single_file["filename"]
-                tableData.push(file_display)
+                //tableData.push(file_display)
               }
             });
         }
