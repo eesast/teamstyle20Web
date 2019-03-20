@@ -134,8 +134,8 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
   height:60px;
 }
 #nav img{
-  height:8vh;
-  width:10vw;
+  height:6vh;
+  width:8vw;
 }
 
 .el-menu{
