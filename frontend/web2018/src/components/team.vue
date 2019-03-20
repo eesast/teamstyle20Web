@@ -548,7 +548,7 @@ export default {
             .then(response => {
               console.log(response.status);
               if (response.ok) {
-                return response.json();
+                return response.json()
               } 
               else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
