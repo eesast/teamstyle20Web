@@ -664,7 +664,7 @@ export default {
         }
         if(this.iscaptain==true)
         {
-            var FETCH_URL="/api/teams/"+this.team_id+"/members"
+            var FETCH_URL="/api/teams/"+this.team_id
             fetch(FETCH_URL, {
             method: "PUT",
             headers: {
