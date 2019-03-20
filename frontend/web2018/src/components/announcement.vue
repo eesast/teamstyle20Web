@@ -131,7 +131,7 @@ export default {
                 console.log(response.status)
                 if(response.ok)
                 {
-                    return response.json();
+                    return response.json()
                 }
                 else
                 {
@@ -140,11 +140,7 @@ export default {
             }).then(res=>
                 {
                     if (res==undefined) return
-                    res=JSON.stringify(res)
-                    this.detailData["title"]=res["title"]
-                    this.detailData["pub_date"]=res["pub_date"]
-                    this.detailData["last_update_date"]=res["last_update_date"]
-                    this.detailData["content"]=res["content"]
+                    this.detailData=res
                 })
         }
 
