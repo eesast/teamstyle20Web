@@ -7,6 +7,8 @@ from django.template import *
 import requests
 import hashlib, uuid
 from django.db.models import Q
+from django.utils.timezone import get_current_timezone
+import datetime
 from django.conf import settings
 # Create your views here.
 
@@ -256,9 +258,39 @@ def modifyTeamByID(request, teamid):
                         output = list()
                         for team in query:
                             if(team.memberInTeam(x_access_token["id"])):
-                                output.append(team.get_teamInfo(2))
+                                thisTeamInfo = team.get_teamInfo(2)
+                                thisTeamInfo["members"] = list()
+                                for member in thisTeamInfo["membersID"]:
+                                    targetURL = 'https://api.eesast.com/v1/users/' + str(member)
+                                    head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                                    query_response = requests.get(targetURL, headers=head)
+                                    userInfo = is_json(query_response.content)
+                                    if type(userInfo) is dict:
+                                        if 'name' in userInfo:
+                                            thisTeamInfo["members"].append(userInfo["name"])
+                                            if str(member) == str(team.captain):
+                                                thisTeamInfo["captain"] = userInfo["name"]
+                                        else:
+                                            thisTeamInfo["members"].append(member)
+                                    else:
+                                        thisTeamInfo["members"].append(member)
+                                output.append(thisTeamInfo)
                             else:
-                                output.append(team.get_teamInfo(showtype))
+                                thisTeamInfo = team.get_teamInfo(showtype)
+                                thisTeamInfo["members"] = list()
+                                for member in thisTeamInfo["membersID"]:
+                                    targetURL = 'https://api.eesast.com/v1/users/' + str(member)
+                                    head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                                    query_response = requests.get(targetURL, headers=head)
+                                    userInfo = is_json(query_response.content)
+                                    if type(userInfo) is dict:
+                                        if 'name' in userInfo:
+                                            thisTeamInfo["members"].append(userInfo["name"])
+                                        else:
+                                            thisTeamInfo["members"].append(member)
+                                    else:
+                                        thisTeamInfo["members"].append(member)
+                                output.append(thisTeamInfo)
                         response = JsonResponse(output, status=200, safe= False)
                         if(query.count() == 0):
                             response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
@@ -271,20 +303,17 @@ def modifyTeamByID(request, teamid):
                 if type(x_access_token) is dict:
                     if 'auth' in x_access_token and 'token' in x_access_token:
                         if x_access_token["auth"] == True:
-                            targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=true"
-                            head = {'Authorization': 'Bearer ' + x_access_token["token"]}
-                            query_response = requests.get(targetURL, headers=head)
-                            userInfo = is_json(query_response.content)
-                            
+                            #targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                            #head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                            #query_response = requests.get(targetURL, headers=head)
+                            #userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
-                            if type(userInfo) is dict:
-                                if 'group' not in userInfo:
-                                    return response
-                                if userInfo["group"] == 'admin':
-                                    has_permission = 1
-                                if str(targetTeam.captain) == str(userInfo["id"]):
-                                    has_permission = 1
+                            #if type(userInfo) is dict:
+                                #if userInfo["group"] == 'admin':
+                                    #has_permission = 1
+                            if str(targetTeam.captain) == str(x_access_token["id"]):
+                                has_permission = 1
                             if has_permission:
                                 targetTeam.delete()
                                 response = HttpResponse("204 Deleted.", status=204)
@@ -308,6 +337,7 @@ def modifyTeamByID(request, teamid):
                             userInfo = is_json(query_response.content)
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
+<<<<<<< HEAD
                             if type(userInfo) is dict:
                                 if 'group' not in userInfo:
                                     return response
@@ -315,6 +345,13 @@ def modifyTeamByID(request, teamid):
                                     has_permission = 1
                                 if str(targetTeam.captain) == str(userInfo["id"]):
                                     has_permission = 1
+=======
+                            #if type(userInfo) is dict:
+                                #if userInfo["group"] == 'admin':
+                                    #has_permission = 1
+                            if str(targetTeam.captain) == str(x_access_token["id"]):
+                                has_permission = 1
+>>>>>>> 35e682ec5783276e869a8d6544979cccfc3c05a4
                             add_captain_err = 0
                             if has_permission:
                                 contentToUpdate = is_json(request.body)
@@ -343,11 +380,31 @@ def modifyTeamByID(request, teamid):
 def modifyTeamMembersByID(request, teamid):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
     if request.method == 'GET':
-        try:
-            targetTeam = Team.objects.get(pk = teamid)
-            response = JsonResponse(targetTeam.get_member(), status=200, safe=False)
-        except Team.DoesNotExist:
-            response = HttpResponse("404 Not Found: Team does not exist.", status=404)
+        if 'HTTP_X_ACCESS_TOKEN' in request.META:
+            response = HttpResponse("401 Unauthorized: Invalid or expired token.", status=401)
+            x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+            if type(x_access_token) is dict:
+                if 'auth' in x_access_token and 'token' in x_access_token:
+                    if x_access_token["auth"] == True:
+                        try:
+                            targetTeam = Team.objects.get(pk = teamid)
+                            thisTeamMember = targetTeam.get_member()
+                            output = list()
+                            for member in thisTeamMember:
+                                targetURL = 'https://api.eesast.com/v1/users/' + str(member)
+                                head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                                query_response = requests.get(targetURL, headers=head)
+                                userInfo = is_json(query_response.content)
+                                if type(userInfo) is dict:
+                                    if 'name' in userInfo:
+                                        output.append(userInfo["name"])
+                                    else:
+                                        output.append(member)
+                                else:
+                                    output.append(member)
+                            response = JsonResponse(output, status=200, safe=False)
+                        except Team.DoesNotExist:
+                            response = HttpResponse("404 Not Found: Team does not exist.", status=404)
         pass
     elif request.method == 'POST':
         try:
@@ -425,18 +482,25 @@ def deleteTeamMembers(request, teamid, deleteid):
                     if type(x_access_token) is dict:
                         if 'auth' in x_access_token and 'token' in x_access_token:
                             if x_access_token["auth"] == True:
-                                targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
-                                head = {'Authorization': 'Bearer ' + x_access_token["token"]}
-                                query_response = requests.get(targetURL, headers=head)
-                                userInfo = is_json(query_response.content)
+                                #targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                                #head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+                                #query_response = requests.get(targetURL, headers=head)
+                                #userInfo = is_json(query_response.content)
                                 has_permission = 0;
                                 response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
+<<<<<<< HEAD
                                 if type(userInfo) is dict:
                                     if 'group' not in userInfo:
                                         return response
                                     if userInfo["group"] == 'admin':
                                         has_permission = 1
                                     if str(targetTeam.captain) == str(userInfo["id"]):
+=======
+                                #if type(userInfo) is dict:
+                                    #if userInfo["group"] == 'admin':
+                                     #   has_permission = 1
+                                if str(targetTeam.captain) == str(x_access_token["id"]):
+>>>>>>> 35e682ec5783276e869a8d6544979cccfc3c05a4
                                         has_permission = 1
                                 if has_permission:
                                     targetTeam.delete_member(x_access_token["id"])
@@ -445,13 +509,12 @@ def deleteTeamMembers(request, teamid, deleteid):
             response = HttpResponse("404 Not found: Team does not exist.", status= 404)
     return response
 
-
-import datetime
+tz = get_current_timezone()
 query = GlobalSetting.objects.all()
 submission = dict()
 if query.count()==1:
-    submission["start"] = query[0].submission_start
-    submission["end"] = query[0].submission_end
+    submission["start"] = query[0].submission_start.replace(tzinfo=tz)
+    submission["end"] = query[0].submission_end.replace(tzinfo=tz)
 else:
     submission = False
 def systemOpen():
