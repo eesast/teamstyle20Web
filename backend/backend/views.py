@@ -227,6 +227,14 @@ def teams(request):
                             else:
                                 output.append(team.get_teamInfo(showtype))
                         response = JsonResponse(output, status=200, safe= False)
+                    else:
+                        response = HttpResponse("auth not true", status=401)
+                else:
+                    response = HttpResponse("auth or token not in", status=401)
+            else:
+                response = HttpResponse("not a dict %s "%(str(request.META['HTTP_X_ACCESS_TOKEN'])), status=401)
+        else:
+            response = HttpResponse("no META", status=401)
     return response
 
 @csrf_exempt
@@ -263,13 +271,16 @@ def modifyTeamByID(request, teamid):
                 if type(x_access_token) is dict:
                     if 'auth' in x_access_token and 'token' in x_access_token:
                         if x_access_token["auth"] == True:
-                            targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=True"
+                            targetURL = 'https://api.eesast.com/v1/users/' + str(x_access_token["id"]) + "?detailInfo=true"
                             head = {'Authorization': 'Bearer ' + x_access_token["token"]}
                             query_response = requests.get(targetURL, headers=head)
                             userInfo = is_json(query_response.content)
+                            
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
+                                if 'group' not in userInfo:
+                                    return response
                                 if userInfo["group"] == 'admin':
                                     has_permission = 1
                                 if str(targetTeam.captain) == str(userInfo["id"]):
@@ -298,6 +309,8 @@ def modifyTeamByID(request, teamid):
                             has_permission = 0;
                             response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                             if type(userInfo) is dict:
+                                if 'group' not in userInfo:
+                                    return response
                                 if userInfo["group"] == 'admin':
                                     has_permission = 1
                                 if str(targetTeam.captain) == str(userInfo["id"]):
@@ -419,6 +432,8 @@ def deleteTeamMembers(request, teamid, deleteid):
                                 has_permission = 0;
                                 response = HttpResponse("401 Unauthorized: Permission Denied.", status=401)
                                 if type(userInfo) is dict:
+                                    if 'group' not in userInfo:
+                                        return response
                                     if userInfo["group"] == 'admin':
                                         has_permission = 1
                                     if str(targetTeam.captain) == str(userInfo["id"]):
