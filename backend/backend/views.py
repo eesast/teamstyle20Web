@@ -260,8 +260,10 @@ def modifyTeamByID(request, teamid):
                                     if type(userInfo) is dict:
                                         if 'name' in userInfo:
                                             thisTeamInfo["members"].append(userInfo["name"])
-                                            if str(member) == str(team.captain):
+                                            if int(member) == int(thisTeamInfo["captainID"]):
                                                 thisTeamInfo["captain"] = userInfo["name"]
+                                            else:
+                                                thisTeamInfo["captain"] = thisTeamInfo["captainID"]
                                         else:
                                             thisTeamInfo["members"].append(member)
                                     else:
