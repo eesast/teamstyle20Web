@@ -174,7 +174,32 @@ def modifyUser(request, user_id):
     return response
 
 
-from backend.models import Team
+def append_team_member_name(x_access_token, query, showtype=0):
+    output = list()
+    for team in query:
+        if (team.memberInTeam(x_access_token["id"])):
+            showtype = 2
+        thisTeamInfo = team.get_teamInfo(showtype)
+        thisTeamInfo["members"] = list()
+        for member in thisTeamInfo["membersID"]:
+            targetURL = 'https://api.eesast.com/v1/users/' + str(member)
+            head = {'Authorization': 'Bearer ' + x_access_token["token"]}
+            query_response = requests.get(targetURL, headers=head)
+            userInfo = is_json(query_response.content)
+            if type(userInfo) is dict:
+                if 'name' in userInfo:
+                    thisTeamInfo["members"].append(userInfo["name"])
+                    if int(member) == int(thisTeamInfo["captainID"]):
+                        thisTeamInfo["captain"] = userInfo["name"]
+                    else:
+                        thisTeamInfo["captain"] = thisTeamInfo["captainID"]
+                else:
+                    thisTeamInfo["members"].append(member)
+            else:
+                thisTeamInfo["members"].append(member)
+        output.append(thisTeamInfo)
+    return output
+
 
 @csrf_exempt
 def teams(request):
@@ -222,12 +247,7 @@ def teams(request):
                 if 'auth' in x_access_token and 'token' in x_access_token:
                     if x_access_token["auth"] == True:
                         query = Team.objects.all()
-                        output = list()
-                        for team in query:
-                            if(team.memberInTeam(x_access_token["id"])):
-                                output.append(team.get_teamInfo(2))
-                            else:
-                                output.append(team.get_teamInfo(showtype))
+                        output = append_team_member_name(x_access_token, query, showtype)
                         response = JsonResponse(output, status=200, safe= False)
     return response
 
@@ -247,44 +267,7 @@ def modifyTeamByID(request, teamid):
                 if 'auth' in x_access_token and 'token' in x_access_token:
                     if x_access_token["auth"] == True:
                         query = Team.objects.filter(id=teamid)
-                        output = list()
-                        for team in query:
-                            if(team.memberInTeam(x_access_token["id"])):
-                                thisTeamInfo = team.get_teamInfo(2)
-                                thisTeamInfo["members"] = list()
-                                for member in thisTeamInfo["membersID"]:
-                                    targetURL = 'https://api.eesast.com/v1/users/' + str(member)
-                                    head = {'Authorization': 'Bearer ' + x_access_token["token"]}
-                                    query_response = requests.get(targetURL, headers=head)
-                                    userInfo = is_json(query_response.content)
-                                    if type(userInfo) is dict:
-                                        if 'name' in userInfo:
-                                            thisTeamInfo["members"].append(userInfo["name"])
-                                            if int(member) == int(thisTeamInfo["captainID"]):
-                                                thisTeamInfo["captain"] = userInfo["name"]
-                                            else:
-                                                thisTeamInfo["captain"] = thisTeamInfo["captainID"]
-                                        else:
-                                            thisTeamInfo["members"].append(member)
-                                    else:
-                                        thisTeamInfo["members"].append(member)
-                                output.append(thisTeamInfo)
-                            else:
-                                thisTeamInfo = team.get_teamInfo(showtype)
-                                thisTeamInfo["members"] = list()
-                                for member in thisTeamInfo["membersID"]:
-                                    targetURL = 'https://api.eesast.com/v1/users/' + str(member)
-                                    head = {'Authorization': 'Bearer ' + x_access_token["token"]}
-                                    query_response = requests.get(targetURL, headers=head)
-                                    userInfo = is_json(query_response.content)
-                                    if type(userInfo) is dict:
-                                        if 'name' in userInfo:
-                                            thisTeamInfo["members"].append(userInfo["name"])
-                                        else:
-                                            thisTeamInfo["members"].append(member)
-                                    else:
-                                        thisTeamInfo["members"].append(member)
-                                output.append(thisTeamInfo)
+                        output = append_team_member_name(x_access_token, query, showtype)
                         response = JsonResponse(output, status=200, safe= False)
                         if(query.count() == 0):
                             response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
