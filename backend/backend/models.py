@@ -2,6 +2,7 @@ from django.db import models
 import json
 from django.core.exceptions import ValidationError
 import os
+import requests
 
 HISTORY_LENGTH = 20
 MEMBER_ALLOWED = 3
@@ -95,8 +96,8 @@ class Team(models.Model):
         output["teamid"] = self.pk
         output["teamname"] = self.teamname
         output["description"] = self.description
-        output["captain"] = self.captain
-        output["members"] = self.get_member()
+        output["captainID"] = self.captain
+        output["membersID"] = self.get_member()
         output["createAt"] = self.createAt
         output["score"] = self.score
         output["rank"] = self.rank

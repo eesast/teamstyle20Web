@@ -678,7 +678,8 @@ export default {
             .then(response => {
               console.log(response.status);
               if (response.ok) {
-                return response.json();
+                // return response.json();
+                return ;
               } else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
                 if(token!=null)
@@ -700,7 +701,7 @@ export default {
             },error=>{
               this.$message.error("加入队伍失败！")
             })
-            .then(res => {
+            .then(()=>{
               this.iscaptain=false
               this.inteam=true
               this.team_id=null
