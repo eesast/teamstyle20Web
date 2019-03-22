@@ -189,7 +189,7 @@ def append_team_member_name(x_access_token, query, showtype=0):
             if type(userInfo) is dict:
                 if 'name' in userInfo:
                     thisTeamInfo["members"].append(userInfo["name"])
-                    if int(member) == int(thisTeamInfo["captainID"]):
+                    if str(member) == str(thisTeamInfo["captainID"]):
                         thisTeamInfo["captain"] = userInfo["name"]
                     else:
                         thisTeamInfo["captain"] = thisTeamInfo["captainID"]
