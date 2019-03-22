@@ -463,6 +463,26 @@ def deleteTeamMembers(request, teamid, deleteid):
                                     response = HttpResponse("204 Operation Successful.", status=204)
         except Team.DoesNotExist:
             response = HttpResponse("404 Not found: Team does not exist.", status= 404)
+    elif request.method == 'GET':
+        try:
+            response = HttpResponse("401 Unauthorized", status=401)
+            targetTeam = Team.objects.filter(Q(members__contains=deleteid))
+            found = 0
+            if 'HTTP_X_ACCESS_TOKEN' in request.META:
+                x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+                if type(x_access_token) is dict:
+                    if 'auth' in x_access_token and 'token' in x_access_token:
+                        if x_access_token["auth"] == True:
+                            if (targetTeam.count() > 0):
+                                for eachteam in targetTeam:
+                                    if deleteid in eachteam.get_member():
+                                        found = 1
+                                        response = HttpResponse("Found 1 401 Unauthorized", status=401)
+                            if found:
+                                output = append_team_member_name(x_access_token, targetTeam, 1)
+                                response = JsonResponse(output, status=200, safe=False)
+        except Team.DoesNotExist:
+            response = HttpResponse("404 Not found: The user doesn\'t consist in any teams.", status=404)
     return response
 
 tz = get_current_timezone()
