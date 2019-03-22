@@ -268,6 +268,7 @@ export default {
         this.tableData = res;
         for (var i = 0; i < this.tableData.length; i++) {
           if (id == this.tableData[i].captainID) {
+            console.log(id);
             this.iscaptain = true;
             this.inteam = true;
             this.detailData["teamname"] = this.tableData[i]["teamname"];
@@ -363,7 +364,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100)
             });
             this.dialogFormVisible = false;
@@ -446,7 +448,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         })
@@ -524,7 +527,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         })
@@ -588,7 +592,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             });
         }
@@ -649,7 +654,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             });
         }
@@ -718,7 +724,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         }
