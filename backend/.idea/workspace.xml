@@ -87,7 +87,7 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="-1839">
               <caret line="12" column="21" lean-forward="true" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
             </state>
           </provider>
@@ -96,8 +96,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+            <state relative-caret-position="75">
+              <caret line="32" column="67" selection-start-line="32" selection-start-column="67" selection-end-line="32" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -105,8 +105,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
+            <state relative-caret-position="161">
+              <caret line="484" column="53" selection-start-line="484" selection-start-column="53" selection-end-line="484" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -146,7 +146,6 @@
       <find>json.loads</find>
       <find>delete_member</find>
       <find>Team</find>
-      <find>Q(</find>
       <find>dele</find>
       <find>modifyteambyid</find>
       <find>get_member</find>
@@ -154,7 +153,11 @@
       <find>Battle</find>
       <find>members</find>
       <find>captain</find>
+      <find>Q</find>
+      <find>delete</find>
+      <find>Q(</find>
       <find>append</find>
+      <find>append_tea</find>
       <find>append_team</find>
     </findStrings>
   </component>
@@ -275,9 +278,9 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5004558" side_tool="true" visible="true" weight="0.09730849" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5013674" side_tool="true" visible="true" weight="0.3126294" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4995442" weight="0.3126294" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49863264" visible="true" weight="0.3126294" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4995442" weight="0.09730849" />
@@ -624,13 +627,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/team20Web/settings.py" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/905c7193-6a97-4dc7-8192-9bdbfd230b80/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="29" selection-start-column="29" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="484">
@@ -645,24 +641,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/905c7193-6a97-4dc7-8192-9bdbfd230b80/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="29" selection-start-column="29" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
+        <state relative-caret-position="-1839">
           <caret line="12" column="21" lean-forward="true" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/team20Web/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        <state relative-caret-position="75">
+          <caret line="32" column="67" selection-start-line="32" selection-start-column="67" selection-end-line="32" selection-end-column="67" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
+        <state relative-caret-position="161">
+          <caret line="484" column="53" selection-start-line="484" selection-start-column="53" selection-end-line="484" selection-end-column="53" />
         </state>
       </provider>
     </entry>
