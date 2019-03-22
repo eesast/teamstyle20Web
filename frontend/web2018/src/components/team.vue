@@ -283,6 +283,7 @@ export default {
             for (var j = 0; j < this.tableData[i].membersID.length; j++) {
               if (id ==this.tableData[i].membersID[j]) {
                 this.inteam = true;
+                this.iscaptain=false;//
                 this.detailData["teamname"] = this.tableData[i]["teamname"];
                 this.detailData["captain"] = this.tableData[i]["captain"];
                  this.detailData["captainID"]= this.tableData[i]["captainID"];
