@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <navbar v-if="$route.name.name !== 'error'"></navbar>
+    <!-- <logotitle v-if="$route.name.name !== 'error' && $route.name.name !== 'index'"></logotitle> -->
     <router-view/>
     <foot v-if="$route.name.name !== 'error'"></foot>
   </div>
@@ -28,6 +29,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 
 
 import navbar from './components/nav'
+import logotitle from './components/logotitle'
 import foot from './components/foot'
 
 console.log(getCookie('token'));
@@ -39,14 +41,14 @@ else navbar.navflag=true;
 
 export default {
   name: 'App',
-  components:{navbar, foot},
+  components:{navbar, foot,logotitle},
    watch:{
   $route(to,from){
     console.log(to.path);
     if(to.path=="/")
     {
       // 跳转到首页
-      window.location="http://teamstyle.eesast.com";
+      // window.location="http://teamstyle.eesast.com";
        
     }
     console.log(getCookie('token'));
@@ -59,6 +61,7 @@ export default {
   },
   mounted:function()
   {
+    console.log(this.$route.name);
     console.log(getCookie('token'));
     if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
     {

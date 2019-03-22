@@ -5,7 +5,7 @@
             <h4>提交代码</h4>
             <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://teamstyle.eesast.com/api/"
             :show-file-list="false" 
             :limit="1"
             :on-success="uploadSuccess"

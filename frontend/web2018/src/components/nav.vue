@@ -5,7 +5,7 @@
     <el-menu v-show="showmenu"class="submenu" :mode="whatmode" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
       <el-menu-item index="#" id='img-submenu' >
-        <img class="eesast" src="../../static/img/digit_no_chinese.png"/>
+        <img class="eesast" src="../../static/img/digit.png"/>
       </el-menu-item>
       <el-menu-item index="/empty_index" >首页</el-menu-item>
       <el-menu-item v-show="navflag==true" index="/login" >登录/注册</el-menu-item>
@@ -131,17 +131,40 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 #nav
 {
-  height:60px;
+  height:80px;
 }
 #nav img{
-  height:6vh;
-  width:8vw;
+  /* height:40px;
+  width:40px; */
+  position: relative;
+  top:0px;
+  /* margin-right:50px; */
+   height:60px;
+    width:auto;
 }
-
+#img-submenu
+{
+  /* width:120px; */
+}
 .el-menu{
-    top:0px;
-    height:100%;
+    /* top:10px; */
+    height:80px;
 }
+#nav .el-menu-item{
+  height:80px;
+  padding-left:30px;
+  padding-right:30px; 
+  padding-top:10px;
+  
+  /* width:100px; */
+  /* padding: 10px; */
+}
+ #nav .el-menu-item.is-active {
+      background-color: rgb(64,158,255,0.2);
+      /* opacity: 0.3; */
+      color:black;
+      border-bottom:0px;
+  }
 .bu1{
   float: right;
 }
@@ -150,6 +173,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
   z-index:2000;
 }
   @media screen and (max-width:720px) {
+    
      #nav .el-menu {
         position: fixed;
         /* top: 8vh; */
@@ -163,6 +187,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
     #nav .el-menu-item {
       font-size:2vh;
       top:8vh;
+      padding-top:0px; 
       height:8vh;
       width:100%;
     }
@@ -173,6 +198,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
    height: 8vh;
     width: 30vw;
     left: -8vw;
+    top:-5px;
     position: relative;
   }
     #nav
