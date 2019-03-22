@@ -38,7 +38,7 @@
                         <th ><img src="../../static/img/star.svg" class="svg"></img>队伍名称</th>
                         <td>{{detailData.teamname}}</td><td>
                             <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;float:right;" @click="clearTeam()">解散队伍</el-button>
-                            <el-button v-else type="danger" size="small" style="position:relative;left:50%;" @click="exitTeam()">退出队伍</el-button>
+                            <el-button v-else type="danger" size="small" style="position:relative;left:50%;float:right;" @click="exitTeam()">退出队伍</el-button>
                         </td>
                     </tr>
                     <tr class='table_th2'>
@@ -609,7 +609,7 @@ export default {
                 message: '您正在退出队伍，请谨慎操作！'
             });
             if(this.team)
-            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.id
+            var FETCH_URL="/api/teams/"+this.team_id+"/members"
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
