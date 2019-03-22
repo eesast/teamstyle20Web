@@ -141,7 +141,7 @@ export default {
             }).then(res=>
                 {
                     if (res==undefined) return
-                    this.detailData=res
+                    this.detailData=res[0]
                 })
         }
 
