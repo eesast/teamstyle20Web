@@ -364,7 +364,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100)
             });
             this.dialogFormVisible = false;
@@ -447,7 +448,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         })
@@ -525,7 +527,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         })
@@ -589,7 +592,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             });
         }
@@ -650,7 +654,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             });
         }
@@ -719,7 +724,8 @@ export default {
               delCookie("username")
               delCookie("id")
               setTimeout(() => {
-                this.$router.push({path: '/Login'})
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/Login";
               }, 100);
             })
         }
