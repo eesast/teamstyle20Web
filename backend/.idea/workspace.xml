@@ -105,8 +105,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="194" column="59" selection-start-line="194" selection-start-column="59" selection-end-line="194" selection-end-column="59" />
+            <state relative-caret-position="205">
+              <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -152,9 +152,10 @@
       <find>get_member</find>
       <find>get_teamInfo</find>
       <find>Battle</find>
-      <find>captain</find>
       <find>members</find>
+      <find>captain</find>
       <find>append</find>
+      <find>append_team</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -660,8 +661,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="194" column="59" selection-start-line="194" selection-start-column="59" selection-end-line="194" selection-end-column="59" />
+        <state relative-caret-position="205">
+          <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
         </state>
       </provider>
     </entry>
