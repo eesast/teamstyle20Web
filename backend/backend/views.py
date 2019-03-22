@@ -192,7 +192,7 @@ def append_team_member_name(x_access_token, query, showtype=0):
                     if str(member) == str(thisTeamInfo["captainID"]):
                         thisTeamInfo["captain"] = userInfo["name"]
                     else:
-                        thisTeamInfo["captain"] = thisTeamInfo["captainID"]
+                        thisTeamInfo["captain"] = "CANTLOAD"
                 else:
                     thisTeamInfo["members"].append(member)
             else:
