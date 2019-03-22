@@ -276,11 +276,12 @@ export default {
             this.detailData["invitecode"] = this.tableData[i]["invitecode"];
             this.detailData["description"] = this.tableData[i]["description"];
             this.detailData["members"] = this.tableData[i]["members"];
+            this.detailData["membersID"] = this.tableData[i]["membersID"];
             this.team_id=this.tableData[i]["teamid"]
 
           } else {
-            for (var j = 0; j < this.tableData[i].members.length; j++) {
-              if (id ==this.tableData[i].members[j]) {
+            for (var j = 0; j < this.tableData[i].membersID.length; j++) {
+              if (id ==this.tableData[i].membersID[j]) {
                 this.inteam = true;
                 this.detailData["teamname"] = this.tableData[i]["teamname"];
                 this.detailData["captain"] = this.tableData[i]["captain"];
@@ -288,6 +289,7 @@ export default {
                 this.detailData["invitecode"] =this.tableData[i]["invitecode"];
                 this.detailData["description"] = this.tableData[i]["description"];
                 this.detailData["members"] = this.tableData[i]["members"];
+                this.detailData["membersID"] = this.tableData[i]["membersID"];
                 this.team_id=this.tableData[i]["teamid"]
               }
             }
