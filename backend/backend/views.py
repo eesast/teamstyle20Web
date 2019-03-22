@@ -214,8 +214,8 @@ def teams(request):
                         response = HttpResponse("422 Unprocessable Entity: Missing essential post data.", status=422)
                         if 'teamname' in newTeamInfo and 'description' in newTeamInfo:
                             if newTeamInfo['teamname'] and newTeamInfo['description']:
-                                newTeamInfo['captain'] = x_access_token['id']
-                                newTeamInfo['members'] = json.dumps([newTeamInfo['captain']])
+                                newTeamInfo['captain'] = int(x_access_token['id'])
+                                newTeamInfo['members'] = json.dumps([int(newTeamInfo['captain'])])
                                 newTeamInfo['invitecode'] = hashlib.sha512(((hashlib.sha512(newTeamInfo['teamname'].encode('utf-8')).hexdigest())+uuid.uuid4().hex).encode('utf-8')).hexdigest()[0:9]
                                 if(Team.objects.filter(teamname = newTeamInfo['teamname']).count()>0):
                                     response = HttpResponse("409 Conflict: Team name already exists.", status=409)
@@ -400,7 +400,7 @@ def modifyTeamMembersByID(request, teamid):
                                         error =1
                                         response = HttpResponse("409 Conflict: User is already in a team.", status=409)
                             if not error:
-                                targetTeam.add_member(x_access_token["id"])
+                                targetTeam.add_member(int(x_access_token["id"]))
                                 response = HttpResponse("201 Operation Successful", status=201)
         except Team.DoesNotExist:
             response = HttpResponse("404 Not Found: Team does not exist.", status=404)
@@ -475,12 +475,14 @@ def deleteTeamMembers(request, teamid, deleteid):
                         if x_access_token["auth"] == True:
                             if (targetTeam.count() > 0):
                                 for eachteam in targetTeam:
-                                    if deleteid in eachteam.get_member():
+                                    if int(deleteid) in eachteam.get_member():
                                         found = 1
                                         response = HttpResponse("Found 1 401 Unauthorized", status=401)
-                            if found:
-                                output = append_team_member_name(x_access_token, targetTeam, 1)
-                                response = JsonResponse(output, status=200, safe=False)
+            if found:
+                output = append_team_member_name(x_access_token, targetTeam, 1)
+                response = JsonResponse(output, status=200, safe=False)
+            else:
+                response = HttpResponse("404 Not found: The user doesn\'t consist in any teams.", status=404)
         except Team.DoesNotExist:
             response = HttpResponse("404 Not found: The user doesn\'t consist in any teams.", status=404)
     return response
