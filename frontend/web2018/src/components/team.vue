@@ -420,11 +420,11 @@ export default {
               {
                 this.$message.success("删除队员成功!");
                 setTimeout(() => {
-                  // window.location="https://teamstyle.eesast.com/team";
+                  window.location="https://teamstyle.eesast.com/team";
                   }, 100)
               }
               if (response.ok) {
-                return response.json();
+                return ;
               } else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
                 if(token!=null)
