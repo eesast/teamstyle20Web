@@ -55,7 +55,7 @@
       </el-form-item>
     </el-form>
     </el-tab-pane>
-    <el-tab-pane label="帮助" name="help" align="center">
+    <!-- <el-tab-pane label="帮助" name="help" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="80px">
         <el-form-item prop="name" label="账号">
          <el-input v-model="form.name"></el-input>
@@ -79,7 +79,8 @@
       <el-button type="primary" @click="find" style="position:relative;margin-left:-60px;">找回账号</el-button> 
       </el-form-item>
     </el-form>
-    </el-tab-pane>
+    </el-tab-pane> -->
+
     </el-tabs>
   </div>
 </template>

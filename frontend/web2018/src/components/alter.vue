@@ -53,7 +53,7 @@ export default {
 <style scoped>
 #login
 {
-  min-height: 70%;
+  min-height: 80%;
   margin-bottom:50px;
 }
  #login .el-form-item{

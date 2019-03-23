@@ -64,8 +64,8 @@
     
 <script>
 var token=getCookie("token")
-var current_username=getCookie("username")
-var current_id=getCookie("id")
+var username=getCookie("username")
+var id = parseInt(getCookie("id"));
 if(token==null)
 {
     this.$message.error("您尚未登录，请先登录，再查看个人中心！")
@@ -75,9 +75,10 @@ export default {
     name: 'personal',
     data() {
         return {
-            flag0: false,
-            intro:"jjafhadhfuka",
-            name: "test",
+            flag0: false,      //用于标记加入或创建，如果为队长，则为true--创建
+            //否则，为队员，false-加入
+            intro:"jjafhadhfuka",//队伍简介  description
+            name: "test",//账号名称
             password:"********",
             team: "one",
             phone: "12345678899",
