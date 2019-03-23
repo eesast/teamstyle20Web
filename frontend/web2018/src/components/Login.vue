@@ -253,6 +253,10 @@ export default {
         {
           this.$message.error("您尚未填写完整信息！");
         }
+        else if(response.status=='500')
+        {
+           this.$message.error("您填写的信息不符合规范!");
+        }
         else
         {
           this.$message.error("注册失败！");
@@ -261,6 +265,8 @@ export default {
       {
         // console.log(res)
         this.form.token=res['token']
+        this.form.id=res['id']
+        this.form.username=res['username']
         this.$message.success('注册成功，请登录开始您的挑战！');
         nav.navflag=false
         setCookie("id",this.form.id)
