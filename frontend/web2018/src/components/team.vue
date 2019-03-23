@@ -38,7 +38,7 @@
                         <th ><img src="../../static/img/star.svg" class="svg"></img>队伍名称</th>
                         <td>{{detailData.teamname}}</td><td>
                             <el-button v-if="iscaptain==true"type="danger" size="small" style="position:relative;float:right;" @click="clearTeam()">解散队伍</el-button>
-                            <el-button v-else type="danger" size="small" style="position:relative;left:50%;float:right;" @click="exitTeam()">退出队伍</el-button>
+                            <el-button v-else type="danger" size="small" style="position:relative;float:right;" @click="exitTeam()">退出队伍</el-button>
                         </td>
                     </tr>
                     <tr class='table_th2'>
@@ -343,6 +343,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } else if (response.status == "409"){
                 this.$message.error("您已加入本队伍或队伍名冲突！");
@@ -360,12 +363,12 @@ export default {
               this.iscaptain=true
               this.inteam=true
               this.$message.success("创建队伍成功!")
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100)
             });
             this.dialogFormVisible = false;
@@ -426,6 +429,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                    window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或成员不存在！");
@@ -438,18 +444,18 @@ export default {
               this.$message.error("踢出成员失败！")
             })
             .then(res => {
-              this.iscaptain=false
-              this.inteam=false
-              this.team_id=null
-              token=null
-              username=null
-              id=null
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // this.iscaptain=false
+              // this.inteam=false
+              // this.team_id=null
+              // token=null
+              // username=null
+              // id=null
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100);
             })
         })
@@ -502,6 +508,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } else if (response.status == "422"){
                 this.$message.error("缺少邀请码字段！");
@@ -517,18 +526,18 @@ export default {
                this.$message.error("加入队伍失败！")
             })
             .then(res => {
-              this.iscaptain=false
-              this.inteam=true
-              this.team_id=null
-              token=null
-              username=null
-              id=null
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // this.iscaptain=false
+              // this.inteam=true
+              // this.team_id=null
+              // token=null
+              // username=null
+              // id=null
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100);
             })
         })
@@ -569,6 +578,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } 
               else if (response.status == "404"){
@@ -585,15 +597,15 @@ export default {
               this.iscaptain=false
               this.inteam=false
               this.team_id=null
-              token=null
-              username=null
-              id=null
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // token=null
+              // username=null
+              // id=null
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100);
             });
         }
@@ -631,6 +643,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } else if (response.status == "404"){
                 this.$message.error("队伍或队伍成员不存在！");
@@ -647,15 +662,15 @@ export default {
               this.iscaptain=false
               this.inteam=false
               this.team_id=null
-              token=null
-              username=null
-              id=null
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // token=null
+              // username=null
+              // id=null
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100);
             });
         }
@@ -701,6 +716,9 @@ export default {
                     token=null
                     username=null
                     id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
                 }
               } else if (response.status == "400"){
                 this.$message.error("您不是队长或权限不足！");
@@ -713,19 +731,19 @@ export default {
               this.$message.error("加入队伍失败！")
             })
             .then(()=>{
-              this.iscaptain=false
-              this.inteam=true
-              this.team_id=null
-              token=null
-              username=null
-              id=null
-              this.isediting=true;
-              delCookie("token")
-              delCookie("username")
-              delCookie("id")
+              // this.iscaptain=false
+              // this.inteam=true
+              // this.team_id=null
+              // token=null
+              // username=null
+              // id=null
+              // this.isediting=true;
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/Login";
+                window.location="https://teamstyle.eesast.com/team";
               }, 100);
             })
         }
