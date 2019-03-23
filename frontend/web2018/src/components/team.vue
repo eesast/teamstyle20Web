@@ -167,7 +167,8 @@ if(token==null)
         }, 100);
 }
 var username = getCookie("username");
-var id = getCookie("id");
+var id = parseInt(getCookie("id"));
+console.log(id);
 
 export default {
   name: "team",
