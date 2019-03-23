@@ -201,7 +201,7 @@ export default {
         setCookie("auth",true)
         setCookie("username",this.form.username)
         setTimeout(() => {
-          this.$router.push({path: '/',query: {flag : false}})
+          this.$router.push({path: '/'})
         }, 100);
       })
     },
@@ -274,7 +274,7 @@ export default {
         setCookie("token",this.form.token)
         setCookie("auth",true)
         setTimeout(() => {
-          this.$router.push({path: '/',query: {flag : false} })
+          this.$router.push({path: '/' })
         }, 100);
       })
     },
