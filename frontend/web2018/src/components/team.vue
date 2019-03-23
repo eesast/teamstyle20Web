@@ -403,7 +403,70 @@ export default {
             type: "warning"
           })
           .then(() => {
-            
+              //some change *****
+
+              console.log(this.detailData.membersID[index])
+              var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.detailData.membersID[index];
+              
+            fetch(FETCH_URL, {
+            method: "DELETE",
+            headers: {
+            "Content-Type": "application/json",
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
+            }).then(response => {
+              console.log(response.status);
+              if(response.status=="204")
+              {
+                this.$message.success("删除队员成功!");
+                setTimeout(() => {
+                  window.location="https://teamstyle.eesast.com/team";
+                  }, 100)
+              }
+              if (response.ok) {
+                return response.json();
+              } else if (response.status == "401") {
+                this.$message.error("token失效或权限不足！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                    token=null
+                    username=null
+                    id=null
+                    setTimeout(() => {
+                    window.location="https://teamstyle.eesast.com/team";
+                    }, 100)
+                }
+              } else if (response.status == "404"){
+                this.$message.error("队伍或成员不存在！");
+              } else if (response.status == "400"){
+                this.$message.error("不能踢出自己！");
+              } else if (response.status == "500"){
+                this.$message.error("Internal proxy error!");
+              } 
+            },error=>{
+              this.$message.error("踢出成员失败！")
+            }).then(res => {
+              // this.iscaptain=false
+              // this.inteam=false
+              // this.team_id=null
+              // token=null
+              // username=null
+              // id=null
+              // delCookie("token")
+              // delCookie("username")
+              // delCookie("id")
+              setTimeout(() => {
+                // this.$router.push({path: '/Login'})
+                window.location="https://teamstyle.eesast.com/team";
+              }, 100);
+            })
+
+
+
+              //********8drop */
 
 
           }).catch(() => {
