@@ -21,10 +21,10 @@
                 <template slot-scope="scope">
                 <el-badge v-if="scope.$index==-1" value="new" class="announcement-item">
                         <!-- <div slot="reference" class="name-wrapper"> -->
-                        <div  @click="announcement_detail(scope.$index)">{{ scope.row.title }}</div>
+                        <div  @click="announcement_detail(scope.$index)" class="clicktitle">{{ scope.row.title }}</div>
                         <!-- </div> -->
                 </el-badge>    
-                 <div v-else  @click="announcement_detail(scope.$index)">{{ scope.row.title }}</div>
+                 <div v-else  @click="announcement_detail(scope.$index)" class="clicktitle">{{ scope.row.title }}</div>
                 </template>
             </el-table-column>
             
@@ -177,6 +177,10 @@ export default {
 
 </script>
 <style>
+.clicktitle
+{
+    cursor: pointer;
+}
 #announcement_contain
 {
     margin-top:20px;
