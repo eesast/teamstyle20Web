@@ -395,18 +395,14 @@ export default {
     dropOut(index) {
       if(this.iscaptain==true)
       {
-          this.$confirm(
-        '是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +
-          this.detailData.members[index] +
-          "</span>&nbsp;&nbsp;&nbsp;请出队伍?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          dangerouslyUseHTMLString: true,
-          type: "warning"
-        }
-      ).then(() => {
+          this.$confirm('是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +this.detailData.members[index] +"</span>&nbsp;&nbsp;&nbsp;请出队伍?","提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            dangerouslyUseHTMLString: true,
+            type: "warning"
+          })
+            .then(() => {
             var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.tableData.membersID[index]
             fetch(FETCH_URL, {
             method: "DELETE",
@@ -414,7 +410,7 @@ export default {
             "Content-Type": "application/json",
             "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
-          }).then(response => {
+            }).then(response => {
               console.log(response.status);
               if(response.status=="204")
               {
@@ -463,8 +459,9 @@ export default {
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
             })
-        })
-        .catch(() => {
+
+
+        }).catch(() => {
           this.$message({
             type: "info",
             message: "已取消删除"
