@@ -186,7 +186,7 @@ export default {
     margin-top:20px;
     /* margin-bottom:20px; */
     width:100%;
-    min-height:70%;
+    min-height:80%;
     /* height:70%; */
     margin-bottom: 50px;
 }
@@ -276,6 +276,10 @@ export default {
     #announcement_contain
     {
         height:80vh;
+    }
+    #announcement-breadcrumb
+    {
+        top:10%;
     }
 }
 </style>

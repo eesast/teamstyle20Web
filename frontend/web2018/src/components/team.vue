@@ -395,26 +395,26 @@ export default {
     dropOut(index) {
       if(this.iscaptain==true)
       {
-          this.$confirm(
-        '是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +
-          this.detailData.members[index] +
-          "</span>&nbsp;&nbsp;&nbsp;请出队伍?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          dangerouslyUseHTMLString: true,
-          type: "warning"
-        }
-      ).then(() => {
-            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.tableData.membersID[index]
+          this.$confirm('是否确定要将队友&nbsp;&nbsp;&nbsp;<span style="color:red">' +this.detailData.members[index] +"</span>&nbsp;&nbsp;&nbsp;请出队伍?","提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            dangerouslyUseHTMLString: true,
+            type: "warning"
+          })
+          .then(() => {
+              //some change *****
+
+              console.log(this.detailData.membersID[index])
+              var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.detailData.membersID[index];
+              
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
             "Content-Type": "application/json",
             "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
-          }).then(response => {
+            }).then(response => {
               console.log(response.status);
               if(response.status=="204")
               {
@@ -424,7 +424,7 @@ export default {
                   }, 100)
               }
               if (response.ok) {
-                return response.json();
+                return ;
               } else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
                 if(token!=null)
@@ -463,13 +463,18 @@ export default {
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
             })
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
+
+
+
+              //********8drop */
+
+
+          }).catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            })
           });
-        });
       }
       else 
       {
@@ -825,7 +830,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 #team_contain {
   width: 100%;
-  min-height: 70%;
+  min-height: 80%;
   margin-bottom: 50px;
 }
 #team_card {

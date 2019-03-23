@@ -20,7 +20,7 @@ export default {
 
 <style>
 #QR_contain{
-    height:80%;
+    height:85%;
     margin-bottom: 5px;
 }
 #QR_contain img{
