@@ -406,8 +406,7 @@ export default {
           dangerouslyUseHTMLString: true,
           type: "warning"
         }
-      )
-        .then(() => {
+      ).then(() => {
             var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.tableData.membersID[index]
             fetch(FETCH_URL, {
             method: "DELETE",
@@ -415,8 +414,7 @@ export default {
             "Content-Type": "application/json",
             "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
-          })
-            .then(response => {
+          }).then(response => {
               console.log(response.status);
               if(response.status=="204")
               {
@@ -450,8 +448,7 @@ export default {
               } 
             },error=>{
               this.$message.error("踢出成员失败！")
-            })
-            .then(res => {
+            }).then(res => {
               // this.iscaptain=false
               // this.inteam=false
               // this.team_id=null
