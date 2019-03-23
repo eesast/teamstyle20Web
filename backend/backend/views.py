@@ -436,7 +436,7 @@ def deleteTeamMembers(request, teamid, deleteid):
     if request.method == 'DELETE':
         try:
             targetTeam = Team.objects.get(pk=teamid)
-            if(not targetTeam.memberInTeam(deleteid)):
+            if(not targetTeam.memberInTeam(int(deleteid))):
                 response = HttpResponse("404 Not Found: Member does not exist.", status=404)
             elif (str(targetTeam.captain) == str(deleteid)):
                 response = HttpResponse("400 Bad Request: Captain cannot be deleted.", status=400)
@@ -459,7 +459,7 @@ def deleteTeamMembers(request, teamid, deleteid):
                                 if str(targetTeam.captain) == str(x_access_token["id"]):
                                         has_permission = 1
                                 if has_permission:
-                                    targetTeam.delete_member(x_access_token["id"])
+                                    targetTeam.delete_member(deleteid)
                                     response = HttpResponse("204 Operation Successful.", status=204)
         except Team.DoesNotExist:
             response = HttpResponse("404 Not found: Team does not exist.", status= 404)
