@@ -80,11 +80,11 @@ export default {
             intro:"jjafhadhfuka",//队伍简介  description
             name: "test",//账号名称
             password:"********",
-            team: "one",
-            phone: "12345678899",
-            mail: "123456789@163.com",
-            score: 100,
-            rank: 5,
+            team: "one",//teamname
+            phone: "12345678899",//phone
+            mail: "123456789@163.com",//mail
+            score: 100,//teamscore
+            rank: 5,//teamrank
             tableData:[],
             //     {
             //         teams: ["team1","team2","team3"],//对战队伍
@@ -161,14 +161,78 @@ export default {
             }
         },
     },
-    created:{
-        function(){
-            let cur1 = document.querySelectorAll("div[class='part2']");
-            let cur2 = document.querySelectorAll("div[class='part2']");
-            cur2.height=cur1.height;
+    created: function()
+    {
+        let cur1 = document.querySelectorAll("div[class='part2']");
+        let cur2 = document.querySelectorAll("div[class='part2']");
+        cur2.height=cur1.height;
 
-        }
+        this.name=username;
+        fetch('/api/teams/0/members/'+id,
+        {
+            method:'GET',
+            headers: {
+            "Content-Type": "application/json",
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+             }
+        }).then(response=>
+        {
+            if (response.status=="200") {
+             return response.json();
+             } 
+             else if (response.status == "401") {
+            this.$message.error("token失效，请重新登录！");
+             }
+             else
+             {
+                  this.$message.error("服务器暂时无法响应！");
+             }
+      },error=>
+      {
+        this.$message.error("加载失败，请稍后刷新页面重试！")
+      }).then(res=>
+      {
+          var ans=res[0];//取出object
+
+          if(ans.captainID==id)this.flag0=true;//是队长
+          else this.flag0=false;
+
+          this.intro=ans.description;
+          this.team=ans.teamname;
+          this.score=ans.score;
+          this.rank=ans.rank;
+
+          //剩下的重复访问user
+           fetch('/api/users/'+id,
+            {
+                method:'GET',
+                headers: {
+                "Content-Type": "application/json",
+                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                }
+            }).then(response=>
+            {
+                    if(response.status=="200")
+                    {
+                        return response.json();
+                    }
+                    else
+                    {
+                        this.$message.error("服务器暂时无法响应！");
+                    }
+            }).then(res=>{
+                this.mail=res.email;
+                this.phone=res.phone;
+            })
+
+            
+
+
+      })
+        
+        
     }
+    
 }
 
 function getCookie(cname){
