@@ -65,10 +65,10 @@
                         <td colspan="2">
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
-                                    <td v-if="detailData.membersID[index]!=detailData.captainID" align="middle">{{detailData.members[index]}}
+                                    <td  align="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
-                                    
+                                    <!-- v-if="detailData.membersID[index]!=detailData.captainID" -->
                                     <!-- <td v-if="iscaptain==true">踢出队伍</td> -->
                                 </tr>
                                 <!-- <tr class='table_th1'><td valign="middle">{{detailData.members[0]}}</td></tr>
