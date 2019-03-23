@@ -30,7 +30,7 @@ urlpatterns = [
     path('api/teams/', views.teams),
     path('api/teams/<int:teamid>', views.modifyTeamByID),
     path('api/teams/<int:teamid>/members', views.modifyTeamMembersByID),
-    path('api/teams/<int:teamid>/members/<int:deleteid>', views.deleteTeamMembers),
+    path('api/teams/<int:teamid>/members/<int:userid>', views.personalTeamActions),
     path('api/codes/teams/<int:teamid>', views.modifyTeamCodes),
     path('api/announce/list', views.listAnnouncementAPI),
     path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
