@@ -420,7 +420,7 @@ export default {
               {
                 this.$message.success("删除队员成功!");
                 setTimeout(() => {
-                  window.location="https://teamstyle.eesast.com/team";
+                  // window.location="https://teamstyle.eesast.com/team";
                   }, 100)
               }
               if (response.ok) {
