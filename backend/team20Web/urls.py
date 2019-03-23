@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from backend import views
-
+admin.site.site_header = "Teamstyle 20 Administration"
+admin.site.site_title = "Teamstyle 20 Admin Portal"
+admin.site.index_title = "Teamstyle 20 Administration Portal"
 urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/', views.index, name='index'),
