@@ -90,7 +90,7 @@
             label="#"
             min-width="5%">
                 <template slot-scope="scope">
-                    {{scope.$index+(currentPage-1)*pagesize}}
+                    {{scope.$index+(currentPage-1)*pagesize+1}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -504,6 +504,13 @@ export default {
             .then(response => {
               console.log(response);
               console.log(response.status);
+              if(response.status=="201")
+              {
+                this.$message.success("加入队伍成功!");
+                setTimeout(() => {
+                  window.location="https://teamstyle.eesast.com/team";
+                  }, 100)
+              }
               if (response.ok) {
                 return response.json();
               } else if (response.status == "401") {
