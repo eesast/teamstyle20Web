@@ -408,7 +408,7 @@ export default {
         }
       )
         .then(() => {
-            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+index
+            var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.tableData.membersID[index]
             fetch(FETCH_URL, {
             method: "DELETE",
             headers: {
