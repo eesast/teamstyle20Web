@@ -2,3 +2,4 @@
 backend/team20Web/settings.py
 
 backend/.idea
+**__pycache__/

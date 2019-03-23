@@ -2,41 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8eff179-cb35-4498-87e9-67044f86577c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0002_student.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0003_globalsettings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0004_announcement_file.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0005_auto_20181102_2029.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0006_auto_20181201_1641.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0007_auto_20181201_1652.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0008_auto_20181201_1703.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0009_auto_20181201_2024.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/migrations/0010_auto_20190223_1457.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gunicorn.conf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/team20Web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/team20Web/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/teams/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/team20Web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/team20Web/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -93,11 +59,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
+            <state relative-caret-position="3630">
               <caret line="176" column="16" selection-start-line="176" selection-start-column="4" selection-end-line="176" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manage.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/manage.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -182,8 +157,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="31" />
-    <option name="y" value="234" />
+    <option name="x" value="28" />
+    <option name="y" value="231" />
     <option name="width" value="1946" />
     <option name="height" value="1036" />
   </component>
@@ -264,13 +239,13 @@
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32712215" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.1549681" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" weight="0.16226071" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39832285" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -548,13 +523,6 @@
     <entry file="das://905c7193-6a97-4dc7-8192-9bdbfd230b80/schema/main/table/backend_team" />
     <entry file="file://$PROJECT_DIR$/gunicorn.conf.py" />
     <entry file="file://$PROJECT_DIR$/../../test/test.py" />
-    <entry file="file://$PROJECT_DIR$/manage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -635,8 +603,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
+        <state relative-caret-position="3630">
           <caret line="176" column="16" selection-start-line="176" selection-start-column="4" selection-end-line="176" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
