@@ -65,7 +65,7 @@
                         <td colspan="2">
                             <table id="members_table">
                                 <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
-                                    <td v-if="detailData.members[index]!=idx"align="middle">{{detailData.members[index]}}
+                                    <td v-if="detailData.membersID[index]!=detailData.captainID" align="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
                                     
@@ -417,6 +417,13 @@ export default {
           })
             .then(response => {
               console.log(response.status);
+              if(response.status=="204")
+              {
+                this.$message.success("删除队员成功!");
+                setTimeout(() => {
+                  window.location="https://teamstyle.eesast.com/team";
+                  }, 100)
+              }
               if (response.ok) {
                 return response.json();
               } else if (response.status == "401") {
@@ -551,20 +558,34 @@ export default {
     clearTeam() {
         if(this.iscaptain==true)
         {
-            this.$message({
-                type: 'info',
-                message: '您正在解散队伍，请谨慎操作！'
-            });
+           this.$confirm('是否确定解散该队伍',"提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            dangerouslyUseHTMLString: true,
+            type: "warning"
+          }).then(()=>{
+            // this.$message({
+            //     type: 'info',
+            //     message: '您正在解散队伍，请谨慎操作！'
+            // });
             var FETCH_URL="/api/teams/"+this.team_id
-            fetch(FETCH_URL, {
-            method: "DELETE",
-            headers: {
-            "Content-Type": "application/json",
-            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-            }
-          })
+              fetch(FETCH_URL, {
+              method: "DELETE",
+              headers: {
+              "Content-Type": "application/json",
+              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+              }
+            })
             .then(response => {
               console.log(response.status);
+              if(response.status=="204")
+              {
+                this.$message.success("删除队员成功!");
+                setTimeout(() => {
+                  window.location="https://teamstyle.eesast.com/team";
+                  }, 100)
+              }
               if (response.ok) {
                 return response.json()
               } 
@@ -608,18 +629,28 @@ export default {
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
             });
+        }).catch(()=>{})
         }
         else{
             this.$message.error("您不是队长，没有解散队伍的权限！")
         }
+        
     }, 
     exitTeam() {
         if(this.inteam==true&&this.iscaptain==false)
         {
-            this.$message({
-                type: 'info',
-                message: '您正在退出队伍，请谨慎操作！'
-            });
+           this.$confirm('是否确定要退出队伍',"提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              dangerouslyUseHTMLString: true,
+              type: "warning"
+            }
+          ).then(()=>{
+            // this.$message({
+            //     type: 'info',
+            //     message: '您正在退出队伍，请谨慎操作！'
+            // });
             // if(this.team)
             var FETCH_URL="/api/teams/"+this.team_id+"/members"
             fetch(FETCH_URL, {
@@ -631,6 +662,13 @@ export default {
           })
             .then(response => {
               console.log(response.status);
+              if(response.status=="204")
+              {
+                this.$message.success("删除队员成功!");
+                setTimeout(() => {
+                  window.location="https://teamstyle.eesast.com/team";
+                  }, 100)
+              }
               if (response.ok) {
                 return response.json();
               } else if (response.status == "401") {
@@ -673,6 +711,7 @@ export default {
                 // window.location="https://teamstyle.eesast.com/team";           
               }, 100);
             });
+          }).catch(()=>{})
         }
         else if(this.inteam==true&&iscaptain==true){
             this.$message.error("您是队长，不可退出自己的队伍，请选择解散队伍或删除队伍成员！")

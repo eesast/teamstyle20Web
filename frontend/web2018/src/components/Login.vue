@@ -255,7 +255,7 @@ export default {
         }
         else if(response.status=='500')
         {
-           this.$message.error("您填写的信息不符合规范!");
+           this.$message.error("您填写的信息不符合规范!可能的原因是手机号或学号填写不正确!");
         }
         else
         {
