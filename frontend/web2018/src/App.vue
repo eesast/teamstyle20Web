@@ -3,7 +3,7 @@
     <navbar v-if="$route.name.name !== 'error'"></navbar>
     <!-- <logotitle v-if="$route.name.name !== 'error' && $route.name.name !== 'index'"></logotitle> -->
     <router-view/>
-    <foot v-if="$route.name.name !== 'error'"></foot>
+    <foot v-if="$route.name.name !== 'error'&& $route.name.name !== 'index'"></foot>
   </div>
 </template>
 
