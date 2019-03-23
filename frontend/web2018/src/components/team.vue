@@ -594,9 +594,9 @@ export default {
               this.$message.error("删除队伍失败！")
             })
             .then(res => {
-              this.iscaptain=false
-              this.inteam=false
-              this.team_id=null
+              // this.iscaptain=false
+              // this.inteam=false
+              // this.team_id=null
               // token=null
               // username=null
               // id=null
@@ -620,7 +620,7 @@ export default {
                 type: 'info',
                 message: '您正在退出队伍，请谨慎操作！'
             });
-            if(this.team)
+            // if(this.team)
             var FETCH_URL="/api/teams/"+this.team_id+"/members"
             fetch(FETCH_URL, {
             method: "DELETE",
@@ -659,9 +659,9 @@ export default {
               this.$message.error("退出队伍失败！")
             })
             .then(res => {
-              this.iscaptain=false
-              this.inteam=false
-              this.team_id=null
+              // this.iscaptain=false
+              // this.inteam=false
+              // this.team_id=null
               // token=null
               // username=null
               // id=null
@@ -670,7 +670,7 @@ export default {
               // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                // window.location="https://teamstyle.eesast.com/team";
+                // window.location="https://teamstyle.eesast.com/team";           
               }, 100);
             });
         }
