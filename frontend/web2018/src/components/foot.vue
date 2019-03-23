@@ -1,7 +1,8 @@
 <template>
   
   <div class="footer">
-    <div class="col supporter">
+    © 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.
+    <!-- <div class="col supporter">
       <h4>赞助商</h4>
       <div class="supporter_container">
         <a href="">
@@ -27,7 +28,7 @@
         <img src="../../static/img/elementui.svg"/></a>
       <a href="https://github.com/">
         <img src="../../static/img/github.svg"/></a>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -124,11 +125,8 @@ export default {
 {
   margin-right:15%;
   font-family:'Balonb';
-  /* color:#303030da; */
   font-size:36px;
-  /* -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
-  -moz-animation: neon2 1.5s ease-in-out infinite alternate;
-  animation: neon2 1.5s ease-in-out infinite alternate; */
+
   background: -webkit-linear-gradient(45deg, #F56C6C,#E6A23C,yellow,#67C23A,#409EFF,purple,#909399,#ffffff);
   -moz-linear-gradient:(45deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
   -ms-linear-gradient:(45deg, #70f7fe, #fbd7c6, #fdefac, #bfb5dd, #bed5f5);
@@ -144,16 +142,27 @@ html,body
   width:100%;
   overflow: hidden;
 }
-
 .footer {
+  padding-top:15px; 
   width: 100%;
-  height: 15%;
-  min-height:120px;
-  display: flex;
-  flex-direction: row;
-  background: rgb(109, 191, 230,0.2);
+  /* height: 15%; */
+  height:35px;
+  /* min-height:120px; */
+  /* display: flex;
+  flex-direction: row; */
+  /* background: rgb(109, 191, 230,0.2); */
+  background: rgba(48, 48, 48, 0.3);
+  color:white;
   position: relative;
+  text-align: center;
+  vertical-align: middle;
   /* margin-top:5%; */
+}
+.footer a
+{
+  text-decoration: none;
+  color:white;
+  font-weight: bolder;
 }
 
 .col {
@@ -194,11 +203,11 @@ html,body
   text-decoration: none;
   color: black;
 }
-a:visited a:hover {
+a:visited,a:hover {
   text-decoration: none;
 }
 a:hover{
-  color: #303030da;
+  /* color: #303030da; */
 }
 .supporter p{
   margin-top: 0;
@@ -263,7 +272,8 @@ h4 {
  { 
    .footer
   {
-    height:6em;
+    height:2em;
+    top:9vh;
   }
    h4
   {

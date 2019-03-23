@@ -161,7 +161,7 @@ export default {
 #file_contain
 {
     width:100%;
-    min-height:77%;
+    min-height:90%;
 }
 #file_card
 {

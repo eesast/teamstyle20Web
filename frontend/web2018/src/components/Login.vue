@@ -312,7 +312,7 @@ function setCookie(cname,cvalue){
 <style scoped>
 #login
 {
-  min-height: 70%;
+  min-height: 80%;
   margin-bottom:50px;
 }
 
@@ -339,7 +339,7 @@ function setCookie(cname,cvalue){
   #login{
     top:9vh;
     position: relative;
-    min-height:77%;
+    min-height:70%;
     margin-bottom:18vh;
     /* width:100%; */
   }

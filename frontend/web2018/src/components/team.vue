@@ -830,7 +830,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 #team_contain {
   width: 100%;
-  min-height: 70%;
+  min-height: 80%;
   margin-bottom: 50px;
 }
 #team_card {
