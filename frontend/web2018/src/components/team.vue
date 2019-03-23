@@ -670,7 +670,7 @@ export default {
               // delCookie("id")
               setTimeout(() => {
                 // this.$router.push({path: '/Login'})
-                window.location="https://teamstyle.eesast.com/team";
+                // window.location="https://teamstyle.eesast.com/team";
               }, 100);
             });
         }
