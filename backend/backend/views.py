@@ -97,6 +97,7 @@ def users(request):
         if request.method == 'POST':
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
+            #return JsonResponse({'result':str(request.body)}) #test where is class
             add_response = requests.post(add_URL, json=user_profile)
             assert add_response.status_code == 201, add_response.status_code
             auth_URL = 'https://api.eesast.com/v1/users/login'
@@ -190,9 +191,9 @@ def append_team_member_name(user_info, query, showtype=0):
                 query_result = is_json(query_response.content)
                 assert type(query_result) is dict, 500
                 assert 'name' in query_result, 500
-                thisTeamInfo["members"].append(query_result["name"])
+                thisTeamInfo["members"].append(query_result["username"])
                 if str(member) == str(thisTeamInfo["captainID"]):
-                    thisTeamInfo["captain"] = query_result["name"]
+                    thisTeamInfo["captain"] = query_result["username"]
         except AssertionError:
             thisTeamInfo["captain"] = thisTeamInfo["captainID"]
             thisTeamInfo["members"] = thisTeamInfo["membersID"]
