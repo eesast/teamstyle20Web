@@ -8,9 +8,9 @@
 
 ### · 全域设定读取(globalsettings) 
 
-##### 注:凡涉及到因token失效而返回401的，建议同时返回JSON文本:
+##### 注:凡涉及到因token失效而返回401的，同时返回文本:
 ```
-401:Invalid or expired token.
+401 Unauthorized: Token invalid or expired.
 ```
 
 
@@ -70,6 +70,7 @@
 
 * /api/users    GET
     * header
+    
     | key | value |
     |-------|------|
     | x-access-token |用户token|
@@ -115,6 +116,7 @@
   创建新用户
 
     * header
+    
   | key | value |
   |-------|------|
   | content-type |application/json|
@@ -146,6 +148,7 @@
 
 * /api/users/:id    GET
     * header
+    
     | key | value |
     |-------|------|
     | x-access-token |用户token|
@@ -267,6 +270,7 @@
     获取队伍信息，按照id排列
 
     * header 
+    
     | key | value |
     |-------|------|
     | x-access-token |用户token|
@@ -322,6 +326,7 @@
     返回特定id队伍的所有队员(包括队长)
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -375,10 +380,12 @@
     加入相应队伍
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
     * query
+    
         | key | value |
         |-------|------|
         | invitecode |8位字符串|
@@ -410,6 +417,7 @@
     修改相应id的队伍的信息，仅队长或管理员可以操作
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -446,6 +454,7 @@
     删除相应id的队伍，仅队长可以操作
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -467,6 +476,7 @@
     将自己从相应id的队伍中退出
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -535,6 +545,7 @@
 
 * /api/codes/teams/:id    POST
     * header
+    
     | key | value |
     |-------|------|
     | x-access-token |用户token|
