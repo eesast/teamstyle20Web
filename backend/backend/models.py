@@ -1,4 +1,5 @@
 # yyr: 在Team一个IntegerField（valid）和id，还有Battle的status以及新增id_map和initiator_name
+# yyr: 更改Team的输出，更改score默认值为1000
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
@@ -18,14 +19,15 @@ class Team(models.Model):
     member_num = models.IntegerField(default = 1, null=True, verbose_name='Members count')
     invitecode = models.CharField(max_length=20, null=True, verbose_name='Invitation code')
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
-    score = models.IntegerField(default = -1)
+    score = models.IntegerField(default = 1000)
     rank = models.IntegerField(default = 999999)
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True, blank = True)
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
-        return self.teamname
+        #return teamname
+        return 'id:%d, teamname:%s, score:%d, valid:%d, history_active:%s, history_passive:%s'%(self.id,self.teamname,self.score,self.valid,self.history_active,self.history_passive)
 
     def get_member_limit(self):
         return MEMBER_ALLOWED
