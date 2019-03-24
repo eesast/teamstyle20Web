@@ -484,9 +484,10 @@ def modifyTeamCodes(request, teamid):
                     code_path[code_type] = fs.path(f)
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
-                response = HttpResponse("204 OK. Current Time: " + str(now), status=204)
+                debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) +"\nSubmission End: " + str(submission["end"])
+                response = HttpResponse("204 OK.\n" + debugInfo, status=204)
             else:
-                response = HttpResponse("403 Forbidden: System closed for upload. Current Time: " + str(now), status=403)
+                response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:
             assert False, 405
     except AssertionError as error:
