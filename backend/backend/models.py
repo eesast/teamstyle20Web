@@ -2,6 +2,7 @@
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
+import django.utils.timezone as tzd
 import os
 import requests
 
@@ -149,8 +150,8 @@ class Announcement(models.Model):
         output = dict()
         output["id"] = self.pk
         output["title"] = self.title
-        output["pub_date"] = self.pub_date
-        output["last_update_date"] = self.last_update_date
+        output["pub_date"] = tzd.localtime(self.pub_date)
+        output["last_update_date"] = tzd.localtime(self.last_update_date)
         if showtype > 0:
             output["content"] = self.content
         return output
