@@ -86,7 +86,7 @@ function datetodate(onedate)
 {
     var T=onedate.indexOf('T');
     var dot=onedate.indexOf('.');
-    var newdate=onedate.substring(0,T-1)+' '+onedate.substring(T+1,dot-1);
+    var newdate=onedate.substring(0,T)+' '+onedate.substring(T+1,dot);
     return newdate;  
 }
 
