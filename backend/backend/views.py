@@ -464,9 +464,7 @@ def modifyTeamCodes(request, teamid):
         user_info = get_user_info(x_access_token["token"])
         target_team = Team.objects.get(pk=teamid)
         assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
-        if request.method == 'GET':
-            pass
-        elif request.method == 'POST':
+        if request.method == 'POST':
             if systemOpen():
                 upload_file = dict()
                 if 'code0' in request.FILES:
@@ -508,6 +506,38 @@ def modifyTeamCodes(request, teamid):
     # else:
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
+
+
+@csrf_exempt
+def downloadTeamCodes(request, teamid, codetype):
+    try:
+        assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
+        x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        assert x_access_token["token"], 401
+        user_info = get_user_info(x_access_token["token"])
+        target_team = Team.objects.get(pk=teamid)
+        assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
+        if request.method == 'GET':
+            pass
+        else:
+            assert False, 405
+    except AssertionError as error:
+        err_status = int(error.__str__())
+        msg = get_error_msg(err_status)
+        err_status = 401 if err_status == 4011 else err_status
+        response = HttpResponse(msg, status=err_status)
+    except jwt.PyJWTError:
+        msg = get_error_msg(4011)
+        response = HttpResponse(msg, status=401)
+    except json.JSONDecodeError:
+        msg = get_error_msg(4221)
+        response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
+    return response
+
 
 
 

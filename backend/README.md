@@ -545,6 +545,8 @@
     formdata(input type="file" name = "code1")
     formdata(input type="file" name = "code2")
     formdata(input type="file" name = "code3")
+    //注意：重新上传将使原档案被覆盖
+    //注意：可以一次不上传所有代码，譬如requests中如果没有FILE["code2"]，就不会改到FILE["code2"]
     ```
     * response
     如果队员（队长）是在对应id的队伍中，并且上传成功，返回状态码204
@@ -563,7 +565,7 @@
     403 Forbidden: System is closed for upload.
     ```
 
-* /api/codes/teams/:id    GET
+* /api/codes/teams/:id/:type    GET
     返回相应id队伍的文件路径（下载地址）
 
     * header
@@ -571,11 +573,12 @@
     |-------|------|
     | x-access-token |用户token|
     * response
-    若队员（队长）在相应id队伍中，并且请求成功，返回状态码200，和对应代码下载地址(JSON格式):
+    若队员（队长）在相应id队伍中，并且请求成功，返回状态码200，和对应代码:
     ```
-    {
-        url:"https://xxx",
-    }
+    
+    
+    - application/octet-stream
+    - filename：(:id)_(:type).cpp
     ```
 
 

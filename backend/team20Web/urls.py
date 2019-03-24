@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/teams/<int:teamid>/members', views.modifyTeamMembersByID),
     path('api/teams/<int:teamid>/members/<int:userid>', views.personalTeamActions),
     path('api/codes/teams/<int:teamid>', views.modifyTeamCodes),
+    path('api/codes/teams/<int:teamid>/<int:codetype>', views.downloadTeamCodes),
     path('api/announce/list', views.listAnnouncementAPI),
     path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
     path('api/file/list', views.listFileAPI),
