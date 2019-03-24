@@ -584,8 +584,9 @@
 * /api/announce/list  GET
     列出所有公告的标题、发布时间和最后更新时间
 
-    * response
-    请求成功，返回状态码200和JSON文本(数组):
+    * ##### response
+
+      请求成功，返回状态码200和JSON文本(数组):
     ```
     [
         {
@@ -646,7 +647,7 @@
   ]
   ```
 
-- /api/announce/view/:id  GET
+- /api/file/download/:id  GET
   获取对应id的文件(以文件下载型式传送)
 
   - response
