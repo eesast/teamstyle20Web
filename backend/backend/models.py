@@ -18,7 +18,7 @@ class Team(models.Model):
     member_num = models.IntegerField(default = 1, null=True, verbose_name='Members count')
     invitecode = models.CharField(max_length=20, null=True, verbose_name='Invitation code')
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
-    score = models.IntegerField(default = -1)
+    score = models.IntegerField(default = 1000)
     rank = models.IntegerField(default = 999999)
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True, blank = True)
