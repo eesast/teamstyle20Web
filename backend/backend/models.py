@@ -7,7 +7,7 @@ import os
 import requests
 
 HISTORY_LENGTH = 20
-MEMBER_ALLOWED = 3
+MEMBER_ALLOWED = 4
 
 class Team(models.Model):
     id = models.AutoField(primary_key= True, verbose_name="Team ID")
