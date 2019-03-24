@@ -21,6 +21,7 @@ class Team(models.Model):
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
     score = models.IntegerField(default = 1000)
     rank = models.IntegerField(default = 999999)
+    valid = models.IntegerField(null = True, blank = True)
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True, blank = True)
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")

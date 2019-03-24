@@ -32,7 +32,7 @@ class FileAdmin(admin.ModelAdmin):
 class BattleAdmin(admin.ModelAdmin):
     list_display = ('id', 'team_engaged', 'request_time', 'status', 'robot_num','result')
     list_display_links = ('id', 'team_engaged', 'request_time')
-    readonly_fields = ('id','team_engaged', 'start_time','request_time','robot_num', 'status', 'result')
+    readonly_fields = ('id','team_engaged', 'start_time','request_time','robot_num', 'status', 'result', 'id_map', 'initiator_name')
     def has_delete_permission(self, request, obj=None):
         return False
     def save_model(self, request, obj, form, change):
