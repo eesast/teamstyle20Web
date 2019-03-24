@@ -475,7 +475,9 @@ def modifyTeamCodes(request, teamid):
                 for code_type, code_file in upload_file.items():
                     filename = str(teamid) + '_' +str(code_type) +'.cpp'
                     f = fs.save(filename, code_file)
-                    response = HttpResponse(f, status=200)
+                    furl = fs.path(f)
+                    target_team.battle_code.name = furl
+                    response = HttpResponse("200 OK.", status=200)
             else:
                 response = HttpResponse("Forbidden", status=403)
         else:
