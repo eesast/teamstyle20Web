@@ -248,6 +248,7 @@ export default {
 #detail_table tr th
 {
     padding:12px;
+    width:32%;
 }
 #detail_table tr th i
 {
@@ -257,6 +258,7 @@ export default {
 {
     position: relative;
     padding:12px;
+    width:68%;
     color:black;
     /* left:200px; */
 }
@@ -291,11 +293,16 @@ export default {
     }
     #announcement_contain
     {
-        height:80vh;
+        min-height:80vh;
     }
     #announcement-breadcrumb
     {
-        top:10%;
+        top:8vh;
+    }
+    #back_btn
+    {
+        position: relative;
+        top:60px;
     }
 }
 </style>
