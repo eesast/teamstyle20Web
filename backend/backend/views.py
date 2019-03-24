@@ -46,6 +46,7 @@ def get_error_msg(err_status):
     msg_list = dict()
     msg_list[405] = "405 Method Not Allowed."
     msg_list[404] = "404 Not Found: User does not exist."
+    msg_list[4043] = "404 Not Found: File not found."
     msg_list[422] = "422 Unprocessible Entity: Missing essential POST data."
     msg_list[4221] = "422 Unprocessible Entity: JSON Decode Error."
     msg_list[4012] = "{\"auth\":false, \"token\":\"\"}"
@@ -518,13 +519,20 @@ def downloadTeamCodes(request, teamid, codetype):
         target_team = Team.objects.get(pk=teamid)
         assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
         if request.method == 'GET':
-            pass
+            target_team_codes = json.loads(target_team.codes)
+            assert type(target_team_codes) is dict, 500
+            assert str(codetype) in target_team_codes, 4043
+            response = FileResponse(open(target_team_codes[str(codetype)], 'rb'), status=200)
+            response['Content-Type'] = 'application/octet-stream'
+            filename = str(teamid) + '_' + str(codetype) + '.cpp'
+            response['Content-Disposition'] = 'attachment;filename = ' + urlquote(filename)
         else:
             assert False, 405
     except AssertionError as error:
         err_status = int(error.__str__())
         msg = get_error_msg(err_status)
         err_status = 401 if err_status == 4011 else err_status
+        err_status = 404 if err_status == 4043 else err_status
         response = HttpResponse(msg, status=err_status)
     except jwt.PyJWTError:
         msg = get_error_msg(4011)
