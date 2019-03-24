@@ -464,6 +464,7 @@ def modifyTeamCodes(request, teamid):
             else:
                 submission = False
             now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone())
+            debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) + "\nSubmission End: " + str(submission["end"])
             if systemOpen(submission,now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
@@ -484,7 +485,6 @@ def modifyTeamCodes(request, teamid):
                     code_path[code_type] = fs.path(f)
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
-                debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) +"\nSubmission End: " + str(submission["end"])
                 response = HttpResponse("204 OK.\n" + debugInfo, status=204)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
