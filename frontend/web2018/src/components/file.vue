@@ -85,7 +85,7 @@ export default {
             fetch(FETCH_URL, {
             method: "GET",
             headers: {
-              "content-type": "application/json"
+              "content-type": "application/octet-stream"
             }
             })
             .then(response => {
