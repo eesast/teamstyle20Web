@@ -471,13 +471,23 @@ def modifyTeamCodes(request, teamid):
                 upload_file = dict()
                 if 'code0' in request.FILES:
                     upload_file[0] = request.FILES['code0']
+                if 'code1' in request.FILES:
+                    upload_file[1] = request.FILES['code1']
+                if 'code2' in request.FILES:
+                    upload_file[2] = request.FILES['code2']
+                if 'code3' in request.FILES:
+                    upload_file[3] = request.FILES['code3']
+                code_path = dict()
                 fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
                 for code_type, code_file in upload_file.items():
                     filename = str(teamid) + '_' +str(code_type) +'.cpp'
+                    if fs.exists(filename):
+                        fs.delete(filename)
                     f = fs.save(filename, code_file)
-                    furl = fs.path(f)
-                    target_team.battle_code.name = furl
-                    response = HttpResponse("200 OK.", status=200)
+                    code_path[code_type] = fs.path(f)
+                target_team.codes = json.dumps(code_path)
+                target_team.save()
+                response = HttpResponse("204 OK.", status=204)
             else:
                 response = HttpResponse("Forbidden", status=403)
         else:

@@ -531,7 +531,7 @@
 | route | http verb | content |
 | ----- |----------|---------|
 | /api/codes/teams/:id | POST | 对应id的队伍上传代码(会覆盖之前的) |
-| /api/codes/teams/:id | GET |对应id的队伍获取本队代码|
+| /api/codes/teams/:id/:type | GET |对应id的队伍获取本队代码|
 
 * /api/codes/teams/:id    POST
     * header
@@ -541,7 +541,10 @@
     | content-type | multipart/form-data |
     * body 
     ```
-    formdata(input type="file"获取到的本地文件)
+    formdata(input type="file" name = "code0")
+    formdata(input type="file" name = "code1")
+    formdata(input type="file" name = "code2")
+    formdata(input type="file" name = "code3")
     ```
     * response
     如果队员（队长）是在对应id的队伍中，并且上传成功，返回状态码204
@@ -552,8 +555,9 @@
     401 Unauthorized: You are not in this team.
     ```
 
-    如果不在系统开放时间内，返回状态码403
-    返回文本：
+    ​	如果不在系统开放时间内，返回状态码403
+
+    ​	返回文本：
 
     ```
     403 Forbidden: System is closed for upload.
