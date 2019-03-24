@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from backend import views
-
+admin.site.site_header = "Teamstyle 20 Administration"
+admin.site.site_title = "Teamstyle 20 Admin Portal"
+admin.site.index_title = "Teamstyle 20 Administration Portal"
 urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/', views.index, name='index'),
@@ -30,8 +32,9 @@ urlpatterns = [
     path('api/teams/', views.teams),
     path('api/teams/<int:teamid>', views.modifyTeamByID),
     path('api/teams/<int:teamid>/members', views.modifyTeamMembersByID),
-    path('api/teams/<int:teamid>/members/<int:deleteid>', views.deleteTeamMembers),
+    path('api/teams/<int:teamid>/members/<int:userid>', views.personalTeamActions),
     path('api/codes/teams/<int:teamid>', views.modifyTeamCodes),
+    path('api/codes/teams/<int:teamid>/<int:codetype>', views.downloadTeamCodes),
     path('api/announce/list', views.listAnnouncementAPI),
     path('api/announce/view/<int:post_id>', views.viewAnnouncementAPI),
     path('api/file/list', views.listFileAPI),

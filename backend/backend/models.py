@@ -2,6 +2,7 @@
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
+import django.utils.timezone as tzd
 import os
 import requests
 
@@ -19,7 +20,6 @@ class Team(models.Model):
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
     score = models.IntegerField(default = -1)
     rank = models.IntegerField(default = 999999)
-    battle_code = models.FileField(null = True, blank = True, upload_to='Codes')
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True, blank = True)
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
@@ -150,8 +150,8 @@ class Announcement(models.Model):
         output = dict()
         output["id"] = self.pk
         output["title"] = self.title
-        output["pub_date"] = self.pub_date
-        output["last_update_date"] = self.last_update_date
+        output["pub_date"] = tzd.localtime(self.pub_date)
+        output["last_update_date"] = tzd.localtime(self.last_update_date)
         if showtype > 0:
             output["content"] = self.content
         return output
@@ -194,8 +194,8 @@ class GlobalSetting(models.Model):
         output = dict()
         output["year"] = self.year
         output["game_name"] = self.game_name
-        output["submission_start"] = self.submission_start
-        output["submission_end"] = self.submission_end
+        output["submission_start"] = tzd.localtime(self.submission_start)
+        output["submission_end"] = tzd.localtime(self.submission_end)
         return output
 
     def save(self, *args, **kwargs):

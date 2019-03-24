@@ -1,6 +1,6 @@
 
 backend/team20Web/settings.py
-
+migrations/
 backend/.idea/
 __pycache__/
 node_modules/
