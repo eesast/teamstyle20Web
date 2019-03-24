@@ -566,7 +566,7 @@
     ```
 
 * /api/codes/teams/:id/:type    GET
-    返回相应id队伍的文件路径（下载地址）
+    返回相应id队伍的文件
 
     * header
     | key | value |
