@@ -8,7 +8,7 @@
             style="width: 100%;font-size:2.2vh;min-height:60vh;">
             <el-table-column min-width="1%"></el-table-column>
             <el-table-column
-            prop="title"
+            prop="filename"
             label="文件名"
             align="left"
             id="tl1"
@@ -21,9 +21,7 @@
             id="tl2"
             label="下载">
                 <template slot-scope="scope">
-                <!-- <a :href="scope.row.download" :download="scope.row.filename"> -->
-                    <el-button size="small" @click="downloadonefile(scope.row.id,scope.row.)">Download</el-button>
-                <!-- </a> -->
+                <a :href="scope.row.download" :download="scope.row.filename"><el-button size="small">Download</el-button></a>
                 </template>
             </el-table-column>
             <!-- <el-table-column
@@ -37,9 +35,9 @@
             </template>
             </el-table-column> -->
             </el-table>
-             <!-- <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
+             <el-tooltip class="item" effect="dark" content="下载所有文件并打包成zip" placement="right-start">
                         <el-button  icon="el-icon-download" size="mini" type="primary" @click="handleBatchDownload()" style="margin-top:15px;">Download All</el-button>
-            </el-tooltip> -->
+            </el-tooltip>
         </el-card>
     </el-col>
     </div>
@@ -68,40 +66,17 @@ export default {
     name: "file",
     data(){
         return {
-            tableData:[],
-            // [{
-            //     filename:'ts20-0.1alpha.zip',
-            //     download:'../../static/files/ts20-0.1alpha.zip'
-            // },{
-            //     filename:'README.MD',
-            //     download:'../../static/files/README.MD'
-            // }]
+            tableData:
+            [{
+                filename:'ts20-0.1alpha.zip',
+                download:'../../static/files/ts20-0.1alpha.zip'
+            },{
+                filename:'README.MD',
+                download:'../../static/files/README.MD'
+            }]
         }
     },
     methods: {
-        downloadonefile(idx)//下载idx的文件
-        {
-             var FETCH_URL="/api/file/download/"+idx
-            fetch(FETCH_URL, {
-            method: "GET",
-            headers: {
-              "content-type": "application/octet-stream",
-              "Content-Disposition":"attachment",
-            }
-            })
-            .then(response => {
-                if(response.ok)
-                {
-                    // return response.json();
-                    this.$message.success('文件下载成功!');
-                }
-                else 
-                {
-                    this.$message.error('文件下载失败!');
-                }
-            })
-
-        },
         handleBatchDownload() {
             //const data = ['/static/docker.svg', '/static/vue.png'] // 需要下载打包的路径, 可以是本地相对路径, 也可以是跨域的全路径
             var data=new Array();
@@ -148,36 +123,35 @@ export default {
               }
             })
             .then(res => {
-            //   var file_from_backend=res
-              this.tableData=res;
-            //   for (var i in file_from_backend)
-            //   {
-            //     //   var single_file=new Object()
-            //     //   single_file["filename"]=file_from_backend[i]["title"]
-            //     //   single_file["id"]=file_from_backend[i]["id"]
-            //     //   single_file["last_update_date"]=file_from_backend[i]["last_update_date"]
-            //     //   var FETCH_URL1="/api/file/download/"+single_file["id"]
-            //     //   fetch(FETCH_URL1, {
-            //     //     method: "GET",
-            //     //     headers: {
-            //     //         "content-type": "application/json"
-            //     //     },
-            //     //   })
-            //     //   .then(response => {
-            //     //     console.log(response.status);
-            //     //     if (response.ok) {
-            //     //         return response.json();
-            //     //     } else {
-            //     //         this.$message.error("获取文件"+ single_file["filename"]+"失败")
-            //     //     }
-            //     //   })
-            //     //   .then(res => {
-            //     //     pass
-            //     // });
-            //     // var file_display= new Object()
-            //     // file_display["filename"]=single_file["filename"]
-            //     //tableData.push(file_display)
-            //   }
+              var file_from_backend=res
+              for (var i in file_from_backend)
+              {
+                  var single_file=new Object()
+                  single_file["filename"]=file_from_backend[i]["title"]
+                  single_file["id"]=file_from_backend[i]["id"]
+                  single_file["last_update_date"]=file_from_backend[i]["last_update_date"]
+                  var FETCH_URL1="/api/file/download/"+single_file["id"]
+                  fetch(FETCH_URL1, {
+                    method: "GET",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                  })
+                  .then(response => {
+                    console.log(response.status);
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        this.$message.error("获取文件"+ single_file["filename"]+"失败")
+                    }
+                  })
+                  .then(res => {
+                    pass
+                });
+                var file_display= new Object()
+                file_display["filename"]=single_file["filename"]
+                //tableData.push(file_display)
+              }
             });
         }
     }
