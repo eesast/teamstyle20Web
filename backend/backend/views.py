@@ -542,6 +542,8 @@ def downloadTeamCodes(request, teamid, codetype):
         response = HttpResponse(msg, status=422)
     except Team.DoesNotExist:
         response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    except FileNotFoundError:
+        response = HttpResponse("404 Not Found: File not found.", status=404)
     # else:
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
