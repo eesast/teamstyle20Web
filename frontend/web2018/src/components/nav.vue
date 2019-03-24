@@ -4,7 +4,7 @@
     
     <el-menu v-show="showmenu"class="submenu" :mode="whatmode" v-bind:router="true" :default-active="onRoutes" @select="handleSelect" router>
 
-      <el-menu-item index="#" id='img-submenu' style="background-color: white;">
+      <el-menu-item index="#" id='img-submenu' class="cx">
         <img class="eesast" src="../../static/img/digit.png"/>
       </el-menu-item>
       <el-menu-item index="/empty_index" >首页</el-menu-item>
@@ -16,7 +16,7 @@
       <el-menu-item v-show="navflag!=true" index="/announcement">公告</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/QR">二维码</el-menu-item>
       <el-menu-item v-show="navflag!=true" class="bu1" index="" style="float:right;"> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
-      <el-menu-item index="#" v-show="navflag!=true" class="bu1" style="float:right;background-color: white;"> {{name}} </el-menu-item>
+      <el-menu-item index="#" v-show="navflag!=true" class="cx bu1" style="float:right;;"> {{name}} </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -176,8 +176,15 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 {
   z-index:2000;
 }
+.cx
+{
+  background:white; 
+}
   @media screen and (max-width:720px) {
-    
+    .cx
+    {
+      background: #EBEEF5;
+    }
      #nav .el-menu {
         position: fixed;
         /* top: 8vh; */
