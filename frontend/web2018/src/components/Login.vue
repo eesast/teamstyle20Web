@@ -233,7 +233,7 @@ export default {
                 "phone":this.form.phone,
                 "email":this.form.email,
                 "name":this.form.realname,
-                "classx":this.form.class,
+                "class":this.form.classx,
                 "id":this.form.studentid,
                 "department":this.form.department
             }
