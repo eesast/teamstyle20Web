@@ -97,6 +97,7 @@ def users(request):
         if request.method == 'POST':
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
+            #return JsonResponse({'result':str(request.body)}) #test where is class
             add_response = requests.post(add_URL, json=user_profile)
             assert add_response.status_code == 201, add_response.status_code
             auth_URL = 'https://api.eesast.com/v1/users/login'

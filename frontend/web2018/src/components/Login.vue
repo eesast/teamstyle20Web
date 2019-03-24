@@ -233,7 +233,7 @@ export default {
                 "phone":this.form.phone,
                 "email":this.form.email,
                 "name":this.form.realname,
-                "classx":this.form.class,
+                "class":this.form.classx,
                 "id":this.form.studentid,
                 "department":this.form.department
             }
@@ -262,6 +262,10 @@ export default {
         {
           this.$message.error("注册失败！");
         }
+        setTimeout(() => {
+          // this.$router.push({path: '/Login'})
+          window.location="https://teamstyle.eesast.com/login";
+        }, 500);
       }).then(res=>
       {
         // console.log(res)
