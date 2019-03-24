@@ -194,8 +194,8 @@ class GlobalSetting(models.Model):
         output = dict()
         output["year"] = self.year
         output["game_name"] = self.game_name
-        output["submission_start"] = self.submission_start
-        output["submission_end"] = self.submission_end
+        output["submission_start"] = tzd.localtime(self.submission_start)
+        output["submission_end"] = tzd.localtime(self.submission_end)
         return output
 
     def save(self, *args, **kwargs):
