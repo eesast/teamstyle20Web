@@ -486,7 +486,7 @@ def modifyTeamCodes(request, teamid):
                 target_team.save()
                 response = HttpResponse("204 OK.", status=204)
             else:
-                response = HttpResponse("Forbidden", status=403)
+                response = HttpResponse("403 Forbidden: System closed for upload.", status=403)
         else:
             assert False, 405
     except AssertionError as error:
