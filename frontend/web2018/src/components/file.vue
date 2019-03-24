@@ -22,7 +22,7 @@
             label="下载">
                 <template slot-scope="scope">
                 <!-- <a :href="scope.row.download" :download="scope.row.filename"> -->
-                    <el-button size="small" @click="downloadonefile(scope.row.id)">Download</el-button>
+                    <el-button size="small" @click="downloadonefile(scope.row.id,scope.row.)">Download</el-button>
                 <!-- </a> -->
                 </template>
             </el-table-column>
@@ -85,7 +85,8 @@ export default {
             fetch(FETCH_URL, {
             method: "GET",
             headers: {
-              "content-type": "application/octet-stream"
+              "content-type": "application/octet-stream",
+              "Content-Disposition":"attachment",
             }
             })
             .then(response => {
