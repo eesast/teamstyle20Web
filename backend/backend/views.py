@@ -10,6 +10,7 @@ from django.db.models import Q
 import django.utils.timezone as tzd
 import datetime, time
 import jwt
+from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 EXPIRE_TIME = 14400
@@ -461,11 +462,20 @@ def modifyTeamCodes(request, teamid):
         x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
         assert x_access_token["token"], 401
         user_info = get_user_info(x_access_token["token"])
+        target_team = Team.objects.get(pk=teamid)
+        assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
         if request.method == 'GET':
             pass
         elif request.method == 'POST':
             if systemOpen():
-                response = HttpResponse("Ready for upload", status = 200)
+                upload_file = dict()
+                if 'code0' in request.FILES:
+                    upload_file[0] = request.FILES['code0']
+                fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
+                for code_type, code_file in upload_file.items():
+                    filename = str(teamid) + '_' +str(code_type) +'.cpp'
+                    f = fs.save(filename, code_file)
+                    response = HttpResponse(f, status=200)
             else:
                 response = HttpResponse("Forbidden", status=403)
         else:
@@ -481,6 +491,8 @@ def modifyTeamCodes(request, teamid):
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
     # else:
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
