@@ -531,7 +531,7 @@
 | route | http verb | content |
 | ----- |----------|---------|
 | /api/codes/teams/:id | POST | 对应id的队伍上传代码(会覆盖之前的) |
-| /api/codes/teams/:id | GET |对应id的队伍获取本队代码|
+| /api/codes/teams/:id/:type | GET |对应id的队伍获取本队代码|
 
 * /api/codes/teams/:id    POST
     * header
@@ -541,7 +541,12 @@
     | content-type | multipart/form-data |
     * body 
     ```
-    formdata(input type="file"获取到的本地文件)
+    formdata(input type="file" name = "code0")
+    formdata(input type="file" name = "code1")
+    formdata(input type="file" name = "code2")
+    formdata(input type="file" name = "code3")
+    //注意：重新上传将使原档案被覆盖
+    //注意：可以一次不上传所有代码，譬如requests中如果没有FILE["code2"]，就不会改到FILE["code2"]
     ```
     * response
     如果队员（队长）是在对应id的队伍中，并且上传成功，返回状态码204
@@ -552,26 +557,28 @@
     401 Unauthorized: You are not in this team.
     ```
 
-    如果不在系统开放时间内，返回状态码403
-    返回文本：
+    ​	如果不在系统开放时间内，返回状态码403
+
+    ​	返回文本：
 
     ```
     403 Forbidden: System is closed for upload.
     ```
 
-* /api/codes/teams/:id    GET
-    返回相应id队伍的文件路径（下载地址）
+* /api/codes/teams/:id/:type    GET
+    返回相应id队伍的文件
 
     * header
     | key | value |
     |-------|------|
     | x-access-token |用户token|
     * response
-    若队员（队长）在相应id队伍中，并且请求成功，返回状态码200，和对应代码下载地址(JSON格式):
+    若队员（队长）在相应id队伍中，并且请求成功，返回状态码200，和对应代码:
     ```
-    {
-        url:"https://xxx",
-    }
+    
+    
+    - application/octet-stream
+    - filename：(:id)_(:type).cpp
     ```
 
 
@@ -584,8 +591,9 @@
 * /api/announce/list  GET
     列出所有公告的标题、发布时间和最后更新时间
 
-    * response
-    请求成功，返回状态码200和JSON文本(数组):
+    * ##### response
+
+      请求成功，返回状态码200和JSON文本(数组):
     ```
     [
         {
@@ -646,7 +654,7 @@
   ]
   ```
 
-- /api/announce/view/:id  GET
+- /api/file/download/:id  GET
   获取对应id的文件(以文件下载型式传送)
 
   - response

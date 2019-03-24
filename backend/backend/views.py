@@ -10,6 +10,7 @@ from django.db.models import Q
 import django.utils.timezone as tzd
 import datetime, time
 import jwt
+from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 EXPIRE_TIME = 14400
@@ -45,6 +46,7 @@ def get_error_msg(err_status):
     msg_list = dict()
     msg_list[405] = "405 Method Not Allowed."
     msg_list[404] = "404 Not Found: User does not exist."
+    msg_list[4043] = "404 Not Found: File not found."
     msg_list[422] = "422 Unprocessible Entity: Missing essential POST data."
     msg_list[4221] = "422 Unprocessible Entity: JSON Decode Error."
     msg_list[4012] = "{\"auth\":false, \"token\":\"\"}"
@@ -461,11 +463,30 @@ def modifyTeamCodes(request, teamid):
         x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
         assert x_access_token["token"], 401
         user_info = get_user_info(x_access_token["token"])
-        if request.method == 'GET':
-            pass
-        elif request.method == 'POST':
+        target_team = Team.objects.get(pk=teamid)
+        assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
+        if request.method == 'POST':
             if systemOpen():
-                response = HttpResponse("Ready for upload", status = 200)
+                upload_file = dict()
+                if 'code0' in request.FILES:
+                    upload_file[0] = request.FILES['code0']
+                if 'code1' in request.FILES:
+                    upload_file[1] = request.FILES['code1']
+                if 'code2' in request.FILES:
+                    upload_file[2] = request.FILES['code2']
+                if 'code3' in request.FILES:
+                    upload_file[3] = request.FILES['code3']
+                code_path = dict()
+                fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
+                for code_type, code_file in upload_file.items():
+                    filename = str(teamid) + '_' +str(code_type) +'.cpp'
+                    if fs.exists(filename):
+                        fs.delete(filename)
+                    f = fs.save(filename, code_file)
+                    code_path[code_type] = fs.path(f)
+                target_team.codes = json.dumps(code_path)
+                target_team.save()
+                response = HttpResponse("204 OK.", status=204)
             else:
                 response = HttpResponse("Forbidden", status=403)
         else:
@@ -481,9 +502,50 @@ def modifyTeamCodes(request, teamid):
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
     # else:
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
+
+
+@csrf_exempt
+def downloadTeamCodes(request, teamid, codetype):
+    try:
+        assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
+        x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        assert x_access_token["token"], 401
+        user_info = get_user_info(x_access_token["token"])
+        target_team = Team.objects.get(pk=teamid)
+        assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
+        if request.method == 'GET':
+            target_team_codes = json.loads(target_team.codes)
+            assert type(target_team_codes) is dict, 500
+            assert str(codetype) in target_team_codes, 4043
+            response = FileResponse(open(target_team_codes[str(codetype)], 'rb'), status=200)
+            response['Content-Type'] = 'application/octet-stream'
+            filename = str(teamid) + '_' + str(codetype) + '.cpp'
+            response['Content-Disposition'] = 'attachment;filename = ' + urlquote(filename)
+        else:
+            assert False, 405
+    except AssertionError as error:
+        err_status = int(error.__str__())
+        msg = get_error_msg(err_status)
+        err_status = 401 if err_status == 4011 else err_status
+        err_status = 404 if err_status == 4043 else err_status
+        response = HttpResponse(msg, status=err_status)
+    except jwt.PyJWTError:
+        msg = get_error_msg(4011)
+        response = HttpResponse(msg, status=401)
+    except json.JSONDecodeError:
+        msg = get_error_msg(4221)
+        response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
+    return response
+
 
 
 
