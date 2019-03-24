@@ -417,6 +417,7 @@
     修改相应id的队伍的信息，仅队长或管理员可以操作
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -453,6 +454,7 @@
     删除相应id的队伍，仅队长可以操作
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
@@ -474,6 +476,7 @@
     将自己从相应id的队伍中退出
 
     * header 
+    
         | key | value |
         |-------|------|
         | x-access-token |用户token|
