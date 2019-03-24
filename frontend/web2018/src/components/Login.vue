@@ -262,6 +262,10 @@ export default {
         {
           this.$message.error("注册失败！");
         }
+        setTimeout(() => {
+          // this.$router.push({path: '/Login'})
+          window.location="https://teamstyle.eesast.com/login";
+        }, 500);
       }).then(res=>
       {
         // console.log(res)
