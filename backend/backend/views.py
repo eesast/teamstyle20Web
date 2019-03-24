@@ -438,17 +438,7 @@ def personalTeamActions(request, teamid, userid):
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
-
-
-get_globalSettings = GlobalSetting.objects.all()
-submission = dict()
-if get_globalSettings.count()==1:
-    submission["start"] = tzd.localtime(get_globalSettings[0].submission_start)
-    submission["end"] = tzd.localtime(get_globalSettings[0].submission_end)
-else:
-    submission = False
-def systemOpen():
-    now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone())
+def systemOpen(submission, now):
     if submission == False:
         return False
     if now < submission["start"] or now > submission["end"]:
@@ -466,7 +456,15 @@ def modifyTeamCodes(request, teamid):
         target_team = Team.objects.get(pk=teamid)
         assert user_info["role"] == "root" or target_team.memberInTeam(int(user_info["id"])), 401
         if request.method == 'POST':
-            if systemOpen():
+            get_globalSettings = GlobalSetting.objects.all()
+            submission = dict()
+            if get_globalSettings.count() == 1:
+                submission["start"] = tzd.localtime(get_globalSettings[0].submission_start)
+                submission["end"] = tzd.localtime(get_globalSettings[0].submission_end)
+            else:
+                submission = False
+            now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone())
+            if systemOpen(submission,now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
                     upload_file[0] = request.FILES['code0']
