@@ -1,7 +1,8 @@
 <template>
   
   <div class="footer">
-    © 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.
+    <img src="../../static/img/THUAI-logo.png" height="55px" width="auto" style="display:inline;"/>
+    <p >© 2019 <a href="https://future.eesast.com/">EESAST</a> All Rights Reserved.</p>
     <!-- <div class="col supporter">
       <h4>赞助商</h4>
       <div class="supporter_container">
@@ -143,10 +144,10 @@ html,body
   overflow: hidden;
 }
 .footer {
-  padding-top:15px; 
+  /* padding-top:15px;  */
   width: 100%;
   /* height: 15%; */
-  height:35px;
+  height:60px;
   /* min-height:120px; */
   /* display: flex;
   flex-direction: row; */
@@ -157,6 +158,13 @@ html,body
   text-align: center;
   vertical-align: middle;
   /* margin-top:5%; */
+}
+.footer p
+{
+  display:inline;
+  position:relative;
+  margin-left:20px;
+  bottom:17px;
 }
 .footer a
 {
@@ -272,8 +280,12 @@ h4 {
  { 
    .footer
   {
-    height:2em;
+    height:15vh;
     top:9vh;
+  }
+  .footer p
+  {
+    display: block;
   }
    h4
   {
