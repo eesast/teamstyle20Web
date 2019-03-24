@@ -3,13 +3,16 @@
    <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" align="center">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px">
         
-        <el-form-item prop="code" label="验证码">
+        <!-- <el-form-item prop="code" label="验证码">
          <el-input v-model="form.name"></el-input><el-button id="al-bu1">获取验证码</el-button>
-       </el-form-item>
-       <el-form-item prop="password" label="密码">
+       </el-form-item> -->
+       <el-form-item prop="password" label="新密码">
+         <el-input v-model="form.oldpassword"></el-input>
+        </el-form-item>
+       <el-form-item prop="password" label="新密码">
          <el-input v-model="form.password"></el-input>
         </el-form-item>
-        <el-form-item prop="password" label="确认密码">
+        <el-form-item prop="passwordagain" label="确认密码">
          <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item>
@@ -32,6 +35,9 @@ export default {
         rules: {
           password:[
             {required: true, message: '请输入密码', trigger: 'blur'}
+          ],
+          passwordagain:[
+            {required: true, message: '请再次输入密码', trigger: 'blur'}
           ],
           code:[
             {required: true, message: '请输入验证码', trigger: 'blur'}

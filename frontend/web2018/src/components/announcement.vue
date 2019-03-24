@@ -81,6 +81,15 @@
 </div>
 </template>
 <script>
+
+function datetodate(onedate)
+{
+    var T=onedate.indexOf('T');
+    var dot=onedate.indexOf('.');
+    var newdate=onedate.substring(0,T)+' '+onedate.substring(T+1,dot);
+    return newdate;  
+}
+
 export default {
     name: "announcement",
     data(){
@@ -107,6 +116,7 @@ export default {
         };
     },
     methods: {
+        
         announcement_init()
         {
             this.index=0;
@@ -141,7 +151,9 @@ export default {
             }).then(res=>
                 {
                     if (res==undefined) return
-                    this.detailData=res[0]
+                    this.detailData=res[0];
+                    this.detailData['pub_date']=datetodate(this.detailData['pub_date']);
+                    this.detailData['last_update_date']=datetodate(this.detailData['last_update_date']);
                 })
         }
 
@@ -169,7 +181,11 @@ export default {
       {
         if (res==undefined) return
         console.log(res)
-        this.tableData=res
+        this.tableData=res;
+        for(var i=0;i<this.tableData.length;i++)
+        {
+            this.tableData[i]['last_update_date']=datetodate(this.tableData[i]['last_update_date'])
+        }
         console.log(this.tableData[0])
     })
     }
