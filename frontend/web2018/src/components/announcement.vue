@@ -81,6 +81,15 @@
 </div>
 </template>
 <script>
+
+function datetodate(onedate)
+{
+    var T=onedate.indexOf('T');
+    var dot=onedate.indexOf('.');
+    var newdate=onedate.subString(0,T-1)+' '+onedate.subString(T+1,dot-1);
+    return newdate;  
+}
+
 export default {
     name: "announcement",
     data(){
@@ -107,13 +116,7 @@ export default {
         };
     },
     methods: {
-        datetodate(onedate)
-        {
-            var T=onedate.indexOf('T');
-            var dot=onedate.indexOf('.');
-            var newdate=onedate.subString(0,T-1)+' '+onedate.subString(T+1,dot-1);
-            return newdate;  
-        },
+        
         announcement_init()
         {
             this.index=0;
