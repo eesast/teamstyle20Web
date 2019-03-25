@@ -21,13 +21,15 @@ class Team(models.Model):
     createAt = models.DateTimeField(auto_now_add=True, verbose_name='Create Time')
     score = models.IntegerField(default = 1000)
     rank = models.IntegerField(default = 999999)
+    valid = models.IntegerField(null = True, blank = True)
     battle_time = models.IntegerField(default = 1)
     codes = models.TextField(null=True, blank = True)
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
-        #return teamname
-        return 'id:%d, teamname:%s, score:%d, valid:%d, history_active:%s, history_passive:%s'%(self.id,self.teamname,self.score,self.valid,self.history_active,self.history_passive)
+        return self.teamname
+        #This line is triggering errors! Please fix them before you apply it again. BY YZQ.
+        #return 'id:%d, teamname:%s, score:%d, valid:%d, history_active:%s, history_passive:%s'%(self.id,self.teamname,self.score,self.valid,self.history_active,self.history_passive)
 
     def get_member_limit(self):
         return MEMBER_ALLOWED
