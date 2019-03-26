@@ -234,6 +234,9 @@ export default {
                 this.team=ans.teamname;
                 this.score=ans.score;
                 this.rank=ans.rank; 
+            },error=>
+            {
+                
             })
 
             

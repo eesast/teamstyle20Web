@@ -7,13 +7,13 @@
          <el-input v-model="form.name"></el-input><el-button id="al-bu1">获取验证码</el-button>
        </el-form-item> -->
        <el-form-item prop="password" label="原密码">
-         <el-input v-model="form.oldpassword"></el-input>
+         <el-input type="password" v-model="form.oldpassword"></el-input>
         </el-form-item>
        <el-form-item prop="password" label="新密码">
-         <el-input v-model="form.password"></el-input>
+         <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item prop="passwordagain" label="确认密码">
-         <el-input v-model="form.password1"></el-input>
+         <el-input type="password" v-model="form.password1"></el-input>
         </el-form-item>
         <el-form-item>
          <el-button type="primary" @click="submit" style="margin-left:-60px;position:relative;">提交</el-button> 
@@ -109,7 +109,8 @@ export default {
                 method:'PUT',
                 headers:
                 {
-                  'Content-Type':'application/json'
+                  'Content-Type':'application/json',
+                  "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
                 },
                 body:JSON.stringify(
                 {
