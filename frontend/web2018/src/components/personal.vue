@@ -208,7 +208,7 @@ export default {
                     //没有队伍
                     this.showteaminfo=false;
                     this.team="none";
-                    return ;
+                    // throw '';
                 }
                 if (response.status=="200") {
                 return response.json();
@@ -225,7 +225,7 @@ export default {
                 this.$message.error("加载失败，请稍后刷新页面重试！")
             }).then(res=>
             {
-                var ans=res[0];//取出object
+                var ans=res;//取出object
 
                 if(ans.captainID==id)this.flag0=true;//是队长
                 else this.flag0=false;
@@ -236,7 +236,7 @@ export default {
                 this.rank=ans.rank; 
             },error=>
             {
-                
+
             })
 
             
