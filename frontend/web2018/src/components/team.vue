@@ -64,13 +64,15 @@
                         <th ><img src="../../static/img/team.svg"  class="svg"></img>队伍成员</th>
                         <td colspan="2">
                             <table id="members_table">
-                                <tr v-for="(x,index) in detailData.members" :class="'table_th'+(index%2+1)">
+                                <template v-for="(x,index) in detailData.members">
+                                <tr v-if="detailData.membersID[index]!=detailData.captainID" :class="'table_th'+(index%2+1)">
                                     <td  align="middle">{{detailData.members[index]}}
                                         <el-button v-if="iscaptain==true" size="small" type="danger" class="dropout" @click="dropOut(index)">移出队伍</el-button>
                                     </td>
                                     <!-- v-if="detailData.membersID[index]!=detailData.captainID" -->
                                     <!-- <td v-if="iscaptain==true">踢出队伍</td> -->
                                 </tr>
+                                </template>
                                 <!-- <tr class='table_th1'><td valign="middle">{{detailData.members[0]}}</td></tr>
                                 <tr class='table_th2'><td valign="middle">2</td></tr>
                                 <tr class='table_th1'><td valign="middle">3</td></tr> -->
