@@ -270,7 +270,7 @@ export default {
       }
     }).then(res=>{
       this.globalsetting=res;//设置
-      finaldate=new Date(res["subemission_end"]);
+      finaldate=new Date(res["submission_end"]);
     })
 
 
