@@ -8,9 +8,9 @@
             <h4>绑定邮箱号：{{mail}}</h4>
             <h4 v-if="flag0">创建的队伍：{{team}}</h4>
             <h4 v-else="flag0">加入的队伍：{{team}}</h4>
-            <h4>对战比分：{{score}}</h4>
-            <h4>当前排名：{{rank}}</h4>
-            <el-collapse v-model="activeNames" @change="handleChange">
+            <h4 v-show="showteaminfo">对战比分：{{score}}</h4>
+            <h4 v-show="showteaminfo">当前排名：{{rank}}</h4>
+            <el-collapse v-model="activeNames" @change="handleChange" v-show="showteaminfo">
             <el-collapse-item title="队伍简介" name="1">
                 {{intro}}
             </el-collapse-item>
@@ -80,11 +80,12 @@ export default {
             intro:"jjafhadhfuka",//队伍简介  description
             name: "test",//账号名称
             password:"********",
-            team: "one",//teamname
+            team: "none",//teamname
             phone: "12345678899",//phone
             mail: "123456789@163.com",//mail
             score: 100,//teamscore
             rank: 5,//teamrank
+            showteaminfo:false,//是否加入队伍
             tableData:[],
             //     {
             //         teams: ["team1","team2","team3"],//对战队伍
@@ -168,42 +169,32 @@ export default {
         cur2.height=cur1.height;
 
         this.name=username;
-        fetch('/api/teams/0/members/'+id,
+
+        //剩下的重复访问user
+        fetch('/api/users/'+id,
         {
             method:'GET',
             headers: {
             "Content-Type": "application/json",
             "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-             }
+            }
         }).then(response=>
         {
-            if (response.status=="200") {
-             return response.json();
-             } 
-             else if (response.status == "401") {
-            this.$message.error("token失效，请重新登录！");
-             }
-             else
-             {
-                  this.$message.error("服务器暂时无法响应！");
-             }
-      },error=>
-      {
-        this.$message.error("加载失败，请稍后刷新页面重试！")
-      }).then(res=>
-      {
-          var ans=res[0];//取出object
+                if(response.status=="200")
+                {
+                    return response.json();
+                }
+                else
+                {
+                    this.$message.error("服务器暂时无法响应！");
+                }
+        }).then(res=>{
+            this.mail=res.email;
+            this.phone=res.phone;
 
-          if(ans.captainID==id)this.flag0=true;//是队长
-          else this.flag0=false;
+            //加入队伍后信息
 
-          this.intro=ans.description;
-          this.team=ans.teamname;
-          this.score=ans.score;
-          this.rank=ans.rank;
-
-          //剩下的重复访问user
-           fetch('/api/users/'+id,
+            fetch('/api/teams/0/members/'+id,
             {
                 method:'GET',
                 headers: {
@@ -212,24 +203,47 @@ export default {
                 }
             }).then(response=>
             {
-                    if(response.status=="200")
-                    {
-                        return response.json();
-                    }
-                    else
-                    {
-                        this.$message.error("服务器暂时无法响应！");
-                    }
-            }).then(res=>{
-                this.mail=res.email;
-                this.phone=res.phone;
+                if(response.status=="404")
+                {
+                    //没有队伍
+                    this.showteaminfo=false;
+                    this.team="none";
+                    return ;
+                }
+                if (response.status=="200") {
+                return response.json();
+                } 
+                else if (response.status == "401") {
+                this.$message.error("token失效，请重新登录！");
+                }
+                else
+                {
+                    this.$message.error("服务器暂时无法响应！");
+                }
+            },error=>
+            {
+                this.$message.error("加载失败，请稍后刷新页面重试！")
+            }).then(res=>
+            {
+                var ans=res[0];//取出object
+
+                if(ans.captainID==id)this.flag0=true;//是队长
+                else this.flag0=false;
+                this.showteaminfo=true;
+                this.intro=ans.description;
+                this.team=ans.teamname;
+                this.score=ans.score;
+                this.rank=ans.rank; 
             })
 
             
+            //***** */
 
 
-      })
-        
+
+        })
+
+               
         
     }
     
