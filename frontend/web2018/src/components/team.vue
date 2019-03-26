@@ -96,7 +96,7 @@
             <el-table-column
             prop="teamname"
             label="队伍名称"
-            min-width="20%">
+            min-width="15%">
             </el-table-column>
             <el-table-column
             prop="captain"
@@ -106,13 +106,13 @@
             <el-table-column
             prop="description"
             label="队伍简介"
-            min-width="30%"
+            min-width="28%"
             v-if="mobile==false"
             >
             </el-table-column>
             <el-table-column
             prop="members"
-            min-width="10%"
+            min-width="15%"
             align="center"
             v-if="mobile==false"
             label="队伍成员">
