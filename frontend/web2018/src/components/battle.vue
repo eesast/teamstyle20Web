@@ -183,7 +183,7 @@ export default {
       {
           console.log(content.file);
           var fileobj=content.file;
-          var URL="/api/codes/teams/"+teamid;
+          var URL="/api/codes/teams/"+this.teamid;
           var form=new FormData();
           form.append("code0",fileobj);
           fetch(URL,{
