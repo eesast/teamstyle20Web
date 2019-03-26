@@ -130,12 +130,12 @@ export default {
                 else if(response.status=="401")
                 {
                   this.$message.error('登录已失效，请重新登录!');
-                  delCookie('token')
-                  delCookie('id')
-                  delCookie('username')
-                  setTimeout(() => {
-                    this.$router.push({path: '/'})
-                  }, 400);
+                  // delCookie('token')
+                  // delCookie('id')
+                  // delCookie('username')
+                  // setTimeout(() => {
+                  //   this.$router.push({path: '/'})
+                  // }, 400);
                 }
                 else if(response.status=="404")
                 {
