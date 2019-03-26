@@ -149,6 +149,8 @@
 </template>
 
 <script>
+var finaldate=new Date("2019-04-18T12:00:00+08:00");
+var nowdate=new Date();
 function getCookie(cname) {
   var name = cname + "=";
   var ca = document.cookie.split(";");
@@ -238,11 +240,41 @@ export default {
           description: "我们最爱划水",
           members: ["好人", "萌新", "蒟蒻"]
         }
-      ]
+      ],
+      globalsetting:{
+          "submission_end": "2019-04-18T12:00:00+08:00",
+          "submission_start": "2019-03-24T11:00:00+08:00",
+          "year": 2019,
+          "game_name": "槍林彈雨"
+      }
     };
   },
 
   created: function() {
+
+
+    fetch('/api/global',{
+      method:'GET',
+      headers:
+      {
+         "Content-Type": "application/json",
+      }
+    }).then(response=>{
+      if(response.ok)
+      {
+        return response.json();
+      }
+      else
+      {
+
+      }
+    }).then(res=>{
+      this.globalsetting=res;//设置
+      finaldate=new Date(res["subemission_end"]);
+    })
+
+
+
     this.idx=id;
     if(window.screen.width<768)
     {
@@ -312,6 +344,14 @@ export default {
     createTeam() {
       // console.log(this.form['teamname']);
       // console.log(this.form['description']);
+      console.log(nowdate);
+      console.log(finaldate)
+      if(nowdate>finaldate)
+      {
+        this.$message.error('报名已截至，不可创建队伍!');
+        return ;
+      }
+      // else this.$message.success('ok')
       if (
         this.form["teamname"].length <= 10 &&
         this.form["teamname"].length > 0
@@ -485,6 +525,14 @@ export default {
     },
     joinTeam(index)//加入第几个队伍 
       {
+        console.log(nowdate);
+        console.log(finaldate)
+        if(nowdate>finaldate)
+        {
+          this.$message.error('报名已截至，不可加入队伍!');
+          return ;
+        }
+
       console.log(this.tableData[index].teamid)//为加入队伍的标号
       this.$prompt("请输入邀请码", "提示", {
         confirmButtonText: "确定",
