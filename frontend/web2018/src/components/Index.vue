@@ -14,6 +14,15 @@
   </div>
 </template>
 <script>
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    }
+    return "";
+}
 window.addEventListener("popstate", function(){
     //doSomething
     window.location = 'https://teamstyle.eesast.com';
@@ -34,7 +43,8 @@ export default {
   methods:{
     indexjump(){
         EventBus.$emit('send-msg', {flag:true})
-        this.$router.push({path: '/login'})
+        if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')this.$router.push({path: '/team'})
+        else this.$router.push({path: '/login'})
     }
   },
   computed:{
@@ -161,7 +171,7 @@ function loop() {
 <style>
 .index
 {
-  height:90%;
+  height:92%;
   min-height:75%;
   position: relative;
 }
@@ -266,6 +276,10 @@ h1.fire-text {
 
 
   @media screen and (max-width:720px) {
+    .index
+    {
+      top:8vh;
+    }
     .intro
     {
         position: absolute;
