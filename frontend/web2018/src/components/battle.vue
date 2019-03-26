@@ -3,17 +3,33 @@
     <div class="code_content">
         <el-card shadow="always" style="text-align:left;">
             <h4>提交代码</h4>
-            <el-upload
+            <!-- <el-upload
             class="upload-demo"
-            action="https://teamstyle.eesast.com/api/"
-            :show-file-list="false" 
-            :limit="1"
+            action="x"
+            :show-file-list="true" 
+            :limit="4"
             :on-success="uploadSuccess"
-            :on-error="uploadError"
-            
+            :on-error="uploadError" 
             >
             <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+            </el-upload> -->
+            <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            :http-request="myUpload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            accept=".cpp"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList">
+            <!-- <i class="el-icon-upload"></i> -->
+             <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
             </el-upload>
+
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
             <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
             <br/>
@@ -67,7 +83,7 @@
     </div>
     <el-dialog title="选择对战队伍" :visible.sync="dialogTableVisible" id="battle_dialog" >
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
-      <!--<el-row v-for="index in tableData.length" >-->
+      <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
       <el-col :span="6"><el-checkbox :label="tableData[index-1].id" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
       <el-col :span="6" v-if="index<tableData.length"><el-checkbox :label="tableData[index].id" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
@@ -90,11 +106,33 @@
 </template>
     
 <script>
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+var token = getCookie("token");
+if(token==null)
+{
+    this.$message("您尚未登录！")
+    setTimeout(() => {
+          this.$router.push({path: '/index'})
+        }, 100);
+}
+var username = getCookie("username");
+var id = parseInt(getCookie("id"));
 export default {
     name: 'battle',
     data() {
         return {
-            // currentPage:1, //初始页
+          fileList: [],            // currentPage:1, //初始页
             // pagesize:100,    //    每页的数据
             dialogTableVisible:false,
             isIndeterminate: true,
@@ -103,103 +141,89 @@ export default {
             tableData: [{
           teamname:'划水萌新',
           captain:'萌新1号',
-          id:0,
+          teamid:0,
           score:20,
-        },{
-          teamname:'划水萌新2',
-          captain:'萌新2号',
-          id:1,
-          score:30,
-        },{
-          teamname:'划水萌新3',
-          captain:'萌新3号',
-          id:3,
-          score:30,
-        },{
-          teamname:'划水萌新4',
-          captain:'萌新2号',
-          id:4,
-          score:30,
-        },{
-          teamname:'划水萌新5',
-          captain:'萌新2号',
-          id:5,
-          score:30,
-        },{
-          teamname:'划水萌新6',
-          captain:'萌新2号',
-          id:6,
-          score:30,
-        },{
-          teamname:'划水萌新7',
-          captain:'萌新2号',
-          score:30,
-          id:7,
-        },{
-          teamname:'划水萌新88',
-          captain:'萌新2号',
-          score:30,
-          id:8,
-        },{
-          teamname:'划水萌新8',
-          captain:'萌新2号',
-          score:30,
-          id:9,
-        },{
-          teamname:'划水萌新9',
-          captain:'萌新2号',
-          score:30,
-          id:10,
-        },{
-          teamname:'划水萌新20',
-          captain:'萌新2号',
-          score:30,
-          id:11,
-        },{
-          teamname:'划水萌新21',
-          captain:'萌新2号',
-          score:30,
-          id:12,
-        },{
-          teamname:'划水萌新22',
-          captain:'萌新2号',
-          score:30,
-          id:123,
-        },{
-          teamname:'划水萌新23',
-          captain:'萌新2号',
-          score:30,
-          id:14,
-        },{
-          teamname:'划水萌新24',
-          captain:'萌新2号',
-          score:30,
-          id:15,
-        },{
-          teamname:'划水萌新25',
-          captain:'萌新2号',
-          score:30,
-          id:16,
-        },{
-          teamname:'划水萌新26',
-          captain:'萌新2号',
-          score:30,
-          id:17,
-        },{
-          teamname:'划水萌新27',
-          captain:'萌新2号',
-          score:30,
-          id:18,
-        },{
-          teamname:'划水萌新28',
-          captain:'萌新2号',
-          score:30,
-          id:19
-        }],
-        
+        }]
         }
     },
+    created: function()
+    {
+        fetch("/api/teams", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+          }
+        })
+          .then(response => {
+            console.log(response.status);
+            if (response.ok) {
+              return response.json();
+            } else if (response.status == "401") {
+              this.$message.error("token失效，请重新登录！");
+            }
+          },error=>
+          {
+            this.$message.error("获取队伍信息失败！")
+          })
+          .then(res => {
+            this.tableData = res;
+            for (var i = 0; i < this.tableData.length; i++) {
+              for (var j = 0; j < this.tableData[i].membersID.length; j++) {
+                if(id==this.tableData[i].membersID[j])
+                {
+                  this.teamid=this.tableData[i].teamid;
+                }
+              }
+            }
+          })
+    },
     methods: {
+      myUpload(content)
+      {
+          console.log(content.file);
+          var fileobj=content.file;
+          var URL="/api/codes/teams/"+teamid;
+          var form=new FormData();
+          form.append("code0",fileobj);
+          fetch(URL,{
+            method:'POST',
+            headers:{
+              "content-type": "multipart/form-data",
+               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
+            body:form,
+          }).then(response=>{
+            if(response.status=="204")
+            {
+              this.$message.success('上传成功!');
+            }
+            else if(response.status=="401")
+            {
+              this.$message.error('你不在这个组中!');
+            }
+            else if(response.status=="403")
+            {
+              this.$message.error('不在系统开放时间内!');
+            }
+            else 
+            {
+              this.$message.error('上传失败!');
+            }
+          })
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 4 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
         uploadSuccess(res){
             if(res.status==1){
               this.$message({
