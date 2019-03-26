@@ -118,8 +118,8 @@
             label="队伍成员">
                 <template slot-scope="scope">
                     <!-- <table style="width:100%;background:#f5f7fa;"frame=void> -->
-                        <span v-for="(x,index) in scope.row.members"      style="border-bottom:0.5px solid ;text-align:center;">
-                            {{x}}<br/>
+                        <span v-for="(x,index) in scope.row.members"      style="border-bottom:0px solid ;text-align:center;">
+                            |{{x}}|<span v-if="index<(scope.row.members.length-1)"></span><br/>
                         </span>
                     <!-- </table> -->
                 </template>
@@ -939,9 +939,11 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 .el-message-box
 {
   position: fixed;
+  
+  width:90vw!important;;
   /* display: block; */
   top:40vh;
-  left:0;
+  left:5vw;
 }
 }
 </style>

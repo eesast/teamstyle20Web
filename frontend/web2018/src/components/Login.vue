@@ -210,6 +210,15 @@ export default {
       // console.log(this.form.name)
       // console.log(this.form.password);
       // console.log(this.form.password1);
+     
+      var reg=/.*[\u4e00-\u9fa5]+.*$/;   /*定义验证表达式*/
+      var rightname=reg.test(this.form.name);     /*进行验证*/
+      if(rightname==true)
+      {
+        this.$message.error('用户名不可含有中文!');
+        return ;
+      }
+      
       if(this.form.password!=this.form.password1)
       {
         this.$message.error('两次输入的密码不一样!');
