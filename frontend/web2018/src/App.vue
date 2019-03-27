@@ -98,4 +98,15 @@ html,body
   width:100%;
   height:100%;
 }
+@media screen and (max-width:720px) {
+.el-message-box
+{
+  position: fixed;
+  
+  width:90vw!important;;
+  /* display: block; */
+  top:40vh;
+  left:5vw;
+}
+}
 </style>

@@ -396,7 +396,12 @@ export default {
                   this.$message.error("队伍信息重要字段缺失！")
               } else if (response.status == "500"){
                   this.$message.error("500服务器故障！")
+              }
+              else
+              {
+                this.$message.error("服务器无法响应！")
               } 
+              throw 'bad';
             },error=>
             {
               this.$message.error("创建队伍失败！")
@@ -413,6 +418,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 window.location="https://teamstyle.eesast.com/team";
               }, 100)
+            },error=>{
+
             });
             this.dialogFormVisible = false;
         } else if (this.form["description"].length == 0) {
@@ -465,9 +472,7 @@ export default {
                   window.location="https://teamstyle.eesast.com/team";
                   }, 100)
               }
-              if (response.ok) {
-                return ;
-              } else if (response.status == "401") {
+              else if (response.status == "401") {
                 this.$message.error("token失效或权限不足！");
                 if(token!=null)
                 {
@@ -488,6 +493,11 @@ export default {
               } else if (response.status == "500"){
                 this.$message.error("Internal proxy error!");
               } 
+              else 
+              {
+                this.$message.error("服务器无法响应！");
+              }
+              throw 'bad';
             },error=>{
               this.$message.error("踢出成员失败！")
             }).then(res => {
@@ -504,6 +514,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
+            },error=>{
+
             })
 
 
@@ -588,6 +600,11 @@ export default {
               } else if (response.status == "404"){
                 this.$message.error("队伍不存在！");
               }
+              else 
+              {
+                this.$message.error("服务器无法响应！");
+              }
+              throw 'bad';
             },error=>
             {
                this.$message.error("加入队伍失败！")
@@ -606,6 +623,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
+            },error=>{
+
             })
         })
         .catch(() => {
@@ -670,6 +689,8 @@ export default {
               else if (response.status == "500"){
                 this.$message.error("Internal proxy error！");
               }
+              else this.$message.error("服务器无法响应！");
+              throw 'bad';
             },error=>
             {
               this.$message.error("删除队伍失败！")
@@ -688,6 +709,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
+            },error=>{
+
             });
         }).catch(()=>{})
         }
@@ -752,6 +775,8 @@ export default {
               } else if (response.status == "500"){
                 this.$message.error("Internal proxy error!");
               }
+              else this.$message.error("服务器无法响应!");
+              throw 'bad';
             },error=>
             {
               this.$message.error("退出队伍失败！")
@@ -770,6 +795,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 // window.location="https://teamstyle.eesast.com/team";           
               }, 100);
+            },error=>{
+
             });
           }).catch(()=>{})
         }
@@ -826,6 +853,8 @@ export default {
               } else if (response.status == "500"){
                 this.$message.error("Internal proxy error!");
               } 
+              else this.$message.error("服务器无法响应!");
+              throw 'bad';
             },error=>{
               this.$message.error("加入队伍失败！")
             })
@@ -844,6 +873,8 @@ export default {
                 // this.$router.push({path: '/Login'})
                 window.location="https://teamstyle.eesast.com/team";
               }, 100);
+            },error=>{
+              
             })
         }
         else{
@@ -986,14 +1017,6 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 {
   width:100%;
 }
-.el-message-box
-{
-  position: fixed;
-  
-  width:90vw!important;;
-  /* display: block; */
-  top:40vh;
-  left:5vw;
-}
+
 }
 </style>

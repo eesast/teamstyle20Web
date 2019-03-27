@@ -3,6 +3,7 @@
     <div class="code_content">
         <el-card shadow="always" style="text-align:left;">
             <h4>提交代码</h4>
+            <h5><i class="el-icon-info"></i>请选择对应的职业后上传代码</h5>
             <!-- <el-upload
             class="upload-demo"
             action="x"
@@ -13,6 +14,18 @@
             >
             <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
             </el-upload> -->
+            
+            <el-select v-model="value" placeholder="请选择您的职业" style="margin-bottom:10px;">
+              
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+            
+            </el-select>
+           
             <el-upload
             ref="upload"
             class="upload-demo"
@@ -27,6 +40,7 @@
             :on-exceed="handleExceed"
             :file-list="fileList">
             <!-- <i class="el-icon-upload"></i> -->
+             <div slot="tip" class="el-upload__tip">只能上传.cpp文件</div>
              <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
             </el-upload>
 
@@ -40,9 +54,20 @@
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
+            <h5><i class="el-icon-info"></i>请选择对应的职业后下载或查看代码</h5>
+            <el-select v-model="codevalue" placeholder="请选择您的职业" style="margin-bottom:10px;">
+              
+            <el-option
+              v-for="item in codeoptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+            
+            </el-select>
             <el-row>
-            <el-button size="small"type="primary"icon="el-icon-view" >查看代码</el-button>
-            <el-button size="small"type="success"icon="el-icon-download" style="margin:2px;">点击下载</el-button>
+            <el-button size="small"type="primary"icon="el-icon-view" @click="lookcode()">查看代码</el-button>
+            <el-button size="small"type="success"icon="el-icon-download" style="margin:2px;"  @click="downloadcode()">点击下载</el-button>
             </el-row>
         </el-card>
     </div>    
@@ -132,18 +157,47 @@ export default {
     name: 'battle',
     data() {
         return {
-          fileList: [],            // currentPage:1, //初始页
+            fileList: [],            // currentPage:1, //初始页
             // pagesize:100,    //    每页的数据
             dialogTableVisible:false,
             isIndeterminate: true,
             checkList: [],
             AInum:0,//AI人数
             tableData: [{
-          teamname:'划水萌新',
-          captain:'萌新1号',
-          teamid:0,
-          score:20,
-        }]
+            teamname:'划水萌新',
+            captain:'萌新1号',
+            teamid:0,
+            score:20,
+            }],
+            options: [{
+              value: 'code0',
+              label: '职业1'
+            }, {
+              value: 'code1',
+              label: '职业2'
+            }, {
+              value: 'code2',
+              label: '职业3'
+            }, {
+              value: 'code3',
+              label: '职业4'
+            }],
+            value: '',
+            codeoptions: [{
+              value: '0',
+              label: '职业1'
+            }, {
+              value: '1',
+              label: '职业2'
+            }, {
+              value: '2',
+              label: '职业3'
+            }, {
+              value: '3',
+              label: '职业4'
+            }],
+            codevalue: ''
+
         }
     },
     created: function()
@@ -162,9 +216,11 @@ export default {
             } else if (response.status == "401") {
               this.$message.error("token失效，请重新登录！");
             }
-          },error=>
-          {
-            this.$message.error("获取队伍信息失败！")
+            else
+            {
+              // this.$message.error("获取队伍信息失败！")
+              throw 'bad';
+            }
           })
           .then(res => {
             this.tableData = res;
@@ -176,16 +232,66 @@ export default {
                 }
               }
             }
+          },error=>{
+            this.$message.error("获取队伍信息失败！")
           })
     },
     methods: {
+      lookcode()//查看代码
+      {
+          fetch('/api/codes/teams/'+this.teamid+'/'+this.codevalue,
+          {
+            method:'GET',
+            headers:{
+              "content-type": "application/octet-stream",
+              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            }
+          }).then(res => res.blob().then(blob => { 
+              var a = document.createElement('a'); 
+              var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+              var filename = res.headers.get('Content-Disposition'); 
+              a.href = url; 
+              a.download = filename; 
+              a.click(); 
+              window.URL.revokeObjectURL(url);
+          }))
+      },
+      downloadcode()//下载代码
+      {
+          fetch('/api/codes/teams/'+this.teamid+'/'+this.codevalue,
+          {
+            method:'GET',
+            headers:{
+              "content-type": "application/octet-stream",
+              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            }
+          }).then(res => res.blob().then(blob => { 
+              var a = document.createElement('a'); 
+              var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+              var filename = res.headers.get('Content-Disposition'); 
+              a.href = url; 
+              a.download = filename; 
+              a.click(); 
+              window.URL.revokeObjectURL(url);
+          }))
+      },
       myUpload(content)
       {
+          
+          this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            dangerouslyUseHTMLString: true,
+            type: "warning"
+          })
+          .then(() => {
           console.log(content.file);
+          console.log(this.value.toString());
           var fileobj=content.file;
           var URL="/api/codes/teams/"+this.teamid;
           var form=new FormData();
-          form.append("code0",fileobj);
+          form.append(this.value.toString(),fileobj);
           fetch(URL,{
             method:'POST',
             headers:{
@@ -194,9 +300,10 @@ export default {
             },
             body:form,
           }).then(response=>{
+            this.fileList=[];
             if(response.status=="204")
             {
-              this.$message.success('上传成功!');
+              this.$message.success('上传成功!');             
             }
             else if(response.status=="401")
             {
@@ -211,6 +318,14 @@ export default {
               this.$message.error('上传失败!');
             }
           })
+
+          }).catch(() => {
+            this.fileList=[];
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            })
+          });
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -219,32 +334,32 @@ export default {
         console.log(file);
       },
       handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 4 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
-        uploadSuccess(res){
-            if(res.status==1){
-              this.$message({
-                message: '恭喜你，上传成功',
-                type: 'success'
-              });
-            }
-            else if(res.status==0){
-              this.$message({
-                message: res.msg,
-                type: 'warning'
-              });
-            }
-            else{
-              this.$message.error('上传失败，请重新上传');
-            }
-          },
-          uploadError(){
-            this.$refs.upload.clearFiles();
-            this.$message.error('上传失败，请重新上传');
-          },
+        // uploadSuccess(res){
+        //     if(res.status==1){
+        //       this.$message({
+        //         message: '恭喜你，上传成功',
+        //         type: 'success'
+        //       });
+        //     }
+        //     else if(res.status==0){
+        //       this.$message({
+        //         message: res.msg,
+        //         type: 'warning'
+        //       });
+        //     }
+        //     else{
+        //       this.$message.error('上传失败，请重新上传');
+        //     }
+        //   },
+        //   uploadError(){
+        //     this.$refs.upload.clearFiles();
+        //     this.$message.error('上传失败，请重新上传');
+        //   },
           // handleCurrentChange: function(currentPage){
           //       this.currentPage = currentPage;
           //       // console.log(this.currentPage)  //点击第几页

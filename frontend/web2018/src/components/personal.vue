@@ -85,6 +85,7 @@ export default {
             mail: "123456789@163.com",//mail
             score: 100,//teamscore
             rank: 5,//teamrank
+            activeNames: [],
             showteaminfo:false,//是否加入队伍
             tableData:[],
             //     {
@@ -137,6 +138,10 @@ export default {
         }
     },
     methods: {
+        handleChange()
+        {
+
+        },
         perdownload(){
             //这里时下载函数
         },
@@ -188,6 +193,7 @@ export default {
                 {
                     this.$message.error("服务器暂时无法响应！");
                 }
+                throw 'bad';
         }).then(res=>{
             this.mail=res.email;
             this.phone=res.phone;
@@ -220,6 +226,7 @@ export default {
                 {
                     this.$message.error("服务器暂时无法响应！");
                 }
+                throw 'bad';
             },error=>
             {
                 this.$message.error("加载失败，请稍后刷新页面重试！")
@@ -244,7 +251,7 @@ export default {
 
 
 
-        })
+        },error=>{})
 
                
         

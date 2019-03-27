@@ -189,6 +189,7 @@ export default {
         {
           this.$message.error("登录失败！");
         }
+        throw 'bad';
       }).then(res=>
       {
         if (res==undefined) return
@@ -204,6 +205,8 @@ export default {
         setTimeout(() => {
           this.$router.push({path: '/'})
         }, 100);
+      },error=>{
+
       })
     },
     create:function(){
@@ -271,10 +274,11 @@ export default {
         {
           this.$message.error("注册失败！");
         }
-        setTimeout(() => {
-          // this.$router.push({path: '/Login'})
-          window.location="https://teamstyle.eesast.com/login";
-        }, 500);
+        throw 'bad';
+        // setTimeout(() => {
+        //   // this.$router.push({path: '/Login'})
+        //   window.location="https://teamstyle.eesast.com/login";
+        // }, 500);
       }).then(res=>
       {
         // console.log(res)
@@ -290,6 +294,8 @@ export default {
         setTimeout(() => {
           this.$router.push({path: '/' })
         }, 100);
+      },error=>{
+        
       })
     },
     find:function(){
