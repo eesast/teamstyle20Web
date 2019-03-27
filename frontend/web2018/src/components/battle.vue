@@ -292,11 +292,11 @@ export default {
           var fileobj=content.file;
           // var URL=;
           var form=new FormData();
-          form.append(this.value.toString(),fileobj);
+          form.append(this.value.toString(),content.file);
           fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
             headers:{
-              "content-type": "multipart/form-data",
+              "Content-Type": "multipart/form-data",
                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
             body:form,
