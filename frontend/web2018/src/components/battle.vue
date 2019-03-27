@@ -286,6 +286,7 @@ export default {
             type: "warning"
           })
           .then(() => {
+            console.log(content);
           console.log(content.file);
           console.log(typeof content.file);
           console.log(this.value.toString());
@@ -321,7 +322,7 @@ export default {
             method:'POST',
             headers:{
               // "content-type": "multipart/form-data",
-               "Content-Type": "application/x-www-form-urlencoded",
+               "Content-Type": "multipart/form-data",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
             body:form,
