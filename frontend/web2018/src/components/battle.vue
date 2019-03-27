@@ -291,34 +291,58 @@ export default {
           console.log(this.value.toString());
           var fileobj=content.file;
           // var URL=;
-          var form=new FormData();
-          form.append(this.value.toString(),content.file);
-          fetch("/api/codes/teams/"+this.teamid,{
-            method:'POST',
-            headers:{
-              "Content-Type": "multipart/form-data",
-               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+          // var form=new FormData();
+          // form.append(this.value.toString(),content.file);
+
+          var form = new FormData();
+          form.append(this.value.toString(), content.file);
+
+          var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://teamstyle.eesast.com/api/codes/teams/"+this.teamid,
+            "method": "POST",
+            "headers": {
+              "x-access-token": JSON.stringify({"token":token,"id":id,"username":username,"auth":true}),
+              "cache-control": "no-cache",
+          
             },
-            body:form,
-          }).then(response=>{
-            this.fileList=[];
-            if(response.status=="204")
-            {
-              this.$message.success('上传成功!');             
-            }
-            else if(response.status=="401")
-            {
-              this.$message.error('你不在这个组中!');
-            }
-            else if(response.status=="403")
-            {
-              this.$message.error('不在系统开放时间内!');
-            }
-            else 
-            {
-              this.$message.error('上传失败!');
-            }
-          })
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": form
+          }
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+          });
+
+          // fetch("/api/codes/teams/"+this.teamid,{
+          //   method:'POST',
+          //   headers:{
+          //     "Content-Type": "multipart/form-data",
+          //      "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+          //   },
+          //   body:form,
+          // }).then(response=>{
+          //   this.fileList=[];
+          //   if(response.status=="204")
+          //   {
+          //     this.$message.success('上传成功!');             
+          //   }
+          //   else if(response.status=="401")
+          //   {
+          //     this.$message.error('你不在这个组中!');
+          //   }
+          //   else if(response.status=="403")
+          //   {
+          //     this.$message.error('不在系统开放时间内!');
+          //   }
+          //   else 
+          //   {
+          //     this.$message.error('上传失败!');
+          //   }
+          // })
 
           }).catch(() => {
             this.fileList=[];
