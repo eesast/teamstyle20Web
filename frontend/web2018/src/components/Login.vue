@@ -189,7 +189,7 @@ export default {
         {
           this.$message.error("登录失败！");
         }
-        //throw 'bad';
+        throw 'bad';
       }).then(res=>
       {
         if (res==undefined) return
@@ -274,7 +274,7 @@ export default {
         {
           this.$message.error("注册失败！");
         }
-        //throw 'bad';
+        throw 'bad';
         // setTimeout(() => {
         //   // this.$router.push({path: '/Login'})
         //   window.location="https://teamstyle.eesast.com/login";

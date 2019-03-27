@@ -219,7 +219,7 @@ export default {
             else
             {
               // this.$message.error("获取队伍信息失败！")
-              ////throw 'bad';
+              throw 'bad';
             }
           })
           .then(res => {

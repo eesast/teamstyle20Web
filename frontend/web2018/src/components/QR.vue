@@ -1,6 +1,7 @@
 <template>
     <div id="QR_contain">
         <img src="../../static/img/QRcode.jpg"></img>
+        <img src="../../static/img/QRcode2.jpg"></img>
     </div>
 </template>
 
@@ -20,22 +21,25 @@ export default {
 
 <style>
 #QR_contain{
-    height:85%;
+    min-height:85%;
     margin-bottom: 5px;
+    position: relative;
 }
 #QR_contain img{
+    display: inline;
     width:auto;
-    height:100%;
+    height:90vh;
+    position: relative;
 }
 @media screen and (max-width: 720px)
  { 
      #QR_contain{
-    height:90vh;
+    min-height:90vh;
     margin-bottom: 5px;
     }
      #QR_contain img{
     width:auto;
-    height:78%;
+    min-height:78%;
     position: relative;
     top:15%;
 }

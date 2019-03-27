@@ -193,7 +193,7 @@ export default {
                 {
                     this.$message.error("服务器暂时无法响应！");
                 }
-                //throw 'bad';
+                throw 'bad';
         }).then(res=>{
             this.mail=res.email;
             this.phone=res.phone;
@@ -226,7 +226,7 @@ export default {
                 {
                     this.$message.error("服务器暂时无法响应！");
                 }
-                //throw 'bad';
+                throw 'bad';
             },error=>
             {
                 this.$message.error("加载失败，请稍后刷新页面重试！")
