@@ -287,12 +287,13 @@ export default {
           })
           .then(() => {
           console.log(content.file);
+          console.log(typeof content.file);
           console.log(this.value.toString());
           var fileobj=content.file;
-          var URL="/api/codes/teams/"+this.teamid;
+          // var URL=;
           var form=new FormData();
           form.append(this.value.toString(),fileobj);
-          fetch(URL,{
+          fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
             headers:{
               "content-type": "multipart/form-data",
