@@ -321,7 +321,7 @@ export default {
             method:'POST',
             headers:{
               // "content-type": "multipart/form-data",
-               "Content-Type": "application/json",
+               "Content-Type": "application/x-www-form-urlencoded",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
             body:form,
