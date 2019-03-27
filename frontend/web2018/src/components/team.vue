@@ -401,7 +401,7 @@ export default {
               {
                 this.$message.error("服务器无法响应！")
               } 
-              throw 'bad';
+              //throw 'bad';
             },error=>
             {
               this.$message.error("创建队伍失败！")
@@ -497,7 +497,7 @@ export default {
               {
                 this.$message.error("服务器无法响应！");
               }
-              throw 'bad';
+              //throw 'bad';
             },error=>{
               this.$message.error("踢出成员失败！")
             }).then(res => {
@@ -604,7 +604,7 @@ export default {
               {
                 this.$message.error("服务器无法响应！");
               }
-              throw 'bad';
+              //throw 'bad';
             },error=>
             {
                this.$message.error("加入队伍失败！")
@@ -690,7 +690,7 @@ export default {
                 this.$message.error("Internal proxy error！");
               }
               else this.$message.error("服务器无法响应！");
-              throw 'bad';
+              //throw 'bad';
             },error=>
             {
               this.$message.error("删除队伍失败！")
@@ -776,7 +776,7 @@ export default {
                 this.$message.error("Internal proxy error!");
               }
               else this.$message.error("服务器无法响应!");
-              throw 'bad';
+              //throw 'bad';
             },error=>
             {
               this.$message.error("退出队伍失败！")
@@ -854,7 +854,7 @@ export default {
                 this.$message.error("Internal proxy error!");
               } 
               else this.$message.error("服务器无法响应!");
-              throw 'bad';
+              //throw 'bad';
             },error=>{
               this.$message.error("加入队伍失败！")
             })
