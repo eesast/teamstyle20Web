@@ -26,8 +26,8 @@
             
             </el-select>
            
-            <form
-           
+            <el-upload
+            ref="upload"
             class="upload-demo"
             action=""
             :http-request="myUpload"
@@ -36,13 +36,12 @@
             :before-remove="beforeRemove"
             :limit="1"    
             :on-exceed="handleExceed"
-            >
-            <!-- <i class="el-icon-upload"></i> -->
+            :file-list="fileList">
+   
              <div slot="tip" class="el-upload__tip">只能上传.cpp文件</div>
-             <!-- <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button> -->
-            <input type="file" id="filex" ></input>
-            </form>
-
+             <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+            </el-upload>
+            <!-- <el-input type="file" @onchange="jsReadFiles(this.files)"/> -->
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
             <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
             <br/>
@@ -157,7 +156,6 @@ export default {
     data() {
         return {
             fileList: [],            // currentPage:1, //初始页
-            file:null,
             // pagesize:100,    //    每页的数据
             dialogTableVisible:false,
             isIndeterminate: true,
@@ -202,8 +200,6 @@ export default {
     },
     created: function()
     {
- 
-
         fetch("/api/teams", {
           method: "GET",
           headers: {
@@ -249,48 +245,13 @@ export default {
           },error=>{
             this.$message.error("获取队伍信息失败！")
           })
-
-
-
-
-        window.onload=()=>{
-        document.getElementById('filex').addEventListener("change",function() {
-        //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
-        var fileObj = document.querySelector("#filex").files[0];
-        //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
-        var formData = new FormData();
-        formData.append('code0', fileObj);
-        fetch("/api/codes/teams/"+this.teamid,{
-            method:'POST',
-            headers:{
-              "content-type": "multipart/form-data",
-               "Content-Type": "multipart/form-data",
-              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-            },
-            body:formData,
-          }).then(response=>{
-            this.fileList=[];
-            if(response.status=="204")
-            {
-              this.$message.success('上传成功!');             
-            }
-            else if(response.status=="401")
-            {
-              this.$message.error('你不在这个组中!');
-            }
-            else if(response.status=="403")
-            {
-              this.$message.error('不在系统开放时间内!');
-            }
-            else 
-            {
-              this.$message.error('上传失败!');
-            }
-          })
-        })
-        }
     },
     methods: {
+      jsReadFiles(file)
+      {
+          var file = files[0];
+          console.log(file);
+      },
       lookcode()//查看代码
       {
           fetch('/api/codes/teams/'+this.teamid+'/'+this.codevalue,
@@ -332,26 +293,33 @@ export default {
       myUpload(content)
       {
           
-          this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            dangerouslyUseHTMLString: true,
-            type: "warning"
-          })
-          .then(() => {
-            console.log(content);
+          // this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
+          // {
+          //   confirmButtonText: "确定",
+          //   cancelButtonText: "取消",
+          //   dangerouslyUseHTMLString: true,
+          //   type: "warning"
+          // })
+          // .then(() => {
+            // console.log(content);
           console.log(content.file);
-          console.log(this.fileList);
+          // console.log(this.fileList);
           console.log(typeof content.file);
-          console.log(this.value.toString());
-          var fileobj="C:\\Users\\nikelong\\Desktop\\tips of PART.txt";
+          // console.log(this.value.toString());
+
+          // var filepath="C:/Users/nikelong/Desktop/1.cpp";
+    
+          // var file = new File(filepath,"ok");
+          // console.log(file);
+
+          var fileobj=content.file;
           // var URL=;
           // var form=new FormData();
           // form.append(this.value.toString(),content.file);
 
           var form = new FormData();
-          form.append('code0', fileobj);
+          form.append(this.value.toString(),content.file);
+          console.log(form);
 
           // var settings = {
           //   "async": true,
@@ -376,7 +344,7 @@ export default {
           fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
             headers:{
-              "content-type": "multipart/form-data",
+              // "content-type": "multipart/form-data",
                "Content-Type": "multipart/form-data",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
@@ -401,13 +369,7 @@ export default {
             }
           })
 
-          }).catch(() => {
-            this.fileList=[];
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            })
-          });
+          // })
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
