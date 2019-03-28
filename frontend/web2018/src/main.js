@@ -7,10 +7,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueClipboard from 'vue-clipboard2'
 import VueParticles from 'vue-particles'
+
 import VueResource from 'vue-resource'
-
 Vue.use(VueResource)
-
 Vue.use(VueParticles)
 Vue.use(VueClipboard)
 Vue.use(ElementUI)
