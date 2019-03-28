@@ -83,6 +83,7 @@ def auth(request):
         err_get_msg_id = 4012 if err_status==401 else err_status
         msg = get_error_msg(err_get_msg_id)
         response = HttpResponse(msg, status=err_status)
+
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
@@ -95,6 +96,7 @@ def auth(request):
 def users(request):
     try:
         if request.method == 'POST':
+            #return JsonResponse({'result':str(request.body)}) #test where is class
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
             #return JsonResponse({'result':str(request.body)}) #test where is class
