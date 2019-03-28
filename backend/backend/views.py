@@ -469,13 +469,13 @@ def modifyTeamCodes(request, teamid):
             if systemOpen(submission,now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
-                    upload_file[0] = request.FILES['code0']
+                    upload_file['0'] = request.FILES['code0']
                 if 'code1' in request.FILES:
-                    upload_file[1] = request.FILES['code1']
+                    upload_file['1'] = request.FILES['code1']
                 if 'code2' in request.FILES:
-                    upload_file[2] = request.FILES['code2']
+                    upload_file['2'] = request.FILES['code2']
                 if 'code3' in request.FILES:
-                    upload_file[3] = request.FILES['code3']
+                    upload_file['3'] = request.FILES['code3']
                 code_path = json.loads(target_team.codes)
                 fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
                 for code_type, code_file in upload_file.items():
@@ -504,8 +504,8 @@ def modifyTeamCodes(request, teamid):
         response = HttpResponse(msg, status=422)
     except Team.DoesNotExist:
         response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
-    # else:
-    #  response = HttpResponse("520 Unknown Error", status=520)
+    else:
+        response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
