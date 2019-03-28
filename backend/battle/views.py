@@ -285,10 +285,13 @@ def compile(request):
     return JsonResponse(ret)
 
 
-def compile2(team_id, ind):
+def compile2(team_id,ind):
     ''' 给定队伍编号team_id以及职业编号(0~3)ind，进行代码编译并放入/media/Codes/output '''
     out_volume = root_path + '/media/temp' + generate_key(10)
     in_volume = '/MyVolume'
+
+    team_id = int(team_id)
+    ind = int(ind)
     if team_id == None or ind == None:
         return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
     if Team.objects.filter(id=team_id).exists() == False:
