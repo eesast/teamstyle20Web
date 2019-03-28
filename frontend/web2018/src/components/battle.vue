@@ -308,7 +308,7 @@ export default {
           // form.append(this.value.toString(),content.file);
 
           var form = new FormData();
-          form.append(this.value.toString(), fileobj);
+          form.append('code0', fileobj);
 
           // var settings = {
           //   "async": true,
