@@ -506,8 +506,8 @@ def modifyTeamCodes(request, teamid):
         response = HttpResponse(msg, status=422)
     except Team.DoesNotExist:
         response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
-    else:
-        response = HttpResponse("520 Unknown Error", status=520)
+    #else:
+        #response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
