@@ -1,6 +1,6 @@
 <template>
     <div id="QR_contain">
-        <img src="../../static/img/QRcode.jpg"></img>
+        <!-- <img src="../../static/img/QRcode.jpg"></img> -->
         <img src="../../static/img/QRcode2.jpg"></img>
     </div>
 </template>
