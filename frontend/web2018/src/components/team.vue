@@ -294,6 +294,18 @@ export default {
           return response.json();
         } else if (response.status == "401") {
           this.$message.error("token失效，请重新登录！");
+          if(token!=null)
+          {
+              delCookie("token")
+              delCookie("id")
+              delCookie("username")
+              token=null
+              username=null
+              id=null
+              setTimeout(() => {
+                window.location="https://teamstyle.eesast.com/login";
+              }, 100)
+          }
         }
       },error=>
       {
@@ -387,7 +399,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                      window.location="https://teamstyle.eesast.com/team";
+                      window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } else if (response.status == "409"){
@@ -483,7 +495,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                    window.location="https://teamstyle.eesast.com/team";
+                    window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } else if (response.status == "404"){
@@ -588,7 +600,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                      window.location="https://teamstyle.eesast.com/team";
+                      window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } else if (response.status == "422"){
@@ -679,7 +691,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                      window.location="https://teamstyle.eesast.com/team";
+                      window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } 
@@ -765,7 +777,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                      window.location="https://teamstyle.eesast.com/team";
+                      window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } else if (response.status == "404"){
@@ -843,7 +855,7 @@ export default {
                     username=null
                     id=null
                     setTimeout(() => {
-                      window.location="https://teamstyle.eesast.com/team";
+                      window.location="https://teamstyle.eesast.com/login";
                     }, 100)
                 }
               } else if (response.status == "400"){

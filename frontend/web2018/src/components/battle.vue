@@ -34,9 +34,7 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
-            multiple
-            accept=".cpp"
-            :limit="1"
+            :limit="1"    
             :on-exceed="handleExceed"
             :file-list="fileList">
             <!-- <i class="el-icon-upload"></i> -->
@@ -158,6 +156,7 @@ export default {
     data() {
         return {
             fileList: [],            // currentPage:1, //初始页
+            file:null,
             // pagesize:100,    //    每页的数据
             dialogTableVisible:false,
             isIndeterminate: true,
@@ -215,6 +214,18 @@ export default {
               return response.json();
             } else if (response.status == "401") {
               this.$message.error("token失效，请重新登录！");
+              if(token!=null)
+              {
+                  delCookie("token")
+                  delCookie("id")
+                  delCookie("username")
+                  token=null
+                  username=null
+                  id=null
+                  setTimeout(() => {
+                    window.location="https://teamstyle.eesast.com/login";
+                  }, 100)
+              }
             }
             else
             {
@@ -288,6 +299,7 @@ export default {
           .then(() => {
             console.log(content);
           console.log(content.file);
+          console.log(this.fileList);
           console.log(typeof content.file);
           console.log(this.value.toString());
           var fileobj=content.file;
