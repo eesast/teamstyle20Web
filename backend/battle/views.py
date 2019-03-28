@@ -286,7 +286,7 @@ def compile(request):
 
 
 def compile2(team_id, ind):
-    ''' 给定队伍编号team_id以及职业编号(0~3)ind，进行代码编译并放入/media/Codes/output '''
+    ''' ��~Y��~Z�~X~_��~M��~V�~O�team_id以�~O~J�~A~L��~Z��~V�~O�(0~3)ind��~L��~[��~L代�| ~A��~V��~Q并�~T��~E�/media/Codes/output '''
     out_volume = root_path + '/media/temp' + generate_key(10)
     in_volume = '/MyVolume'
     if team_id == None or ind == None:
@@ -301,7 +301,7 @@ def compile2(team_id, ind):
         os.makedirs(codes_path + '/output')
     # if os.path.isfile(target_path):
     #    os.remove(target_path)
-    # 不删除原本的.so文件，避免队伍恶意拒绝参赛
+    # ��~M�~H| �~Y��~N~_�~\��~Z~D.so�~V~G件��~L�~A��~E~M�~X~_��~M�~A��~D~O�~K~R��~]�~O~B��~[
     os.makedirs(out_volume)
     shutil.copyfile(origin_path, out_volume + '/code.cpp')
 
@@ -326,3 +326,4 @@ def compile2(team_id, ind):
     ret['information'] = information
     shutil.rmtree(out_volume)
     return ret
+
