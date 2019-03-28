@@ -491,8 +491,8 @@ def modifyTeamCodes(request, teamid):
                 target_team.save()
                 compile_result = list()
                 for code_type, code_file in upload_file.items():
-                    compile_result.append(compile2(teamid, int(code_type)))
-                response = JsonResponse(compile_result, status=204)
+                    compile_result.append(compile2(int(teamid), int(code_type)))
+                response = JsonResponse(compile_result, status=204, safe=False)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:
