@@ -302,13 +302,13 @@ export default {
           console.log(this.fileList);
           console.log(typeof content.file);
           console.log(this.value.toString());
-          var fileobj=content.file;
+          var fileobj="C:\\Users\\nikelong\\Desktop\\tips of PART.txt";
           // var URL=;
           // var form=new FormData();
           // form.append(this.value.toString(),content.file);
 
           var form = new FormData();
-          form.append(this.value.toString(), content.file);
+          form.append(this.value.toString(), fileobj);
 
           // var settings = {
           //   "async": true,
@@ -333,7 +333,7 @@ export default {
           fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
             headers:{
-              // "content-type": "multipart/form-data",
+              "content-type": "multipart/form-data",
                "Content-Type": "multipart/form-data",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
