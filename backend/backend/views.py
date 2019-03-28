@@ -12,6 +12,7 @@ import datetime, time
 import jwt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from battle.views import compile2
 
 EXPIRE_TIME = 14400
 def make_x_access_token(eesast_token, validDuration=EXPIRE_TIME):
@@ -486,7 +487,10 @@ def modifyTeamCodes(request, teamid):
                     code_path[code_type] = fs.path(f)
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
-                response = HttpResponse("204 OK.\n" + debugInfo, status=204)
+                compile_result = list()
+                for code_type, code_file in upload_file.items():
+                    compile_result.append(compile2(teamid, int(code_type)))
+                response = JsonResponse(compile_result, status=204)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:
