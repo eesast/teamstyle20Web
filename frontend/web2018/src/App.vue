@@ -6,7 +6,7 @@
     <foot v-if="$route.name.name !== 'error'&& $route.name.name !== 'index'"></foot>
   </div>
 </template>
-
+<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>    
 <script>
 function getCookie(cname){
     var name = cname + "=";

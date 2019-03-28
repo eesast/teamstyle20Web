@@ -127,7 +127,6 @@
     <div class="empty_content"></div>
 </div>
 </template>
-<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>    
 
 <script>
 
