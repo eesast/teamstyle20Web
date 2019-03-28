@@ -283,3 +283,46 @@ def compile(request):
     ret['information']=information
     shutil.rmtree(out_volume)
     return JsonResponse(ret)
+
+
+def compile2(team_id, ind):
+    ''' 给定队伍编号team_id以及职业编号(0~3)ind，进行代码编译并放入/media/Codes/output '''
+    out_volume = root_path + '/media/temp' + generate_key(10)
+    in_volume = '/MyVolume'
+    if team_id == None or ind == None:
+        return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
+    if Team.objects.filter(id=team_id).exists() == False:
+        return HttpResponse('No such team !')
+    origin_path = codes_path + '/%d_%d.cpp' % (team_id, ind)
+    target_path = so_path + '/%d_%d.so' % (team_id, ind)
+    if os.path.exists(origin_path) == False:
+        return HttpResponse('No corresponding .cpp file!')
+    if os.path.exists(codes_path + '/output') == False:
+        os.makedirs(codes_path + '/output')
+    # if os.path.isfile(target_path):
+    #    os.remove(target_path)
+    # 不删除原本的.so文件，避免队伍恶意拒绝参赛
+    os.makedirs(out_volume)
+    shutil.copyfile(origin_path, out_volume + '/code.cpp')
+
+    client = docker.from_env()
+    try:
+        client.containers.run(image_name, command='bash /ts20/bin/compile.sh', tty=True, stdin_open=True, remove=True,
+                              network_mode='host', volumes={out_volume: {'bind': in_volume}})
+    except docker.errors.ContainerError:
+        pass
+    team = Team.objects.get(id=team_id)
+    status = ''
+    if os.path.exists(out_volume + '/out.so') == True:
+        status = 'Compile successfully.'
+        team.valid |= (1 << ind)
+        shutil.copyfile(out_volume + '/out.so', target_path)
+    else:
+        status = 'Compile Error.'
+    team.save()
+    information = open(out_volume + '/log').read()
+    ret = {}
+    ret['status'] = status
+    ret['information'] = information
+    shutil.rmtree(out_volume)
+    return ret
