@@ -127,8 +127,7 @@
     <div class="empty_content"></div>
 </div>
 </template>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
-</script>
+
 <script>
 
 function getCookie(cname) {
