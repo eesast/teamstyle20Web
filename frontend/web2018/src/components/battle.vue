@@ -254,7 +254,7 @@ export default {
 
 
 
-        document.getElementById('filex').on("change",function() {
+        document.getElementById('filex').addEventListener("change",function() {
         //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
         var fileObj = document.querySelector("#filex").files[0];
         //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
