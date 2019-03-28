@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueClipboard from 'vue-clipboard2'
 import VueParticles from 'vue-particles'
 
-import VueResource from '../static/js/vue-source'
-Vue.use(VueResource)
+// import VueResource from '../static/js/vue-source'
+// Vue.use(VueResource)
 Vue.use(VueParticles)
 Vue.use(VueClipboard)
 Vue.use(ElementUI)
