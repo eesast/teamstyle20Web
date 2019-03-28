@@ -487,7 +487,7 @@ def modifyTeamCodes(request, teamid):
                     code_path[code_type] = fs.path(f)
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
-                compile_result = dict()
+                compile_result = list()
                 for code_type, code_file in upload_file.items():
                     compile_result.append(compile2(teamid, int(code_type)))
                 response = JsonResponse(compile_result, status=204)
