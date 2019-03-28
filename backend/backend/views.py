@@ -476,7 +476,7 @@ def modifyTeamCodes(request, teamid):
                     upload_file[2] = request.FILES['code2']
                 if 'code3' in request.FILES:
                     upload_file[3] = request.FILES['code3']
-                code_path = dict()
+                code_path = json.loads(target_team.codes)
                 fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
                 for code_type, code_file in upload_file.items():
                     filename = str(teamid) + '_' +str(code_type) +'.cpp'
