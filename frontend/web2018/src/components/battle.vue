@@ -26,8 +26,8 @@
             
             </el-select>
            
-            <el-upload
-            ref="upload"
+            <form
+           
             class="upload-demo"
             action=""
             :http-request="myUpload"
@@ -36,11 +36,12 @@
             :before-remove="beforeRemove"
             :limit="1"    
             :on-exceed="handleExceed"
-            :file-list="fileList">
+            >
             <!-- <i class="el-icon-upload"></i> -->
              <div slot="tip" class="el-upload__tip">只能上传.cpp文件</div>
-             <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
-            </el-upload>
+             <!-- <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button> -->
+            <input type="file" id="filex"></input>
+            </form>
 
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
             <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
@@ -201,6 +202,8 @@ export default {
     },
     created: function()
     {
+ 
+
         fetch("/api/teams", {
           method: "GET",
           headers: {
@@ -246,6 +249,45 @@ export default {
           },error=>{
             this.$message.error("获取队伍信息失败！")
           })
+
+
+
+
+
+        $("#filex").on("change",function() {
+        //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
+        var fileObj = document.querySelector("#filex").files[0];
+        //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
+        var formData = new FormData();
+        formData.append('code0', fileObj);
+        fetch("/api/codes/teams/"+this.teamid,{
+            method:'POST',
+            headers:{
+              "content-type": "multipart/form-data",
+               "Content-Type": "multipart/form-data",
+              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
+            body:formData,
+          }).then(response=>{
+            this.fileList=[];
+            if(response.status=="204")
+            {
+              this.$message.success('上传成功!');             
+            }
+            else if(response.status=="401")
+            {
+              this.$message.error('你不在这个组中!');
+            }
+            else if(response.status=="403")
+            {
+              this.$message.error('不在系统开放时间内!');
+            }
+            else 
+            {
+              this.$message.error('上传失败!');
+            }
+          })
+        })
     },
     methods: {
       lookcode()//查看代码
