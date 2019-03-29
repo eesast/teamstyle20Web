@@ -149,7 +149,7 @@
 </template>
 
 <script>
-var finaldate=new Date("2019-04-18T12:00:00+08:00");
+var finaldate=new Date("2019-04-01T00:00:00+08:00");
 var nowdate=new Date();
 function getCookie(cname) {
   var name = cname + "=";
@@ -270,7 +270,7 @@ export default {
       }
     }).then(res=>{
       this.globalsetting=res;//设置
-      finaldate=new Date(res["submission_end"]);
+      // finaldate=new Date(res["submission_end"]);
     })
 
 

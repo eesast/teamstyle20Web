@@ -1,6 +1,7 @@
 <template>
     <div id="QR_contain">
         <!-- <img src="../../static/img/QRcode.jpg"></img> -->
+        <h5><i class="el-icon-info"></i>本群仅用于接待，入群后请联系两位负责人：张钧（微信: ZJ-together）、饶淙元（微信：rcy-512），然后进入大群</h5>
         <img src="../../static/img/QRcode2.jpg"></img>
     </div>
 </template>
@@ -37,12 +38,17 @@ export default {
     min-height:90vh;
     margin-bottom: 5px;
     }
+    #QR_contain h5
+    {
+        position: relative;
+        top:10vh;
+    }
      #QR_contain img{
     width:auto;
-    min-height:78%;
+    max-height:78vh;
     position: relative;
-    top:15%;
-}
+    top:10vh;
+    }
  }
 
 </style>
