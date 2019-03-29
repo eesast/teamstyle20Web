@@ -124,7 +124,8 @@ export default {
         },
         announcement_detail(idx)//展示标号为idx的公告的细节
         {
-            idx+=1
+            // idx+=1
+            idx=this.tableData[i]['id'];
             // console.log(idx);
             // this.$set(this.index,1);
             this.index=1;//面包屑上显示公告详情
