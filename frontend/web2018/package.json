@@ -14,17 +14,28 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@sindresorhus/is": "^0.15.0",
     "axios": "^0.18.0",
+    "cacheable-request": "^6.0.0",
+    "duplexer3": "^0.1.4",
     "element": "^0.1.4",
     "element-ui": "^2.5.4",
     "file-saver": "^2.0.0",
+    "into-stream": "^5.0.0",
+    "is-retry-allowed": "^1.1.0",
+    "isurl": "^4.0.0",
     "jszip": "^3.1.5",
+    "lowercase-keys": "^1.0.1",
+    "mimic-response": "^2.0.0",
+    "p-cancelable": "^1.1.0",
+    "p-timeout": "^3.0.0",
     "resolve-cwd": "^2.0.0",
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.2.1",
     "vue-particles": "^1.0.9",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-source": "^1.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
