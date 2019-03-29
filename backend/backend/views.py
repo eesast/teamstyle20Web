@@ -84,6 +84,7 @@ def auth(request):
         err_get_msg_id = 4012 if err_status==401 else err_status
         msg = get_error_msg(err_get_msg_id)
         response = HttpResponse(msg, status=err_status)
+
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
@@ -96,6 +97,7 @@ def auth(request):
 def users(request):
     try:
         if request.method == 'POST':
+            #return JsonResponse({'result':str(request.body)}) #test where is class
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
             #return JsonResponse({'result':str(request.body)}) #test where is class
@@ -488,9 +490,10 @@ def modifyTeamCodes(request, teamid):
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
                 compile_result = list()
-                for code_type, code_file in upload_file.items():
-                    compile_result.append(compile2(teamid, int(code_type)))
-                response = JsonResponse(compile_result, status=204)
+               # for code_type, code_file in upload_file.items():
+               #     compile_result.append(compile2(int(teamid), int(code_type)))
+               # response = JsonResponse(compile_result, status=204, safe=False)
+                response = HttpResponse("204 OK", status = 204)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:

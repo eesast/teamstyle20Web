@@ -1,0 +1,7 @@
+/ts20/code/player-only/src/player.cpp: In function 'void play_game()':
+/ts20/code/player-only/src/player.cpp:25:45: warning: narrowing conversion of '((rand() % 100) + 450)' from 'int' to 'double' inside { } [-Wnarrowing]
+   XYPosition landing_point = { rand() % 100 + 450, rand() % 100 + 450 };
+                                ~~~~~~~~~~~~~^~~~~
+/ts20/code/player-only/src/player.cpp:25:65: warning: narrowing conversion of '((rand() % 100) + 450)' from 'int' to 'double' inside { } [-Wnarrowing]
+   XYPosition landing_point = { rand() % 100 + 450, rand() % 100 + 450 };
+                                                    ~~~~~~~~~~~~~^~~~~

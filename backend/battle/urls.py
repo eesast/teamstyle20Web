@@ -8,9 +8,9 @@ urlpatterns = [
     path('debug/view/queue', views.debug_view_queue),
     path('debug/view/team', views.debug_view_team),
     path('debug/view/battle', views.debug_view_battle),
-    path('debug/clear/queue', views.debug_clear_queue),
-    path('debug/clear/team', views.debug_clear_team),
-    path('debug/clear/battle', views.debug_clear_battle),
-    path('debug/add/team', views.debug_add_team),
+#    path('debug/clear/queue', views.debug_clear_queue),
+#    path('debug/clear/team', views.debug_clear_team),
+#    path('debug/clear/battle', views.debug_clear_battle),
+#    path('debug/add/team', views.debug_add_team),
     path('result', views.view_result),
 ]
