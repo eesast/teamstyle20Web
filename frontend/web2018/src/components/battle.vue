@@ -289,7 +289,9 @@ export default {
               a.download = "职业"+(parseInt(filename[filename.length-5])+1)+'.cpp'; 
               a.click(); 
               window.URL.revokeObjectURL(url);
-          }))
+          })).catch(()=>{
+            this.$message.error('文件不存在!');
+          })
       },
       myUpload(content)
       {
