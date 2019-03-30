@@ -482,8 +482,8 @@ def modifyTeamCodes(request, teamid):
             else:
                 submission = False
             now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(), microsecond=0)
-            debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(
-                submission["start"]) + "\nSubmission End: " + str(submission["end"])
+            debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) + "\nSubmission End: " + str(submission["end"])
+            debugInfo += str(request.FILES)
             if systemOpen(submission, now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
@@ -494,7 +494,9 @@ def modifyTeamCodes(request, teamid):
                     upload_file['2'] = request.FILES['code2']
                 if 'code3' in request.FILES:
                     upload_file['3'] = request.FILES['code3']
-                code_path = json.loads(target_team.codes)
+                code_path = dict()
+                if(target_team.codes != ''):
+                    code_path = json.loads(target_team.codes)
                 fs = FileSystemStorage(location=settings.MEDIA_ROOT + '/Codes')
                 for code_type, code_file in upload_file.items():
                     filename = str(teamid) + '_' + str(code_type) + '.cpp'
@@ -508,7 +510,7 @@ def modifyTeamCodes(request, teamid):
                 # for code_type, code_file in upload_file.items():
                 #     compile_result.append(compile2(int(teamid), int(code_type)))
                 # response = JsonResponse(compile_result, status=204, safe=False)
-                response = HttpResponse("204 OK", status=204)
+                response = HttpResponse("204 OK" + debugInfo, status=204)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:

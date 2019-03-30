@@ -23,7 +23,7 @@ class Team(models.Model):
     rank = models.IntegerField(default = 999999)
     valid = models.IntegerField(default = 0)
     battle_time = models.IntegerField(default = 1)
-    codes = models.TextField(null=True, blank = True)
+    codes = models.TextField(default = '{}')
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
