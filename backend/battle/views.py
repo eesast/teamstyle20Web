@@ -289,6 +289,8 @@ def compile2(team_id, ind):
     ''' ��~Y��~Z�~X~_��~M��~V�~O�team_id以�~O~J�~A~L��~Z��~V�~O�(0~3)ind��~L��~[��~L代�| ~A��~V��~Q并�~T��~E�/media/Codes/output '''
     out_volume = root_path + '/media/temp' + generate_key(10)
     in_volume = '/MyVolume'
+    team_id = int(team_id)
+    ind = int(ind)
     if team_id == None or ind == None:
         return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
     if Team.objects.filter(id=team_id).exists() == False:
