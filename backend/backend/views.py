@@ -483,8 +483,8 @@ def modifyTeamCodes(request, teamid):
                 submission = False
             now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(), microsecond=0)
             debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) + "\nSubmission End: " + str(submission["end"])
-            debugInfo += "\n" + str(request.body)
-            debugInfo += "\n" + str(request.META)
+            debugInfo += "\n\n\n\n------BODY--------\n" + str(request.body)
+            debugInfo += "\n\n\n\n------HEADER-------\n" + str(request.META)
             if systemOpen(submission, now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
