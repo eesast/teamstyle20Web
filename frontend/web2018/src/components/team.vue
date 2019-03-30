@@ -970,6 +970,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 #detail_table tr th {
   padding: 12px;
+   width:32%;
 }
 #detail_table tr th i {
   padding-right: 12px;
@@ -978,6 +979,7 @@ document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
   position: relative;
   /* padding:12px; */
   vertical-align: middle;
+  width:68%;
   color: black;
   /* left:200px; */
 }
