@@ -30,6 +30,9 @@
             ref="upload"
             class="upload-demo"
             action=""
+            v-loading="loading_upload"
+            element-loading-text="文件上传中"
+            element-loading-spinner="el-icon-loading"
             :http-request="myUpload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
@@ -40,13 +43,15 @@
    
              <div slot="tip" class="el-upload__tip">只能上传.cpp文件</div>
              <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+             <!-- <el-button size="small" type="primary" icon="el-icon-loading" v-if="loading_upload==true" disabled>文件上传中</el-button> -->
             </el-upload>
             <!-- <el-input type="file" @onchange="jsReadFiles(this.files)"/> -->
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
             <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
             <br/>
             <h4>发起对战</h4>
-            <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true">发起对战</el-button>
+            <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true" v-if="loading_fight==false">发起对战</el-button>
+            <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;"  v-if="loading_fight==true" icon="el-icon-loading" disabled="true">对战中</el-button>
             <h5>今日对战次数:</h5>
             <h5>剩余对战次数:</h5>
             <br/>
@@ -108,10 +113,10 @@
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
       <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
-      <el-col :span="6"><el-checkbox :label="tableData[index-1].id" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index<tableData.length"><el-checkbox :label="tableData[index].id" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].id" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].id" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      <el-col :span="6"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index<tableData.length"><el-checkbox :label="tableData[index].teamid" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
       </template>
       </el-row>
       <!-- <el-row>
@@ -159,6 +164,8 @@ export default {
             // pagesize:100,    //    每页的数据
             dialogTableVisible:false,
             isIndeterminate: true,
+            loading_upload:false,
+            loading_fight:false,
             checkList: [],
             AInum:0,//AI人数
             tableData: [{
@@ -296,15 +303,16 @@ export default {
       myUpload(content)
       {
           
-          // this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
-          // {
-          //   confirmButtonText: "确定",
-          //   cancelButtonText: "取消",
-          //   dangerouslyUseHTMLString: true,
-          //   type: "warning"
-          // })
-          // .then(() => {
+          this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            dangerouslyUseHTMLString: true,
+            type: "warning"
+          })
+          .then(() => {
             // console.log(content);
+            this.loading_upload=true;
           console.log(content.file);
           // console.log(this.fileList);
           console.log(typeof content.file);
@@ -365,6 +373,7 @@ export default {
             },
             body:form,
           }).then(response=>{
+            this.loading_upload=false;
             this.fileList=[];
             if(response.status=="205")
             {
@@ -396,7 +405,7 @@ export default {
             }
           })
 
-          // })
+          })
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -443,10 +452,14 @@ export default {
         {
           this.dialogTableVisible=false;//隐藏对话框
           console.log(this.checkList);//勾选的队伍
+
+          this.loading_fight=true;
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
           //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname
 
           //以下将传送checkList这些标号的队伍，以及AInum个AI进行对战   *********************
+
+          this.loading_fight=false;
         }
         
     }
