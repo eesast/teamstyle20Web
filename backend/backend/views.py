@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.utils.http import urlquote
 from .models import *
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.template import *
 import requests
@@ -12,9 +12,12 @@ import datetime, time
 import jwt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from battle.views import compile2
+
+# from battle.views import compile2
 
 EXPIRE_TIME = 14400
+
+
 def make_x_access_token(eesast_token, validDuration=EXPIRE_TIME):
     user_info = jwt.decode(eesast_token, verify=False)
     token_content = dict()
@@ -23,11 +26,12 @@ def make_x_access_token(eesast_token, validDuration=EXPIRE_TIME):
     token_content["exp"] = time.time() + validDuration
     if user_info["exp"] < token_content["exp"]:
         raise jwt.ExpiredSignatureError
-    x_access_token =  jwt.encode(token_content, settings.SECRET_KEY, algorithm='HS256')
+    x_access_token = jwt.encode(token_content, settings.SECRET_KEY, algorithm='HS256')
     user_info["auth"] = True
     user_info["token"] = x_access_token.decode('utf-8')
     del user_info["name"], user_info["email"], user_info["group"], user_info["role"], user_info["iat"], user_info["exp"]
     return user_info
+
 
 def get_user_info(x_access_token):
     token_content = jwt.decode(x_access_token, settings.SECRET_KEY, algorithms='HS256')
@@ -36,12 +40,14 @@ def get_user_info(x_access_token):
     user_info["eesast"] = token_content["eesast"]
     return user_info
 
+
 def is_json(myjson):
-    if(isinstance(myjson, str)):
+    if (isinstance(myjson, str)):
         json_object = json.loads(myjson)
     else:
         json_object = json.loads(myjson.decode('utf-8'))
     return json_object
+
 
 def get_error_msg(err_status):
     msg_list = dict()
@@ -56,6 +62,7 @@ def get_error_msg(err_status):
     msg_list[409] = "409 Conflict: Team name already exists."
     return msg_list.get(err_status, str(err_status) + " Unknown Error.")
 
+
 def index(request):
     global_settings = GlobalSetting.objects.all()
     announcements = Announcement.objects.all()
@@ -64,9 +71,12 @@ def index(request):
         'announcements': announcements,
     }
     return render(request, 'index.html', context)
+
+
 def detail(request, post_id):
     announcement = get_object_or_404(Announcement, pk=post_id)
     return render(request, 'detail.html', {'post': announcement})
+
 
 @csrf_exempt
 def auth(request):
@@ -81,15 +91,15 @@ def auth(request):
         response = JsonResponse(output, status=200)
     except AssertionError as error:
         err_status = int(error.__str__())
-        err_get_msg_id = 4012 if err_status==401 else err_status
+        err_get_msg_id = 4012 if err_status == 401 else err_status
         msg = get_error_msg(err_get_msg_id)
         response = HttpResponse(msg, status=err_status)
 
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
-    #else:
-       # response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    # response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -97,10 +107,10 @@ def auth(request):
 def users(request):
     try:
         if request.method == 'POST':
-            #return JsonResponse({'result':str(request.body)}) #test where is class
+            # return JsonResponse({'result':str(request.body)}) #test where is class
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
-            #return JsonResponse({'result':str(request.body)}) #test where is class
+            # return JsonResponse({'result':str(request.body)}) #test where is class
             add_response = requests.post(add_URL, json=user_profile)
             assert add_response.status_code == 201, add_response.status_code
             auth_URL = 'https://api.eesast.com/v1/users/login'
@@ -114,7 +124,7 @@ def users(request):
             assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
             x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
             assert type(x_access_token) is dict, 401
-            assert x_access_token["token"],401
+            assert x_access_token["token"], 401
             user_info = get_user_info(x_access_token["token"])
             get_user_URL = 'https://api.eesast.com/v1/users?detailInfo=True'
             get_user_hed = {'Authorization': 'Bearer ' + user_info["eesast"]}
@@ -125,7 +135,7 @@ def users(request):
     except AssertionError as error:
         err_status = int(error.__str__())
         msg = get_error_msg(err_status)
-        err_status = 401 if err_status==4011 else err_status
+        err_status = 401 if err_status == 4011 else err_status
         response = HttpResponse(msg, status=err_status)
     except jwt.PyJWTError:
         msg = get_error_msg(4011)
@@ -133,8 +143,8 @@ def users(request):
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
-    #else:
-      #  response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -154,7 +164,7 @@ def modifyUser(request, user_id):
         elif request.method == 'PUT':
             modifyInfo = is_json(request.body)
             query_response = requests.put(target_user_URL, json=modifyInfo, headers=head)
-            msg = "204 OK." if (query_response.status_code==204) else (query_response.text)
+            msg = "204 OK." if (query_response.status_code == 204) else (query_response.text)
             response = HttpResponse(msg, status=query_response.status_code)
         elif request.method == 'DELETE':
             assert user_info["role"] == "root", 401
@@ -173,8 +183,8 @@ def modifyUser(request, user_id):
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
-    #else:
-      #  response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -216,6 +226,7 @@ def get_teamid_by_userid(user_id):
         return -1
     pass
 
+
 @csrf_exempt
 def teams(request):
     try:
@@ -223,7 +234,7 @@ def teams(request):
         x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
         assert x_access_token["token"], 401
         user_info = get_user_info(x_access_token["token"])
-        #head = {'Authorization': 'Bearer ' + user_info["eesast"]}
+        # head = {'Authorization': 'Bearer ' + user_info["eesast"]}
         if request.method == 'GET':
             if 'detailInfo' in request.GET:
                 showtype = int(request.GET['detailInfo'] == 'True' or request.GET['detailInfo'] == 'true')
@@ -234,12 +245,14 @@ def teams(request):
             response = JsonResponse(output, status=200, safe=False)
         elif request.method == 'POST':
             new_team_info = is_json(request.body)
-            assert 'teamname' in new_team_info and 'description' in new_team_info , 422
+            assert 'teamname' in new_team_info and 'description' in new_team_info, 422
             new_team_info['captain'] = int(user_info['id'])
             new_team_info['members'] = json.dumps([int(new_team_info['captain'])])
-            new_team_info['invitecode'] = hashlib.sha512(((hashlib.sha512(new_team_info['teamname'].encode('utf-8')).hexdigest()) + uuid.uuid4().hex).encode('utf-8')).hexdigest()[0:9]
-            assert Team.objects.filter(teamname = new_team_info['teamname']).count()==0, 409
-            if (get_teamid_by_userid(int(user_info["id"]))>=0):
+            new_team_info['invitecode'] = hashlib.sha512(
+                ((hashlib.sha512(new_team_info['teamname'].encode('utf-8')).hexdigest()) + uuid.uuid4().hex).encode(
+                    'utf-8')).hexdigest()[0:9]
+            assert Team.objects.filter(teamname=new_team_info['teamname']).count() == 0, 409
+            if (get_teamid_by_userid(int(user_info["id"])) >= 0):
                 response = HttpResponse("409 Conflict: User is already in a team.", status=409)
             else:
                 result = Team.objects.create(**new_team_info)
@@ -258,8 +271,8 @@ def teams(request):
     except json.JSONDecodeError:
         msg = get_error_msg(4221)
         response = HttpResponse(msg, status=422)
-    #else:
-      #  response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -307,7 +320,7 @@ def modifyTeamByID(request, teamid):
         elif request.method == 'DELETE':
             target_team = Team.objects.get(pk=teamid)
             has_permission = 0;
-            if int(target_team.captain) == int(user_info["id"]) or user_info["role"] == "root" :
+            if int(target_team.captain) == int(user_info["id"]) or user_info["role"] == "root":
                 has_permission = 1
             assert has_permission, 401
             target_team.delete()
@@ -327,8 +340,8 @@ def modifyTeamByID(request, teamid):
         response = HttpResponse(msg, status=422)
     except Team.DoesNotExist:
         response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
-    #else:
-      #  response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -358,7 +371,7 @@ def modifyTeamMembersByID(request, teamid):
             elif (str(targetTeam.invitecode) != str(addInfo["invitecode"])):
                 error = 1
                 response = HttpResponse("403 Forbidden: Incorrect invite code.", status=403)
-            elif (get_teamid_by_userid(int(user_info["id"]))>=0):
+            elif (get_teamid_by_userid(int(user_info["id"])) >= 0):
                 error = 1
                 response = HttpResponse("409 Conflict: User is already in a team.", status=409)
             if not error:
@@ -394,7 +407,6 @@ def modifyTeamMembersByID(request, teamid):
     return response
 
 
-
 @csrf_exempt
 def personalTeamActions(request, teamid, userid):
     try:
@@ -404,7 +416,7 @@ def personalTeamActions(request, teamid, userid):
         user_info = get_user_info(x_access_token["token"])
         if request.method == 'GET':
             a = get_teamid_by_userid(userid)
-            if(a!=-1):
+            if (a != -1):
                 target_team = Team.objects.filter(pk=a)
                 output = append_team_member_name(user_info, target_team, 1)
                 response = JsonResponse(output[0], status=200)
@@ -413,12 +425,12 @@ def personalTeamActions(request, teamid, userid):
         elif request.method == 'DELETE':
             target_team = Team.objects.get(pk=teamid)
             has_permission = 0;
-            if int(target_team.captain) == int(user_info["id"]) or user_info["role"] == "root" :
+            if int(target_team.captain) == int(user_info["id"]) or user_info["role"] == "root":
                 has_permission = 1
             assert has_permission, 401
             if (str(target_team.captain) == str(userid)):
                 response = HttpResponse("400 Bad Request: Captain cannot be deleted.", status=400)
-            elif(not target_team.memberInTeam(int(userid))):
+            elif (not target_team.memberInTeam(int(userid))):
                 response = HttpResponse("400 Bad Request: The ID is not in the team.", status=400)
             else:
                 target_team.delete_member(userid)
@@ -442,6 +454,7 @@ def personalTeamActions(request, teamid, userid):
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
 
+
 def systemOpen(submission, now):
     if submission == False:
         return False
@@ -449,6 +462,7 @@ def systemOpen(submission, now):
         return False
     else:
         return True
+
 
 @csrf_exempt
 def modifyTeamCodes(request, teamid):
@@ -467,9 +481,10 @@ def modifyTeamCodes(request, teamid):
                 submission["end"] = tzd.localtime(get_globalSettings[0].submission_end)
             else:
                 submission = False
-            now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(),microsecond=0)
-            debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(submission["start"]) + "\nSubmission End: " + str(submission["end"])
-            if systemOpen(submission,now):
+            now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(), microsecond=0)
+            debugInfo = "Current Time: " + str(now) + "\nSubmission Start: " + str(
+                submission["start"]) + "\nSubmission End: " + str(submission["end"])
+            if systemOpen(submission, now):
                 upload_file = dict()
                 if 'code0' in request.FILES:
                     upload_file['0'] = request.FILES['code0']
@@ -480,9 +495,9 @@ def modifyTeamCodes(request, teamid):
                 if 'code3' in request.FILES:
                     upload_file['3'] = request.FILES['code3']
                 code_path = json.loads(target_team.codes)
-                fs = FileSystemStorage(location=settings.MEDIA_ROOT+'/Codes')
+                fs = FileSystemStorage(location=settings.MEDIA_ROOT + '/Codes')
                 for code_type, code_file in upload_file.items():
-                    filename = str(teamid) + '_' +str(code_type) +'.cpp'
+                    filename = str(teamid) + '_' + str(code_type) + '.cpp'
                     if fs.exists(filename):
                         fs.delete(filename)
                     f = fs.save(filename, code_file)
@@ -490,10 +505,10 @@ def modifyTeamCodes(request, teamid):
                 target_team.codes = json.dumps(code_path)
                 target_team.save()
                 compile_result = list()
-               # for code_type, code_file in upload_file.items():
-               #     compile_result.append(compile2(int(teamid), int(code_type)))
-               # response = JsonResponse(compile_result, status=204, safe=False)
-                response = HttpResponse("204 OK", status = 204)
+                # for code_type, code_file in upload_file.items():
+                #     compile_result.append(compile2(int(teamid), int(code_type)))
+                # response = JsonResponse(compile_result, status=204, safe=False)
+                response = HttpResponse("204 OK", status=204)
             else:
                 response = HttpResponse("403 Forbidden: System closed for upload.\n" + debugInfo, status=403)
         else:
@@ -511,8 +526,8 @@ def modifyTeamCodes(request, teamid):
         response = HttpResponse(msg, status=422)
     except Team.DoesNotExist:
         response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
-    #else:
-        #response = HttpResponse("520 Unknown Error", status=520)
+    # else:
+    # response = HttpResponse("520 Unknown Error", status=520)
     return response
 
 
@@ -556,8 +571,6 @@ def downloadTeamCodes(request, teamid, codetype):
     return response
 
 
-
-
 def listAnnouncementAPI(request):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
     if request.method == 'GET':
@@ -578,7 +591,7 @@ def viewAnnouncementAPI(request, post_id):
             output.append(query.get_AnnouncementInfo(1))
             response = JsonResponse(output, status=200, safe=False)
         except Announcement.DoesNotExist:
-            response = HttpResponse("404 Not found.", status = 404)
+            response = HttpResponse("404 Not found.", status=404)
     return response
 
 
@@ -602,14 +615,15 @@ def downloadFileAPI(request, file_id):
             response['Content-Type'] = 'application/octet-stream'
             response['Content-Disposition'] = 'attachment;filename = ' + urlquote(query.filename())
         except File.DoesNotExist:
-            response = HttpResponse("404 Not found.", status = 404)
+            response = HttpResponse("404 Not found.", status=404)
     return response
+
 
 def getGlobalSettings(request):
     response = HttpResponse("405 Method not allowed: You\'ve used an unallowed method.", status=405)
     if request.method == 'GET':
         query = GlobalSetting.objects.all()
-        if query.count()==1:
+        if query.count() == 1:
             response = JsonResponse(query[0].get_globalSetting(), status=200)
         else:
             response = HttpResponse("404 Not found: Global Settings of this event are not yet configured.", status=404)
