@@ -12,7 +12,7 @@
       <el-menu-item v-show="navflag!=true" index="/team" >组队</el-menu-item>
       <!-- <el-menu-item v-show="navflag!=true" index="/battle" >对战</el-menu-item> -->
       <!-- <el-menu-item v-show="navflag!=true" index="/personal" >个人中心</el-menu-item> -->
-      <el-menu-item v-show="navflag!=true" index="/file" >文件</el-menu-item>
+      <!-- <el-menu-item v-show="navflag!=true" index="/file" >文件</el-menu-item> -->
       <el-menu-item v-show="navflag!=true" index="/announcement">公告</el-menu-item>
       <el-menu-item v-show="navflag!=true" index="/QR">二维码</el-menu-item>
       <el-menu-item v-show="navflag!=true" class="bu1" index="" style="float:right;"> <div  @click="navjump" style="vertical-align:middle;color:#F56C6C;">退出登录</div></el-menu-item>
