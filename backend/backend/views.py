@@ -13,7 +13,7 @@ import jwt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
-# from battle.views import compile2
+from battle.views import compile2
 
 EXPIRE_TIME = 14400
 
