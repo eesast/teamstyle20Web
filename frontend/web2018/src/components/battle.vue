@@ -262,15 +262,25 @@ export default {
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             }
           }).then(res=>{
-              console.log(res);
-              this.$confirm(res,"浏览",
+            if(res.status=="200")
+            {
+              return res.blob();
+            }
+            else if(res.status=="404")
+            {
+              this.$message.error('没有对应该职业的文件!');
+              throw 'bad';
+            }
+            }).then(blob=>{
+              console.log(blob);
+              this.$confirm(blob,"浏览",
               {
                 confirmButtonText: "确定",
                 // cancelButtonText: "取消",
                 dangerouslyUseHTMLString: true,
                 type: "warning"
               }).then(()=>{}).catch(()=>{})
-          })
+          }).catch(()=>{})
       },
       downloadcode()//下载代码
       {
@@ -281,15 +291,25 @@ export default {
               "content-type": "application/octet-stream",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             }
-          }).then(res => res.blob().then(blob => { 
+          }).then(res=>{
+            if(res.status=="200")
+            {
+              return res.blob();
+            }
+            else if(res.status=="404")
+            {
+              this.$message.error('没有对应该职业的文件!');
+              throw 'bad';
+            }
+            }).then(blob => { 
               var a = document.createElement('a'); 
               var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
               var filename = res.headers.get('Content-Disposition'); 
               a.href = url; 
-              a.download = "职业"+((filename[filename.length-1])+1)+'.cpp'; 
+              a.download = "职业"+(parseInt(filename[filename.length-5])+1)+'.cpp'; 
               a.click(); 
               window.URL.revokeObjectURL(url);
-          }))
+          }).catch(()=>{})
       },
       myUpload(content)
       {
