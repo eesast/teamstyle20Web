@@ -261,15 +261,16 @@ export default {
               "content-type": "application/octet-stream",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             }
-          }).then(res => res.blob().then(blob => { 
-              var a = document.createElement('a'); 
-              var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
-              // var filename = res.headers.get('Content-Disposition'); 
-              a.href = url; 
-              // a.download = filename; 
-              a.click(); 
-              window.URL.revokeObjectURL(url);
-          }))
+          }).then(res=>{
+              console.log(res);
+              this.$confirm(res,"浏览",
+              {
+                confirmButtonText: "确定",
+                // cancelButtonText: "取消",
+                dangerouslyUseHTMLString: true,
+                type: "warning"
+              }).then(()=>{}).catch(()=>{})
+          })
       },
       downloadcode()//下载代码
       {
@@ -285,7 +286,7 @@ export default {
               var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
               var filename = res.headers.get('Content-Disposition'); 
               a.href = url; 
-              a.download = "职业"+(parseInt(filename.substring(filename.length-1))+1); 
+              a.download = "职业"+((filename[filename.length-1])+1)+'.cpp'; 
               a.click(); 
               window.URL.revokeObjectURL(url);
           }))
