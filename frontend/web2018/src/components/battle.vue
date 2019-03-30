@@ -363,13 +363,25 @@ export default {
             body:form,
           }).then(response=>{
             this.fileList=[];
-            if(response.status=="204")
+            if(response.status=="205")
             {
               this.$message.success('上传成功!');             
             }
             else if(response.status=="401")
             {
-              this.$message.error('你不在这个组中!');
+              this.$message.error("token失效，请重新登录！");
+              if(token!=null)
+              {
+                  delCookie("token")
+                  delCookie("id")
+                  delCookie("username")
+                  token=null
+                  username=null
+                  id=null
+                  setTimeout(() => {
+                    window.location="https://teamstyle.eesast.com/login";
+                  }, 100)
+              }
             }
             else if(response.status=="403")
             {
