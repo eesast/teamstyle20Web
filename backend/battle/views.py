@@ -303,7 +303,6 @@ def compile2(team_id, ind):
         os.makedirs(codes_path + '/output')
     # if os.path.isfile(target_path):
     #    os.remove(target_path)
-    # ��~M�~H| �~Y��~N~_�~\��~Z~D.so�~V~G件��~L�~A��~E~M�~X~_��~M�~A��~D~O�~K~R��~]�~O~B��~[
     os.makedirs(out_volume)
     shutil.copyfile(origin_path, out_volume + '/code.cpp')
 
