@@ -237,6 +237,7 @@ export default {
     position: relative;
     text-align: left;
     color: #909399;
+    z-index: 2020;
     border-collapse: collapse;
 }
 #detail_table tr
