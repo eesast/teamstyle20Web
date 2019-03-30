@@ -264,9 +264,9 @@ export default {
           }).then(res => res.blob().then(blob => { 
               var a = document.createElement('a'); 
               var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
-              var filename = res.headers.get('Content-Disposition'); 
+              // var filename = res.headers.get('Content-Disposition'); 
               a.href = url; 
-              a.download = filename; 
+              // a.download = filename; 
               a.click(); 
               window.URL.revokeObjectURL(url);
           }))
@@ -285,7 +285,7 @@ export default {
               var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
               var filename = res.headers.get('Content-Disposition'); 
               a.href = url; 
-              a.download = filename; 
+              a.download = "职业"+(parseInt(filename.substring(filename.length-1))+1); 
               a.click(); 
               window.URL.revokeObjectURL(url);
           }))
