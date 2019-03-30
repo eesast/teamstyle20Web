@@ -225,7 +225,7 @@ export default {
   margin-top: 10px;
   margin-right: 40px;
 }
-#detail_table
+#announcement_contain #detail_table
 {
     padding: 12px 0;
     min-width: 0;
@@ -240,14 +240,14 @@ export default {
     z-index: 2020;
     border-collapse: collapse;
 }
-#detail_table tr
+#announcement_contain #detail_table tr
 {
     /* border:1px solid red; */
     width:100%;
     padding:12px;
     border-bottom: 1px solid #f5f7fa;
 }
-#detail_table tr th
+#announcement_contain #detail_table tr th
 {
     padding:12px;
     width:32%;

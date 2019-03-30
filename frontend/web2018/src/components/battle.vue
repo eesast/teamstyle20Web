@@ -356,7 +356,7 @@ export default {
           fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
             headers:{
-              "content-type": "multipart/form-data",
+              // "content-type": "multipart/form-data",
                "Content-Type": "multipart/form-data",
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
