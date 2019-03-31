@@ -377,7 +377,18 @@ export default {
             this.fileList=[];
             if(response.status=="205")
             {
-              this.$message.success('上传成功!');             
+              this.$message.success('上传成功!');      
+              var res=response.json();
+              this.$alert(res[0].status+'<br/>'+res[0].information, '编译结果', {
+              confirmButtonText: '确定',
+               dangerouslyUseHTMLString: true,
+              callback: action => {
+                // this.$message({
+                //   type: 'info',
+                //   message: `action: ${ action }`
+                // });
+              }
+            });       
             }
             else if(response.status=="401")
             {
