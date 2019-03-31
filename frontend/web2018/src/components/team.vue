@@ -281,6 +281,86 @@ export default {
       this.mobile=true;
       this.pagesize=7;
     }
+
+    fetch('/api/teams/0/members/'+id,
+    {
+        method:'GET',
+        headers: {
+        "Content-Type": "application/json",
+        "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+        }
+    }).then(response=>
+    {
+        if(response.status=="404")
+        {
+            //没有队伍
+            this.showteaminfo=false;
+            this.team="none";
+            // throw '';
+        }
+        if (response.status=="200") {
+        return response.json();
+        } 
+        else if (response.status == "401") {
+        this.$message.error("token失效，请重新登录！");
+        if(token!=null)
+        {
+            delCookie("token")
+            delCookie("id")
+            delCookie("username")
+            token=null
+            username=null
+            id=null
+            setTimeout(() => {
+              window.location="https://teamstyle.eesast.com/login";
+            }, 100)
+        }
+        }
+        else
+        {
+            this.$message.error("服务器暂时无法响应！");
+        }
+        throw 'bad';
+    },error=>
+    {
+        this.$message.error("加载失败，请稍后刷新页面重试！")
+    }).then(res=>
+    {
+        var ans=res;//取出object
+
+        if(ans.captainID==id){
+            console.log(id);
+            this.iscaptain = true;
+            this.inteam = true;
+            this.detailData["teamname"] = ans["teamname"];
+            this.detailData["captain"]= ans["captain"];
+            this.detailData["captainID"]= ans["captainID"];
+            this.detailData["invitecode"] = ans["invitecode"];
+            this.detailData["description"] = ans["description"];
+            this.detailData["members"] = ans["members"];
+            this.detailData["membersID"] = ans["membersID"];
+            this.team_id=ans["teamid"]
+
+          } else {
+           
+                this.inteam = true;
+                this.iscaptain=false;//
+                this.detailData["teamname"] = ans["teamname"];
+                this.detailData["captain"] = ans["captain"];
+                 this.detailData["captainID"]= ans["captainID"];
+                this.detailData["invitecode"] =ans["invitecode"];
+                this.detailData["description"] = ans["description"];
+                this.detailData["members"] = ans["members"];
+                this.detailData["membersID"] = ans["membersID"];
+                this.team_id=ans["teamid"]
+              
+            
+          }
+    },error=>
+    {
+
+    })
+
     fetch("/api/teams", {
       method: "GET",
       headers: {
@@ -313,37 +393,37 @@ export default {
       })
       .then(res => {
         this.tableData = res;
-        for (var i = 0; i < this.tableData.length; i++) {
-          if (id == this.tableData[i].captainID) {
-            console.log(id);
-            this.iscaptain = true;
-            this.inteam = true;
-            this.detailData["teamname"] = this.tableData[i]["teamname"];
-            this.detailData["captain"]= this.tableData[i]["captain"];
-            this.detailData["captainID"]= this.tableData[i]["captainID"];
-            this.detailData["invitecode"] = this.tableData[i]["invitecode"];
-            this.detailData["description"] = this.tableData[i]["description"];
-            this.detailData["members"] = this.tableData[i]["members"];
-            this.detailData["membersID"] = this.tableData[i]["membersID"];
-            this.team_id=this.tableData[i]["teamid"]
+        // for (var i = 0; i < this.tableData.length; i++) {
+        //   if (id == this.tableData[i].captainID) {
+        //     console.log(id);
+        //     this.iscaptain = true;
+        //     this.inteam = true;
+        //     this.detailData["teamname"] = this.tableData[i]["teamname"];
+        //     this.detailData["captain"]= this.tableData[i]["captain"];
+        //     this.detailData["captainID"]= this.tableData[i]["captainID"];
+        //     this.detailData["invitecode"] = this.tableData[i]["invitecode"];
+        //     this.detailData["description"] = this.tableData[i]["description"];
+        //     this.detailData["members"] = this.tableData[i]["members"];
+        //     this.detailData["membersID"] = this.tableData[i]["membersID"];
+        //     this.team_id=this.tableData[i]["teamid"]
 
-          } else {
-            for (var j = 0; j < this.tableData[i].membersID.length; j++) {
-              if (id ==this.tableData[i].membersID[j]) {
-                this.inteam = true;
-                this.iscaptain=false;//
-                this.detailData["teamname"] = this.tableData[i]["teamname"];
-                this.detailData["captain"] = this.tableData[i]["captain"];
-                 this.detailData["captainID"]= this.tableData[i]["captainID"];
-                this.detailData["invitecode"] =this.tableData[i]["invitecode"];
-                this.detailData["description"] = this.tableData[i]["description"];
-                this.detailData["members"] = this.tableData[i]["members"];
-                this.detailData["membersID"] = this.tableData[i]["membersID"];
-                this.team_id=this.tableData[i]["teamid"]
-              }
-            }
-          }
-        }
+        //   } else {
+        //     for (var j = 0; j < this.tableData[i].membersID.length; j++) {
+        //       if (id ==this.tableData[i].membersID[j]) {
+        //         this.inteam = true;
+        //         this.iscaptain=false;//
+        //         this.detailData["teamname"] = this.tableData[i]["teamname"];
+        //         this.detailData["captain"] = this.tableData[i]["captain"];
+        //          this.detailData["captainID"]= this.tableData[i]["captainID"];
+        //         this.detailData["invitecode"] =this.tableData[i]["invitecode"];
+        //         this.detailData["description"] = this.tableData[i]["description"];
+        //         this.detailData["members"] = this.tableData[i]["members"];
+        //         this.detailData["membersID"] = this.tableData[i]["membersID"];
+        //         this.team_id=this.tableData[i]["teamid"]
+        //       }
+        //     }
+        //   }
+        // }
       });
   },
 
