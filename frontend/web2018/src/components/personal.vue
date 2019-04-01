@@ -20,10 +20,52 @@
     <div class="empty"></div>
     <div class="part2" style="vertical-align: top;">
         <el-card shadow="always"  style="text-align:left;">
-        <h4>分数曲线：</h4>
+        <!-- <h4>分数曲线：</h4> -->
         <el-collapse v-model="activeNames" @change="handleChange">
-            <el-collapse-item title="对战历史" name="2">
-                <el-table :data="tableData" style="width: 100%"  max-height="300" :cell-class-name="tableStyle"
+
+
+            <!-- 主动对战结果 -->
+            <el-collapse-item title="主动对战历史" name="1">
+                <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofactive"
+                empty-text="暂无对战历史"
+                >
+                <el-table-column prop="color" min-width="1%" >
+                    <template slot-scope="scope">
+                    <div class="nothing" >&nbsp;</div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
+                    <!-- <template slot-scope="scope">
+                        <span v-for="(x,index) in scope.row.teams">{{x}}|</span>
+                        AI:{{scope.row.ainum}}
+                    </template> -->
+                </el-table-column>
+                <el-table-column prop="rank" label="队伍排名" min-width="20%">
+                </el-table-column>
+                <el-table-column prop="score" label="得分" min-width="20%">
+                </el-table-column>
+                <el-table-column prop="state" label="状态" min-width="20%">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.state==2"><i class="el-icon-loading"></i>对战中</span>
+                        <span v-if="scope.row.state==1"><i class="el-icon-loading"></i>排队中</span>
+                        <span v-if="scope.row.state==0">对战结束</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="download" min-width="40%">
+                    <template slot-scope="scope">
+                    <el-button  size="small" @click="perdownload(scope.$index,1)" :disabled="scope.row.state!=0">下载回放</el-button>
+                    <el-button  size="small" @click="perdetail(scope.$index,1)" :disabled="scope.row.state!=0">查看详情</el-button>
+                    </template>
+                </el-table-column>
+                </el-table>
+            </el-collapse-item>
+
+
+
+            <!-- 被动对战结果 -->
+            
+            <el-collapse-item title="被挑战历史" name="2">
+                <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofpassive"
                 empty-text="暂无对战历史"
                 >
             <el-table-column prop="color" min-width="1%" >
@@ -41,21 +83,25 @@
             </el-table-column>
             <el-table-column prop="score" label="得分" min-width="20%">
             </el-table-column>
-            <el-table-column prop="state" label="状态" min-width="20%">
+           <el-table-column prop="state" label="状态" min-width="20%">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.state"><i class="el-icon-loading"></i>对战中</span>
-                    <span v-else>对战结束</span>
+                    <span v-if="scope.row.state==2"><i class="el-icon-loading"></i>对战中</span>
+                    <span v-if="scope.row.state==1"><i class="el-icon-loading"></i>排队中</span>
+                    <span v-if="scope.row.state==0">对战结束</span>
                 </template>
             </el-table-column>
             <el-table-column prop="download" min-width="40%">
                 <template slot-scope="scope">
-                <el-button  size="small" @click="perdownload" :disabled="scope.row.state">下载回放</el-button>
-                <el-button  size="small" @click="perdownload" :disabled="scope.row.state">查看详情</el-button>
+                <el-button  size="small" @click="perdownload(scope.$index,2)" :disabled="scope.row.state!=0">下载回放</el-button>
+                <el-button  size="small" @click="perdetail(scope.$index,2)" :disabled="scope.row.state!=0">查看详情</el-button>
                 </template>
             </el-table-column>
             </el-table>
             </el-collapse-item>
-            </el-collapse>
+
+
+
+        </el-collapse>
         </el-card>
     </div>
     <div class="empty_content"></div>
@@ -87,54 +133,30 @@ export default {
             rank: 5,//teamrank
             activeNames: [],
             showteaminfo:false,//是否加入队伍
-            tableData:[],
-            //     {
-            //         teams: ["team1","team2","team3"],//对战队伍
-            //         ainum:0,//AI人数
-            //         winner:'team1',//吃鸡队伍
-            //         rank: 1,//当前队伍排名
-            //         score:1,//当前队伍得分
-            //         state:false,//对战是否结束       是或否
-            //         download:'',//回放下载路径
-            //     },
-            //     {
-            //         teams: "team2",
-            //         result: "fail",
-            //         state:true,//对战是否结束       是或否
-            //     },
-            //     {
-            //         teams: "team3",
-            //         result: "fail"
-            //     },
-            //     {
-            //         teams: "team4",
-            //         result: "victory"
-            //     },
-            //     {
-            //         teams: "team2",
-            //         result: "fail"
-            //     },
-            //     {
-            //         teams: "team3",
-            //         result: "fail"
-            //     },
-            //     {
-            //         teams: "team4",
-            //         result: "victory"
-            //     },
-            //     {
-            //         teams: "team2",
-            //         result: "fail"
-            //     },
-            //     {
-            //         teams: "team3",
-            //         result: "fail"
-            //     },
-            //     {
-            //         teams: "team4",
-            //         result: "victory"
-            //     }
-            // ]
+            history_active:[],
+            history_passive:[],
+            tableDataofactive:[
+            {
+                teams: [1,2],
+                teamsname:[],
+                ainum: 5,
+                state: 0,
+                initiator_id: 2,
+                winner: "yyr2",
+                rank: 2,
+                score: 300
+            }],
+            tableDataofpassive:[
+            {
+                teams: [1,2],
+                teamsname:[],
+                ainum: 5,
+                state: 2,
+                initiator_id: 2,
+                winner: "yyr2",
+                rank: 2,
+                score: 300
+            }]
         }
     },
     methods: {
@@ -142,8 +164,42 @@ export default {
         {
 
         },
-        perdownload(){
-            //这里时下载函数
+        perdetail(idx,num){
+            //这里是弹出一个框显示对战结果
+            console.log(idx);
+
+            if(num==1)//active
+            {
+                this.$alert('对战队伍:'+this.tableDataofactive[idx].teamsname+'<br/>AI数量:'+this.tableDataofactive[idx].ainum+'<br/>吃鸡队伍:'+this.tableDataofactive[idx].winner+'<br/>本次比赛队伍排名:'+this.tableDataofactive[idx].rank+'<br/>本场比赛得分:'+this.tableDataofactive[idx].score, 
+                '对战详情', {
+                confirmButtonText: '确定',
+                dangerouslyUseHTMLString: true,
+                callback: action => {
+                    // this.$message({
+                    //   type: 'info',
+                    //   message: `action: ${ action }`
+                    // });
+                }
+                })
+            }
+            else if(num==2)//passive
+            {
+                this.$alert('对战队伍:'+this.tableDataofpassive[idx].teamsname+'<br/>AI数量:'+this.tableDataofpassive[idx].ainum+'<br/>吃鸡队伍:'+this.tableDataofpassive[idx].winner+'<br/>本次比赛队伍排名:'+this.tableDataofpassive[idx].rank+'<br/>本场比赛得分:'+this.tableDataofpassive[idx].score, 
+                '对战详情', {
+                confirmButtonText: '确定',
+                dangerouslyUseHTMLString: true,
+                callback: action => {
+                    // this.$message({
+                    //   type: 'info',
+                    //   message: `action: ${ action }`
+                    // });
+                }
+                })
+            }
+             
+        },
+        perdownload(idx,num){
+            //这里是下载函数
         },
         tableRowClassName({row, rowIndex}) {
         if (row.result=== "fail") {
@@ -159,10 +215,17 @@ export default {
                 path: '/alter',
         })
       },
-      tableStyle({ row, column, rowIndex, columnIndex }) {
+      tableStyleofactive({ row, column, rowIndex, columnIndex }) {
             if(columnIndex==0)
             {
-                if(this.tableData[rowIndex].result=='victory')return 'statecolor'
+                if(this.tableDataofactive[rowIndex].result=='victory')return 'statecolor'
+                else return 'statecolor2'
+            }
+        },
+        tableStyleofpassive({ row, column, rowIndex, columnIndex }) {
+            if(columnIndex==0)
+            {
+                if(this.tableDataofpassive[rowIndex].result=='victory')return 'statecolor'
                 else return 'statecolor2'
             }
         },
@@ -253,6 +316,60 @@ export default {
                 this.team=ans.teamname;
                 this.score=ans.score;
                 this.rank=ans.rank; 
+                this.history_active=ans.history_active;
+                this.history_passive=ans.history_passive;
+
+
+                //更新active和passtive
+                for(var i=0;i<this.history_active.length;i++)
+                {
+                    // tableDataofactive
+                    fetch('/api/battle/result',{
+                        method:'GET',
+                        headers:{
+                              "Content-Type": "application/json",
+                              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                        },
+                        body:JSON.stringify({
+                            battle_id:this.history_active[i],
+                        })
+                    }).then(responsex=>{
+                        if(responsex.ok)
+                        {
+                            return responsex.json();
+                        }
+                        else throw 'bad';
+                    }).then(resx=>{
+                        this.tableDataofactive[i]=resx;
+
+                    }).catch(()=>{this.$message.error('服务器无法响应')})
+                }
+
+                for(var i=0;i<this.history_passive.length;i++)
+                {
+                    fetch('/api/battle/result',{
+                        method:'GET',
+                        headers:{
+                              "Content-Type": "application/json",
+                              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                        },
+                        body:JSON.stringify({
+                            battle_id:this.history_passive[i],
+                        })
+                    }).then(responsex=>{
+                        if(responsex.ok)
+                        {
+                            return responsex.json();
+                        }
+                        else throw 'bad';
+                    }).then(resx=>{
+                        this.tableDataofpassive[i]=resx;
+                    }).catch(()=>{this.$message.error('服务器无法响应')})
+                }
+
+
+
+
             },error=>
             {
 
