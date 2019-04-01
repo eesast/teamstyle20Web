@@ -108,9 +108,9 @@ def add_battle(request):
     # 读取request，检查合法性，并且存入Battle数据库
     team_engaged = request.GET.get('teams', None)
     robot_num = request.GET.get('AInum', None)
-    initiator_name = request.GET.get('initiator_name',None)
+    initiator_id = request.GET.get('initiator_id',None)
     status = 1
-    if team_engaged==None or robot_num==None or initiator_name==None :
+    if team_engaged==None or robot_num==None or initiator_id==None :
         return HttpResponse('Lose parameters.')
     robot_num = int(robot_num)
     team_engaged = json.loads(team_engaged)
@@ -120,8 +120,13 @@ def add_battle(request):
             return HttpResponse('No team:%s'%team_id)
         if team[0].valid!=15:
             return HttpResponse('Team \"%s\" is invalid!'%(team_id))
+    ini_team = Team.objects.get(id=initiator_id)
+    if ini_team.get_battle_time()==0:
+        return HttpResponse('No remaining times.')
+    ini_team.battle_time += 1
+    ini_team.save()
 
-    battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_name=initiator_name)
+    battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_id=initiator_id)
     battle_id=battle.id # 对战ID
     path = root_path+'/media/data/%d'%battle_id ;
     os.makedirs(path)
