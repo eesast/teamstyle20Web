@@ -495,9 +495,28 @@ export default {
             // })
           }).then(response=>{
             console.log(response);
-            if(response.status.ok)
+            if(response.ok)
             {
-              return response.json();
+              // return response.json();
+              // this.$message.success('对战发起成功，请在""')
+              this.$alert("对战发起成功，请在<a href='https://teamstyle.eesast.com/personal'>个人中心</a>界面查看对战结果", '提示', {
+                confirmButtonText: '确定',
+                dangerouslyUseHTMLString: true,
+                callback: action => {
+                  // this.$message({
+                  //   type: 'info',
+                  //   message: `action: ${ action }`
+                  // });
+                }
+              })
+            }
+            else if(response.status=="405")
+            {
+              this.$message.error('已达今日对战次数上限!');
+            }
+            else if(response.status=="406")
+            {
+                this.$message.error('选择的队伍不符合要求');
             }
             else throw 'bad';
           }).then(res=>{
