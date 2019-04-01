@@ -290,44 +290,46 @@ def compile(request):
 
 def compile2(team_id, ind):
     ''' ��~Y��~Z�~X~_��~M��~V�~O�team_id以�~O~J�~A~L��~Z��~V�~O�(0~3)ind��~L��~[��~L代�| ~A��~V��~Q并�~T��~E�/media/Codes/output '''
-    out_volume = root_path + '/media/temp' + generate_key(10)
-    in_volume = '/MyVolume'
-    team_id = int(team_id)
-    ind = int(ind)
-    if team_id == None or ind == None:
-        return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
-    if Team.objects.filter(id=team_id).exists() == False:
-        return HttpResponse('No such team !')
-    origin_path = codes_path + '/%d_%d.cpp' % (team_id, ind)
-    target_path = so_path + '/%d_%d.so' % (team_id, ind)
-    if os.path.exists(origin_path) == False:
-        return HttpResponse('No corresponding .cpp file!')
-    if os.path.exists(codes_path + '/output') == False:
-        os.makedirs(codes_path + '/output')
-    # if os.path.isfile(target_path):
-    #    os.remove(target_path)
-    os.makedirs(out_volume)
-    shutil.copyfile(origin_path, out_volume + '/code.cpp')
-
-    client = docker.from_env()
     try:
-        client.containers.run(image_name, command='bash /ts20/bin/compile.sh', tty=True, stdin_open=True, remove=True,
-                              network_mode='host', volumes={out_volume: {'bind': in_volume}})
-    except docker.errors.ContainerError:
-        pass
-    team = Team.objects.get(id=team_id)
-    status = ''
-    if os.path.exists(out_volume + '/out.so') == True:
-        status = 'Compile successfully.'
-        team.valid |= (1 << ind)
-        shutil.copyfile(out_volume + '/out.so', target_path)
-    else:
-        status = 'Compile Error.'
-    team.save()
-    information = open(out_volume + '/log').read()
-    ret = {}
-    ret['status'] = status
-    ret['information'] = information
-    shutil.rmtree(out_volume)
-    return ret
-
+        out_volume = root_path + '/media/temp' + generate_key(10)
+        in_volume = '/MyVolume'
+        team_id = int(team_id)
+        ind = int(ind)
+        if team_id == None or ind == None:
+            return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
+        if Team.objects.filter(id=team_id).exists() == False:
+            return HttpResponse('No such team !')
+        origin_path = codes_path + '/%d_%d.cpp' % (team_id, ind)
+        target_path = so_path + '/%d_%d.so' % (team_id, ind)
+        if os.path.exists(origin_path) == False:
+            return HttpResponse('No corresponding .cpp file!')
+        if os.path.exists(codes_path + '/output') == False:
+            os.makedirs(codes_path + '/output')
+        # if os.path.isfile(target_path):
+        #    os.remove(target_path)
+        os.makedirs(out_volume)
+        shutil.copyfile(origin_path, out_volume + '/code.cpp')
+    
+        client = docker.from_env()
+        try:
+            client.containers.run(image_name, command='bash /ts20/bin/compile.sh', tty=True, stdin_open=True, remove=True,
+                                network_mode='host', volumes={out_volume: {'bind': in_volume}})
+        except docker.errors.ContainerError:
+            pass
+        team = Team.objects.get(id=team_id)
+        status = ''
+        if os.path.exists(out_volume + '/out.so') == True:
+            status = 'Compile successfully.'
+            team.valid |= (1 << ind)
+            shutil.copyfile(out_volume + '/out.so', target_path)
+        else:
+            status = 'Compile Error.'
+        team.save()
+        information = open(out_volume + '/log').read()
+        ret = {}
+        ret['status'] = status
+        ret['information'] = information
+        shutil.rmtree(out_volume)
+        return ret
+    except:
+        shutil.rmtree(out_volume)
