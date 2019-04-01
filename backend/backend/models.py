@@ -1,5 +1,7 @@
 # yyr: 在Team一个IntegerField（valid）和id，还有Battle的status以及新增id_map和initiator_name
 # yyr: 更改Team的输出，更改score默认值为1000
+
+# yyr: 增加Team返回信息的valid和battle_time(剩余挑战次数)，Team模型中增加last_update表示上一次更新battle_time的日期
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
@@ -9,6 +11,7 @@ import requests
 
 HISTORY_LENGTH = 20
 MEMBER_ALLOWED = 4
+BATTLE_TIMES   = 10
 
 class Team(models.Model):
     id = models.AutoField(primary_key= True, verbose_name="Team ID")
@@ -22,7 +25,8 @@ class Team(models.Model):
     score = models.IntegerField(default = 1000)
     rank = models.IntegerField(default = 999999)
     valid = models.IntegerField(default = 0)
-    battle_time = models.IntegerField(default = 1)
+    battle_time = models.IntegerField(default = 10)
+    last_update = models.DateField(auto_now_add = True)
     codes = models.TextField(default = '{}')
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
@@ -36,6 +40,12 @@ class Team(models.Model):
 
     def get_member(self):
         return json.loads(self.members)
+
+    def get_battle_time(self):
+        today = datetime.date.today()
+        if(today != self.last_update_date):
+            self.last_update_date = today ;
+            battle_time = BATTLE_TIMES ;
 
     def add_member(self, newMember):
         memberList = json.loads(self.members)
