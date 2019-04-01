@@ -115,10 +115,10 @@
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
       <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
-      <el-col :span="6" v-if="tableData[index-1].valid==15"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index<tableData.length&&tableData[index].valid==15"><el-checkbox :label="tableData[index].teamid" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+1<tableData.length&&tableData[index+1].valid==15"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+2<tableData.length&&tableData[index+2].valid==15"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="tableData[index-1].valid==15"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;" :disabled="tableData[index-1].teamid==teamid">{{tableData[index-1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index<tableData.length&&tableData[index].valid==15"><el-checkbox :label="tableData[index].teamid" style="margin:3px;" :disabled="tableData[index].teamid==teamid">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+1<tableData.length&&tableData[index+1].valid==15"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;" :disabled="tableData[index+1].teamid==teamid">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+2<tableData.length&&tableData[index+2].valid==15"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;" :disabled="tableData[index+2].teamid==teamid">{{tableData[index+2].teamname}}</el-checkbox></el-col>
       </template>
       </el-row>
       <!-- <el-row>
@@ -172,14 +172,15 @@ export default {
             AInum:0,//AI人数
             teamid:0,//队伍id
             battletime:10,//
-            tableData: [{
-            teamname:'划水萌新',
-            captain:'萌新1号',
-            teamid:0,
-            score:20,
-            battletime:0,
-            valid:15,//是否有效
-            }],//
+            tableData: [],
+            //[{
+            // teamname:'划水萌新',
+            // captain:'萌新1号',
+            // teamid:0,
+            // score:20,
+            // battletime:0,
+            // valid:15,//是否有效
+            // }],//
             options: [{
               value: 'code0',
               label: '职业1'
@@ -253,6 +254,10 @@ export default {
                 {
                   this.teamid=this.tableData[i].teamid;
                   this.battletime=this.tableData[i].battletime;//对战次数
+                  if(this.tableData[i].valid==15)
+                  {
+                    this.checkList.push(this.teamid);
+                  }
                 }
               }
             }
