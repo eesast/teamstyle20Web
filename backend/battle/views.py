@@ -135,7 +135,7 @@ def add_battle(request):
     for team_id in team_engaged:
         team = Team.objects.get(id=team_id)
         team_name = team.teamname
-        d[cnt]=team_name
+        d[cnt]=team_id
         for j in range(4):
             shutil.copyfile(so_path+'/%d_%d.so'%(team.id,j),path+'/libAI_%d_%d.so'%(cnt,j))
         cnt+=1
