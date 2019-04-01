@@ -501,8 +501,6 @@ export default {
             else throw 'bad';
           }).then(res=>{
 
-          }).catch(()=>{
-
           })
           //以下将传送checkList这些标号的队伍，以及AInum个AI进行对战   *********************
 
