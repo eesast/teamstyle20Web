@@ -123,7 +123,7 @@ def add_battle(request):
     ini_team = Team.objects.get(id=initiator_id)
     if ini_team.get_battle_time()==0:
         return HttpResponse('No remaining times.')
-    ini_team.battle_time += 1
+    ini_team.battle_time -= 1
     ini_team.save()
 
     battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_id=initiator_id)
@@ -139,7 +139,7 @@ def add_battle(request):
         for j in range(4):
             shutil.copyfile(so_path+'/%d_%d.so'%(team.id,j),path+'/libAI_%d_%d.so'%(cnt,j))
         cnt+=1
-        if team_name!=initiator_name: # 更改对战历史
+        if team_id!=initiator_id: # 更改对战历史
             tmp=json.loads(team.history_passive)
             tmp.append(battle_id)
             team.history_passive=json.dumps(tmp)
@@ -150,7 +150,8 @@ def add_battle(request):
         team.save()
         
     for i in range(robot_num):
-        d[cnt]='__AI%d'%i # 与队伍命名不可冲突
+        #d[cnt]='__AI%d'%i # 与队伍命名不可冲突
+        d[cnt]=100+cnt ;
         for j in range(4):
             shutil.copyfile(AI_path,path+'/libAI_%d_%d.so'%(cnt,j))
         cnt+=1
@@ -174,13 +175,13 @@ def view_result(request):
     if battle.exists()==False :
         return HttpResponse('Not Found')
     battle     = battle[0]
-    initiator  = battle.initiator_name
+    initiator  = battle.initiator_id
     status     = battle.status
     ret        = {}
     ret['teams'] = battle.team_engaged
     ret['ainum'] = battle.robot_num
     ret['state'] = status
-    ret['initiator_name'] = initiator
+    ret['initiator_id'] = initiator
     # 返回对战队伍、AI数目、冠军、发起者排名和得分、对战是否结束
     if status!=0 :
         ret['winner'] = '-1'
@@ -194,8 +195,8 @@ def view_result(request):
     initiator_rank  = 0
     initiator_score = 0
     virtual_id = 0   # 发起者在房间中的id
-    for (vid,name) in id_map.items():
-        if name==initiator:
+    for (vid,id) in id_map.items():
+        if id==initiator:
             virtual_id = vid
     for i in range(0,len(score)):
         if score[i][0]==virtual_id:
