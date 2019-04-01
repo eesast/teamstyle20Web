@@ -113,6 +113,7 @@ def add_battle(request):
     if team_engaged==None or robot_num==None or initiator_id==None :
         return HttpResponse('Lose parameters.')
     robot_num = int(robot_num)
+    initiator_id = int(initiator_id)
     team_engaged = json.loads(team_engaged)
     for team_id in team_engaged:
         team = Team.objects.filter(id=team_id)
