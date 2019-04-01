@@ -106,13 +106,13 @@ export default {
             //     "pub_date":"Dec. 1,2018,8:38 p.m.",
             //     "last_update_date":"Dec. 1,2018,8:38 p.m."
             // },],
-            detailData:
-            {
-                "title":"这是一个公告",
-                "content":"这只是一个公告，还没有什么内容",
-                "pub_date":"Dec. 1,2018,8:38 p.m.",
-                "last_update_date":"Dec. 1,2018,8:38 p.m."
-            }
+            detailData:{},
+            // {
+            //     "title":"这是一个公告",
+            //     "content":"这只是一个公告，还没有什么内容",
+            //     "pub_date":"Dec. 1,2018,8:38 p.m.",
+            //     "last_update_date":"Dec. 1,2018,8:38 p.m."
+            // }
         };
     },
     methods: {

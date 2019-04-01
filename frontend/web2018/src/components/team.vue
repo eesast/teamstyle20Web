@@ -208,13 +208,14 @@ export default {
       },
       formLabelWidth: "100px", //对话框宽度
       //若当前用户已有队伍，则其队伍信息
-      detailData: {
-        teamname: "划水大法好",
-        captain: "萌新0号",
-        invitecode: "1z2x3c4v",
-        description: "我们最爱划水",
-        members: ["好人", "萌新"]
-      },
+      detailData: {},
+      // {
+      //   teamname: "划水大法好",
+      //   captain: "萌新0号",
+      //   invitecode: "1z2x3c4v",
+      //   description: "我们最爱划水",
+      //   members: ["好人", "萌新"]
+      // },
       currentPage: 1, //初始页
       pagesize: 5, //    每页的数据
       //加入队伍中所有队伍信息
@@ -225,22 +226,22 @@ export default {
       //     description:"我们最爱划水",
       //     members:['好人','萌新']
       // }, ]
-      tableData: [
-        {
-          teamid: 0,
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新"]
-        },
-        {
-          teamid: 0,
-          teamname: "划水大法好",
-          captain: "萌新0号",
-          description: "我们最爱划水",
-          members: ["好人", "萌新", "蒟蒻"]
-        }
-      ],
+      tableData: [],
+      //   {
+      //     teamid: 0,
+      //     teamname: "划水大法好",
+      //     captain: "萌新0号",
+      //     description: "我们最爱划水",
+      //     members: ["好人", "萌新"]
+      //   },
+      //   {
+      //     teamid: 0,
+      //     teamname: "划水大法好",
+      //     captain: "萌新0号",
+      //     description: "我们最爱划水",
+      //     members: ["好人", "萌新", "蒟蒻"]
+      //   }
+      // ],
       globalsetting:{
           "submission_end": "2019-04-18T12:00:00+08:00",
           "submission_start": "2019-03-24T11:00:00+08:00",
