@@ -217,7 +217,7 @@ def end_battle(request):
         return HttpResponse('Wrong key! %s'%key)
     room = Room.objects.filter(key=key)[0]
     battle_id = room.battle_id
-    room.delete()
+#room.delete()  #TODO !!!!!!!!!!!!
     battle = Battle.objects.get(id=battle_id)
     team_engaged = json.loads(battle.team_engaged)
     items = os.listdir(data_path+'/%s'%battle_id)
@@ -232,12 +232,12 @@ def end_battle(request):
     game_score = list(result['score'])
     origin_score = [0 for i in range(len(game_score))]
     for i in range(len(game_score)):
-        if id_map[game_score[i][0]].startswith('__AI')==False:
-            origin_score[i] = Team.objects.get(teamname=id_map[game_score[i][0]]).score
+        if int(id_map[game_score[i][0]])<100:
+            origin_score[i] = Team.objects.get(id=int(id_map[game_score[i][0]])).score
     origin_score = update(np.array(origin_score), np.array(list(result['score'].values())))
     for i in range(len(game_score)):
-        if id_map[game_score[i][0]].startswith('__AI')==False:
-            team = Team.objects.get(teamname=id_map[game_score[i][0]])
+        if int(id_map[game_score[i][0]])<100:
+            team = Team.objects.get(id=int(id_map[game_score[i][0]]))
             team.score = origin_score[i]
             team.save()
     battle.result=json.dumps(result)
