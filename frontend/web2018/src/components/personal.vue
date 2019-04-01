@@ -324,7 +324,7 @@ export default {
                 for(var i=0;i<this.history_active.length;i++)
                 {
                     // tableDataofactive
-                    fetch('/api/battle/result',{
+                    fetch('/api/battle/result?battle_id='+this.history_active[i],{
                         method:'GET',
                         headers:{
                               "Content-Type": "application/json",
@@ -347,7 +347,7 @@ export default {
 
                 for(var i=0;i<this.history_passive.length;i++)
                 {
-                    fetch('/api/battle/result',{
+                    fetch('/api/battle/result?battle_id='+this.history_passive[i],{
                         method:'GET',
                         headers:{
                               "Content-Type": "application/json",
