@@ -109,50 +109,8 @@
 </template>
     
 <script>
-function add_active(i)
-{
-    fetch('/api/battle/result?battle_id='+this.history_active[i],{
-        method:'GET',
-        headers:{
-                "Content-Type": "application/x-www-form-urlencoded",
-                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-        },
-        // body:JSON.stringify({
-        //     battle_id:this.history_active[i],
-        // })
-    }).then(responsex=>{
-        if(responsex.ok)
-        {
-            return responsex.json();
-        }
-        else throw 'bad';
-    }).then(resx=>{
-        this.tableDataofactive[i]=resx;
-
-    }).catch(()=>{this.$message.error('服务器无法响应')})
-}
-function add_passive(i)
-{   
-    fetch('/api/battle/result?battle_id='+this.history_passive[i],{
-        method:'GET',
-        headers:{
-                "Content-Type": "application/x-www-form-urlencoded",
-                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-        },
-        // body:JSON.stringify({
-        //     battle_id:this.history_passive[i],
-        // })
-    }).then(responsex=>{
-        if(responsex.ok)
-        {
-            return responsex.json();
-        }
-        else throw 'bad';
-    }).then(resx=>{
-        this.tableDataofpassive[i]=resx;
-    }).catch(()=>{this.$message.error('服务器无法响应')})
-
-}
+// function 
+// function 
 var token=getCookie("token")
 var username=getCookie("username")
 var id = parseInt(getCookie("id"));
@@ -204,6 +162,50 @@ export default {
         }
     },
     methods: {
+        add_active(i)
+        {
+            fetch('/api/battle/result?battle_id='+this.history_active[i],{
+                method:'GET',
+                headers:{
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                },
+                // body:JSON.stringify({
+                //     battle_id:this.history_active[i],
+                // })
+            }).then(responsex=>{
+                if(responsex.ok)
+                {
+                    return responsex.json();
+                }
+                else throw 'bad';
+            }).then(resx=>{
+                this.tableDataofactive[i]=resx;
+
+            }).catch(()=>{this.$message.error('服务器无法响应')})
+        },
+        add_passive(i)
+        {   
+            fetch('/api/battle/result?battle_id='+this.history_passive[i],{
+                method:'GET',
+                headers:{
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                },
+                // body:JSON.stringify({
+                //     battle_id:this.history_passive[i],
+                // })
+            }).then(responsex=>{
+                if(responsex.ok)
+                {
+                    return responsex.json();
+                }
+                else throw 'bad';
+            }).then(resx=>{
+                this.tableDataofpassive[i]=resx;
+            }).catch(()=>{this.$message.error('服务器无法响应')})
+
+        },
         handleChange()
         {
 
@@ -368,13 +370,13 @@ export default {
                 for(var i=0;i<this.history_active.length;i++)
                 {
                     // tableDataofactive
-                    add_active(i);
+                    this.add_active(i);
                     
                 }
 
                 for(var i=0;i<this.history_passive.length;i++)
                 {
-                    add_passive(i);
+                    this.add_passive(i);
                     
                 }
 
