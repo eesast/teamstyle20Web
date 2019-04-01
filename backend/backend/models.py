@@ -6,7 +6,7 @@ from django.db import models
 import json
 from django.core.exceptions import ValidationError
 import django.utils.timezone as tzd
-import os
+import os, datetime
 import requests
 
 HISTORY_LENGTH = 20
@@ -26,7 +26,7 @@ class Team(models.Model):
     rank = models.IntegerField(default = 999999)
     valid = models.IntegerField(default = 0)
     battle_time = models.IntegerField(default = 10)
-    last_update = models.DateField(auto_now_add = True)
+    last_update = models.DateField(default=datetime.date(2019,4,1))
     codes = models.TextField(default = '{}')
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
@@ -43,9 +43,11 @@ class Team(models.Model):
 
     def get_battle_time(self):
         today = datetime.date.today()
-        if(today != self.last_update_date):
-            self.last_update_date = today ;
-            battle_time = BATTLE_TIMES ;
+        if(today != self.last_update):
+            self.last_update = today ;
+            self.battle_time = BATTLE_TIMES ;
+        self.save()
+        return self.battle_time
 
     def add_member(self, newMember):
         memberList = json.loads(self.members)
@@ -115,6 +117,8 @@ class Team(models.Model):
         output["captainID"] = self.captain
         output["membersID"] = self.get_member()
         output["createAt"] = self.createAt
+        output["valid"] = self.valid
+        output["battle_time"] = self.get_battle_time()
         output["score"] = self.score
         output["rank"] = self.rank
         if showtype > 0:
