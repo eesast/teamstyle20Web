@@ -140,7 +140,7 @@ export default {
             tableDataofactive:[],
             // {
             //     teams: [1,2],
-            //     teamsname:[],
+            //     teams:[],
             //     ainum: 5,
             //     state: 0,
             //     initiator_id: 2,
@@ -151,7 +151,7 @@ export default {
             tableDataofpassive:[],
             // {
             //     teams: [1,2],
-            //     teamsname:[],
+            //     teams:[],
             //     ainum: 5,
             //     state: 2,
             //     initiator_id: 2,
@@ -219,7 +219,7 @@ export default {
 
             if(num==1)//active
             {
-                this.$alert('对战队伍:'+this.tableDataofactive[idx].teamsname+'<br/>AI数量:'+this.tableDataofactive[idx].ainum+'<br/>吃鸡队伍:'+this.tableDataofactive[idx].winner+'<br/>本次比赛队伍排名:'+this.tableDataofactive[idx].rank+'<br/>本场比赛得分:'+this.tableDataofactive[idx].score, 
+                this.$alert('对战队伍:'+this.tableDataofactive[idx].teams+'<br/>AI数量:'+this.tableDataofactive[idx].ainum+'<br/>吃鸡队伍:'+this.tableDataofactive[idx].winner+'<br/>本次比赛队伍排名:'+this.tableDataofactive[idx].rank+'<br/>本场比赛得分:'+this.tableDataofactive[idx].score, 
                 '对战详情', {
                 confirmButtonText: '确定',
                 dangerouslyUseHTMLString: true,
