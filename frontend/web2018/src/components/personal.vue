@@ -135,28 +135,28 @@ export default {
             showteaminfo:false,//是否加入队伍
             history_active:[],
             history_passive:[],
-            tableDataofactive:[
-            {
-                teams: [1,2],
-                teamsname:[],
-                ainum: 5,
-                state: 0,
-                initiator_id: 2,
-                winner: "yyr2",
-                rank: 2,
-                score: 300
-            }],
-            tableDataofpassive:[
-            {
-                teams: [1,2],
-                teamsname:[],
-                ainum: 5,
-                state: 2,
-                initiator_id: 2,
-                winner: "yyr2",
-                rank: 2,
-                score: 300
-            }]
+            tableDataofactive:[],
+            // {
+            //     teams: [1,2],
+            //     teamsname:[],
+            //     ainum: 5,
+            //     state: 0,
+            //     initiator_id: 2,
+            //     winner: "yyr2",
+            //     rank: 2,
+            //     score: 300
+            // }],
+            tableDataofpassive:[],
+            // {
+            //     teams: [1,2],
+            //     teamsname:[],
+            //     ainum: 5,
+            //     state: 2,
+            //     initiator_id: 2,
+            //     winner: "yyr2",
+            //     rank: 2,
+            //     score: 300
+            // }]
         }
     },
     methods: {

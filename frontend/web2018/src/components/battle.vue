@@ -47,13 +47,15 @@
             </el-upload>
             <!-- <el-input type="file" @onchange="jsReadFiles(this.files)"/> -->
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
-            <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:3/24 24:00</span></h5>
+            <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:4/18 12:00</span></h5>
             <br/>
             <h4>发起对战</h4>
+            <h5><i class="el-icon-info"></i>仅可以选择代码<span style="color:red">有效</span>的队伍进行对战</h5>
+            <h5><i class="el-icon-info"></i><span style="color:red">有效</span>指该队伍各职业代码都已经提交且都编译通过</h5>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true" v-if="loading_fight==false">发起对战</el-button>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;"  v-if="loading_fight==true" icon="el-icon-loading" disabled="true">对战中</el-button>
-            <h5>今日对战次数:{{10-battletime}}</h5>
-            <h5>剩余对战次数:{{battletime}}</h5>
+            <h5>今日对战次数:{{10-battle_time}}</h5>
+            <h5>剩余对战次数:{{battle_time}}</h5>
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
@@ -113,10 +115,10 @@
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
       <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
-      <el-col :span="6" v-if="tableData[index-1].valid==15"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index<tableData.length&&tableData[index].valid==15"><el-checkbox :label="tableData[index].teamid" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+1<tableData.length&&tableData[index+1].valid==15"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+2<tableData.length&&tableData[index+2].valid==15"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="tableData[index-1].valid==15"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;" :disabled="tableData[index-1].teamid==teamid">{{tableData[index-1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index<tableData.length&&tableData[index].valid==15"><el-checkbox :label="tableData[index].teamid" style="margin:3px;" :disabled="tableData[index].teamid==teamid">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+1<tableData.length&&tableData[index+1].valid==15"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;" :disabled="tableData[index+1].teamid==teamid">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+2<tableData.length&&tableData[index+2].valid==15"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;" :disabled="tableData[index+2].teamid==teamid">{{tableData[index+2].teamname}}</el-checkbox></el-col>
       </template>
       </el-row>
       <!-- <el-row>
@@ -169,15 +171,16 @@ export default {
             checkList: [],
             AInum:0,//AI人数
             teamid:0,//队伍id
-            battletime:10,//
-            tableData: [{
-            teamname:'划水萌新',
-            captain:'萌新1号',
-            teamid:0,
-            score:20,
-            battletime:0,
-            valid:15,//是否有效
-            }],//
+            battle_time:10,//
+            tableData: [],
+            //[{
+            // teamname:'划水萌新',
+            // captain:'萌新1号',
+            // teamid:0,
+            // score:20,
+            // battle_time:0,
+            // valid:15,//是否有效
+            // }],//
             options: [{
               value: 'code0',
               label: '职业1'
@@ -250,7 +253,11 @@ export default {
                 if(id==this.tableData[i].membersID[j])
                 {
                   this.teamid=this.tableData[i].teamid;
-                  this.battletime=this.tableData[i].battletime;//对战次数
+                  this.battle_time=this.tableData[i].battle_time;//对战次数
+                  if(this.tableData[i].valid==15)
+                  {
+                    this.checkList.push(this.teamid);
+                  }
                 }
               }
             }
