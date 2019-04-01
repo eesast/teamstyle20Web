@@ -8,7 +8,7 @@ from backend.models import Battle, Team
 from battle.models import Room, Queue
 
 root_path=os.getcwd()
-AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修改
+AI_path=root_path+'/media/Codes/robot/robot.so'
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
 data_path = root_path+'/media/data'
@@ -108,20 +108,21 @@ def add_battle(request):
     # 读取request，检查合法性，并且存入Battle数据库
     team_engaged = request.GET.get('teams', None)
     robot_num = request.GET.get('AInum', None)
-    initiator_name = request.GET.get('initiator_name',None)
+    initiator_id = request.GET.get('initiator_id',None)
     status = 1
-    if team_engaged==None or robot_num==None or initiator_name==None :
+    if team_engaged==None or robot_num==None or initiator_id==None :
         return HttpResponse('Lose parameters.')
     robot_num = int(robot_num)
     team_engaged = json.loads(team_engaged)
-    for team_name in team_engaged:
-        team = Team.objects.filter(teamname=team_name)
+    initiator_id = int(initiator_id)
+    for team_id in team_engaged:
+        team = Team.objects.filter(id=team_id)
         if team.exists()==False:
-            return HttpResponse('No team:%s'%team_name)
+            return HttpResponse('No team:%s'%team_id)
         if team[0].valid!=15:
-            return HttpResponse('Team \"%s\" is invalid!'%(team_name))
+            return HttpResponse('Team \"%s\" is invalid!'%(team_id))
 
-    battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_name=initiator_name)
+    battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_id=initiator_id)
     battle_id=battle.id # 对战ID
     path = root_path+'/media/data/%d'%battle_id ;
     os.makedirs(path)
@@ -133,7 +134,7 @@ def add_battle(request):
         for j in range(4):
             shutil.copyfile(so_path+'/%d_%d.so'%(team.id,j),path+'/libAI_%d_%d.so'%(cnt,j))
         cnt+=1
-        if team_name!=initiator_name: # 更改对战历史
+        if team_name!=initiator_id: # 更改对战历史
             tmp=json.loads(team.history_passive)
             tmp.append(battle_id)
             team.history_passive=json.dumps(tmp)
@@ -168,13 +169,14 @@ def view_result(request):
     if battle.exists()==False :
         return HttpResponse('Not Found')
     battle     = battle[0]
-    initiator  = battle.initiator_name
+    initiator  = battle.initiator_id
     status     = battle.status
     ret        = {}
     ret['teams'] = battle.team_engaged
+    # TODO:增加返回队伍名
     ret['ainum'] = battle.robot_num
     ret['state'] = status
-    ret['initiator_name'] = initiator
+    ret['initiator_id'] = initiator
     # 返回对战队伍、AI数目、冠军、发起者排名和得分、对战是否结束
     if status!=0 :
         ret['winner'] = '-1'
