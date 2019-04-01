@@ -482,16 +482,16 @@ export default {
           this.loading_fight=true;
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
           //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname
-          fetch('/api/battle/add',{
+          fetch('/api/battle/add'+"?teams="+this.checkList+"&AInum="+this.AInum+"&initiator_id="+this.teamid,{
             method:'GET',
             headers:{
                 "Content-Type": "application/json",
                 "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
             body:JSON.stringify({
-              "teams":this.checkList,
-              "AInum":this.AInum,
-              "initiator_id":this.teamid
+              // "teams":,
+              // "AInum":,
+              // "initiator_id":this.teamid
             })
           }).then(response=>{
             console.log(response);
