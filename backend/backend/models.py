@@ -227,8 +227,8 @@ class GlobalSetting(models.Model):
 class Battle(models.Model):
     id = models.AutoField(primary_key= True, verbose_name="Battle ID")
     team_engaged   = models.TextField()
-    id_map       = models.TextField(null=True)
-    initiator_name = models.CharField(max_length=30, null=True)
+    id_map         = models.TextField(null=True)
+    initiator_id   = models.IntegerField()
     request_time   = models.DateTimeField(auto_now_add= True)
     start_time     = models.DateTimeField(null=True)
     robot_num      = models.IntegerField()
