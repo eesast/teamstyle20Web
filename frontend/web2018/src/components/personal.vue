@@ -320,19 +320,19 @@ export default {
                 this.history_passive=ans.history_passive;
 
 
-                //更新active和passtive
+                //更新active和passive
                 for(var i=0;i<this.history_active.length;i++)
                 {
                     // tableDataofactive
                     fetch('/api/battle/result?battle_id='+this.history_active[i],{
                         method:'GET',
                         headers:{
-                              "Content-Type": "application/json",
+                              "Content-Type": "application/x-www-form-urlencoded",
                               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
                         },
-                        body:JSON.stringify({
-                            battle_id:this.history_active[i],
-                        })
+                        // body:JSON.stringify({
+                        //     battle_id:this.history_active[i],
+                        // })
                     }).then(responsex=>{
                         if(responsex.ok)
                         {
@@ -350,12 +350,12 @@ export default {
                     fetch('/api/battle/result?battle_id='+this.history_passive[i],{
                         method:'GET',
                         headers:{
-                              "Content-Type": "application/json",
+                              "Content-Type": "application/x-www-form-urlencoded",
                               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
                         },
-                        body:JSON.stringify({
-                            battle_id:this.history_passive[i],
-                        })
+                        // body:JSON.stringify({
+                        //     battle_id:this.history_passive[i],
+                        // })
                     }).then(responsex=>{
                         if(responsex.ok)
                         {
