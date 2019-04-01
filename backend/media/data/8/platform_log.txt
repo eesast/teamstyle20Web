@@ -1,0 +1,98 @@
+"/ts20"
+teammate:0 1 2 3 
+teammate:0 1 2 3 
+teammate:0 1 2 3 
+teammate:0 1 2 3 
+start_pos111 1000
+start_pos111 1000
+over_pos826 0
+start_pos111 1000
+start_pos111 1000
+over_pos826 0
+player:frame0
+hp:0
+over_pos826 0
+over_pos826 0
+positon0 0
+player:frame0
+hp:0
+player:frame0
+hp:0
+player:frame0
+hp:0
+positon0 0
+positon0 0
+positon0 0
+AI:command_type: PARACHUTE
+role: 2
+landing_point {
+  x: 547
+  y: 505
+}
+
+AI:command_type: PARACHUTE
+role: 2
+landing_point {
+  x: 547
+  y: 505
+}
+
+AI:command_type: PARACHUTE
+role: 2
+landing_point {
+  x: 547
+  y: 505
+}
+
+AI:command_type: PARACHUTE
+role: 2
+landing_point {
+  x: 547
+  y: 505
+}
+
+GameMain initialize finished
+{'comment': 'here gives some import data_file relative path', 'CHARACTER_FILE_PATH': './data/character.json', 'ITEM_FILE_PATH': './data/item.json', 'MAP_FILE_PATH': './data/map.json', 'PLAYBACK_FILE_PATH': '../playback/', 'CIRCLE_FILE_PATH': './data/circle.json', 'SOUND_FILE_PATH': './data/sound.json', 'PARAMETER_FILE_PATH': './data/parameter.json'}
+{'MEDIC': {'number': 0, 'hp': 120, 'distance': 160.0, 'angle': 124.0, 'radius': 0.5, 'move': 1.8, 'skill': 0.5}, 'SIGNALMAN': {'number': 1, 'hp': 100, 'distance': 160.0, 'angle': 124.0, 'radius': 0.45, 'move': 1.6, 'skill': 2.0}, 'HACK': {'number': 2, 'hp': 90, 'distance': 160.0, 'angle': 124.0, 'radius': 0.43, 'move': 1.2, 'skill': 1.0}, 'SNIPER': {'number': 3, 'hp': 80, 'distance': 200.0, 'angle': 115.0, 'radius': 0.4, 'move': 1.0, 'skill': 1.5}}
+{'FIST': {'type': 'WEAPON', 'number': 0, 'durability': 9999, 'macro': 'FIST', 'mode': '', 'range': 1, 'cd': 4, 'damage': 30, 'reduce': 0, 'param': 30.0, 'occur': 0, 'name': 'FIST'}, 'HAND_GUN': {'type': 'WEAPON', 'number': 1, 'durability': 8, 'macro': 'HAND_GUN', 'mode': '', 'range': 80, 'cd': 4, 'damage': 25, 'reduce': 0, 'param': 2.5, 'occur': 100, 'name': 'HAND_GUN'}, 'SUBMACHINE_GUN': {'type': 'WEAPON', 'number': 2, 'durability': 20, 'macro': 'SUBMACHINE_GUN', 'mode': '', 'range': 100, 'cd': 1, 'damage': 25, 'reduce': 0, 'param': 2.5, 'occur': 50, 'name': 'SUBMACHINE_GUN'}, 'SEMI_AUTOMATIC_RILE': {'type': 'WEAPON', 'number': 3, 'durability': 15, 'macro': 'SEMI_AUTOMATIC_RILE', 'mode': '', 'range': 150, 'cd': 3, 'damage': 30, 'reduce': 0, 'param': 1.5, 'occur': 50, 'name': 'SEMI_AUTOMATIC_RILE'}, 'ASSAULT_RIFLE': {'type': 'WEAPON', 'number': 4, 'durability': 20, 'macro': 'ASSAULT_RIFLE', 'mode': '', 'range': 150, 'cd': 2, 'damage': 40, 'reduce': 0, 'param': 2.0, 'occur': 35, 'name': 'ASSAULT_RIFLE'}, 'MACHINE_GUN': {'type': 'WEAPON', 'number': 5, 'durability': 50, 'macro': 'MACHINE_GUN', 'mode': '', 'range': 100, 'cd': 1, 'damage': 40, 'reduce': 0, 'param': 3.0, 'occur': 20, 'name': 'MACHINE_GUN'}, 'SNIPER_RILFE': {'type': 'WEAPON', 'number': 6, 'durability': 8, 'macro': 'SNIPER_RILFE', 'mode': '', 'range': 600, 'cd': 8, 'damage': 100, 'reduce': 0, 'param': 0.5, 'occur': 20, 'name': 'SNIPER_RILFE'}, 'SNIPER_BARRETT': {'type': 'WEAPON', 'number': 7, 'durability': 5, 'macro': 'SNIPER_BARRETT', 'mode': '', 'range': 1000, 'cd': 10, 'damage': 150, 'reduce': 0, 'param': 0.3, 'occur': 10, 'name': 'SNIPER_BARRETT'}, 'TIGER_BILLOW_HAMMER': {'type': 'WEAPON', 'number': 8, 'durability': 20, 'macro': 'TIGER_BILLOW_HAMMER', 'mode': '', 'range': 2, 'cd': 5, 'damage': 50, 'reduce': 0, 'param': 60.0, 'occur': 30, 'name': 'TIGER_BILLOW_HAMMER'}, 'CROSSBOW': {'type': 'WEAPON', 'number': 9, 'durability': 10, 'macro': 'CROSSBOW', 'mode': '', 'range': 100, 'cd': 6, 'damage': 30, 'reduce': 0, 'param': 1.0, 'occur': 25, 'name': 'CROSSBOW'}, 'VEST_1': {'type': 'ARMOR', 'number': 10, 'durability': 100, 'macro': 'VEST_1', 'mode': '', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 50, 'name': 'VEST_1'}, 'VEST_2': {'type': 'ARMOR', 'number': 11, 'durability': 150, 'macro': 'VEST_2', 'mode': '', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 25, 'name': 'VEST_2'}, 'VEST_3': {'type': 'ARMOR', 'number': 12, 'durability': 200, 'macro': 'VEST_3', 'mode': '', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 10, 'name': 'VEST_3'}, 'INSULATED_CLOTHING': {'type': 'ARMOR', 'number': 13, 'durability': 100, 'macro': 'INSULATED_CLOTHING', 'mode': '', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 30, 'name': 'INSULATED_CLOTHING'}, 'MUFFLER': {'type': 'GOODS', 'number': 14, 'durability': 1, 'macro': 'MUFFLER', 'mode': 'PORTABLE', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.3, 'occur': 10, 'name': 'MUFFLER'}, 'BONDAGE': {'type': 'GOODS', 'number': 15, 'durability': 1, 'macro': 'BONDAGE', 'mode': 'SPENDABLE', 'range': 0, 'cd': 5, 'damage': 0, 'reduce': 0, 'param': -20.0, 'occur': 60, 'name': 'BONDAGE'}, 'FIRST_AID_CASE': {'type': 'GOODS', 'number': 16, 'durability': 1, 'macro': 'FIRST_AID_CASE', 'mode': 'SPENDABLE', 'range': 0, 'cd': 8, 'damage': 0, 'reduce': 0, 'param': -100.0, 'occur': 20, 'name': 'FIRST_AID_CASE'}, 'CODE_CASE': {'type': 'GOODS', 'number': 17, 'durability': 1, 'macro': 'CODE_CASE', 'mode': 'TRIGGERED', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 30, 'name': 'CODE_CASE'}, 'SCOPE_2': {'type': 'GOODS', 'number': 18, 'durability': 1, 'macro': 'SCOPE_2', 'mode': 'SPENDABLE', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 50, 'name': 'SCOPE_2'}, 'SCOPE_4': {'type': 'GOODS', 'number': 19, 'durability': 1, 'macro': 'SCOPE_4', 'mode': 'SPENDABLE', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 25, 'name': 'SCOPE_4'}, 'SCOPE_8': {'type': 'GOODS', 'number': 20, 'durability': 1, 'macro': 'SCOPE_8', 'mode': 'SPENDABLE', 'range': 0, 'cd': 0, 'damage': 0, 'reduce': 0, 'param': 0.0, 'occur': 10, 'name': 'SCOPE_8'}}
+{'RADIO_VOICE': {'number': 0, 'speed': 500.0, 'distance': 3000.0}, 'FOOTSTEP_SOUND': {'number': 1, 'speed': 50.0, 'distance': 100.0}, 'GUN_SOUND': {'number': 2, 'speed': 100.0, 'distance': 300.0}, 'BOOM_SOUND': {'number': 3, 'speed': 200.0, 'distance': 600.0}}
+{0: {'items': 1000, 'delay': 200, 'wait': 200, 'move': 200, 'damage': 0.5, 'shrink': 0.75}, 1: {'items': 500, 'delay': 0, 'wait': 200, 'move': 180, 'damage': 0.75, 'shrink': 0.6}, 2: {'items': 250, 'delay': 0, 'wait': 200, 'move': 160, 'damage': 1.0, 'shrink': 0.5}, 3: {'items': 125, 'delay': 0, 'wait': 200, 'move': 140, 'damage': 1.25, 'shrink': 0.5}, 4: {'items': 50, 'delay': 0, 'wait': 200, 'move': 120, 'damage': 1.5, 'shrink': 0.5}, 5: {'items': 50, 'delay': 0, 'wait': 200, 'move': 100, 'damage': 2.0, 'shrink': 0.5}, 6: {'items': 50, 'delay': 0, 'wait': 200, 'move': 80, 'damage': 3.0, 'shrink': 0.5}, 7: {'items': 50, 'delay': 0, 'wait': 200, 'move': 60, 'damage': 5.0, 'shrink': 0.5}, 8: {'items': 50, 'delay': 0, 'wait': 200, 'move': 40, 'damage': 10.0, 'shrink': 0.0}}
+{'character': {'move_step': [0, 0.2, 0.5, 0.3], 'reduce': 80.0}, 'main': {'score_by_rank': {'1': 400, '2': 300, '3': 250, '4': 200, '5': 150, '6': 100, '7': 90, '8': 80, '9': 70, '10': 60, '11': 50, '12': 40, '13': 30, '14': 20, '15': 10, '16': 5}, 'damage_param': 100.0, 'score_by_kill_one': 25}}
+all data load finished
+map items initialize finished
+the route's start position is (111,1000) and its over position is (826,0)
+parachute:{0: {'vocation': 2, 'position': (547.0, 505.0), 'team': 0}, 1: {'vocation': 2, 'position': (547.0, 505.0), 'team': 0}, 2: {'vocation': 2, 'position': (547.0, 505.0), 'team': 0}, 3: {'vocation': 2, 'position': (547.0, 505.0), 'team': 0}}
+player 1 choose repeated vocation 2, now it's adjusted to 3
+player 2 choose repeated vocation 2, now it's adjusted to 3
+player 2 choose repeated vocation 3, now it's adjusted to 0
+player 3 choose repeated vocation 2, now it's adjusted to 3
+player 3 choose repeated vocation 3, now it's adjusted to 0
+player 3 choose repeated vocation 0, now it's adjusted to 1
+write 59 bytes into the playback file
+turn 0 starts!
+player 0 move to (140.081,959.327)
+player 1 move to (140.081,959.327)
+player 2 move to (140.081,959.327)
+player 3 move to (140.081,959.327)
+map items initialize finished
+player 0 's sounds list: []
+player 1 's sounds list: []
+player 2 's sounds list: []
+player 3 's sounds list: []
+write 53877 bytes into the playback file
+in turn 1 game over with alive teams: [0, 1, 2, 3]
+all players death order and frame: []
+all players score are: {0: 400}
+return 5 players' data back to platform
+{}
+unwrap_command successfully
+{'move': {}, 'shoot': {}, 'pickup': {}, 'radio': {}}
+turn 1 starts!
+player 0 move to (169.162,918.654)
+player 1 move to (169.162,918.654)
+player 2 move to (169.162,918.654)
+player 3 move to (169.162,918.654)
+player 0 's sounds list: []
+player 1 's sounds list: []
+player 2 's sounds list: []
+player 3 's sounds list: []

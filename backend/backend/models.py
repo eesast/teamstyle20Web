@@ -230,12 +230,13 @@ class Battle(models.Model):
     id = models.AutoField(primary_key= True, verbose_name="Battle ID")
     team_engaged   = models.TextField()
     id_map         = models.TextField(null=True)
-    initiator_id   = models.IntegerField()
+    initiator_id   = models.IntegerField(default=-1)
+    initiator_name = models.CharField(max_length=30, null=True)
     request_time   = models.DateTimeField(auto_now_add= True)
     start_time     = models.DateTimeField(null=True)
     robot_num      = models.IntegerField()
     status         = models.IntegerField()
     result         = models.TextField( null=True)
     def __str__(self):
-        return self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
+        return 'id:%d  '%self.id +self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
 
