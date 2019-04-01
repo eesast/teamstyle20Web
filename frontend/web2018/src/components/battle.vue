@@ -488,11 +488,11 @@ export default {
                 "Content-Type": "application/json",
                 "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
-            body:JSON.stringify({
-              // "teams":,
-              // "AInum":,
-              // "initiator_id":this.teamid
-            })
+            // body:JSON.stringify({
+            //   // "teams":,
+            //   // "AInum":,
+            //   // "initiator_id":this.teamid
+            // })
           }).then(response=>{
             console.log(response);
             if(response.status.ok)
