@@ -238,5 +238,5 @@ class Battle(models.Model):
     status         = models.IntegerField()
     result         = models.TextField( null=True)
     def __str__(self):
-        return 'id:%d  '%id +self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
+        return 'id:%d  '%self.id +self.request_time.strftime("%Y-%m-%d %H:%M:%S") + ':' +   self.team_engaged
 
