@@ -81,7 +81,7 @@
         <el-card shadow="always" style="width:100%;">
             <el-table
             :data="tableData"
-            :default-sort = "{prop: 'teamname', order: 'descending'}"
+            :default-sort = "{prop: 'score', order: 'descending'}"
             stripe
             style="width: 100%">
             <el-table-column
