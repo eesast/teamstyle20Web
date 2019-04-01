@@ -58,6 +58,7 @@ def get_error_msg(err_status):
     msg_list[4221] = "422 Unprocessible Entity: JSON Decode Error."
     msg_list[4012] = "{\"auth\":false, \"token\":\"\"}"
     msg_list[4011] = "401 Unauthorized: Token invalid or expired."
+    msg_list[403] = "403 Forbidden: System Not Opened."
     msg_list[401] = "401 Unauthorized."
     msg_list[409] = "409 Conflict: Team name already exists."
     return msg_list.get(err_status, str(err_status) + " Unknown Error.")
@@ -228,6 +229,15 @@ def get_teamid_by_userid(user_id):
         return -1
     pass
 
+def systemTeamingOpen(teaming, now):
+    if teaming == False:
+        return False
+    if now > teaming:
+        return False
+    else:
+        return True
+
+
 
 @csrf_exempt
 def teams(request):
@@ -246,6 +256,14 @@ def teams(request):
             output = append_team_member_name(user_info, query, showtype)
             response = JsonResponse(output, status=200, safe=False)
         elif request.method == 'POST':
+            get_globalSettings = GlobalSetting.objects.all()
+            teaming = False
+            if get_globalSettings.count() == 1:
+                teaming = tzd.localtime(get_globalSettings[0].teaming_end)
+            else:
+                teaming = False
+            now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(), microsecond=0)
+            assert systemTeamingOpen(teaming, now), 403
             new_team_info = is_json(request.body)
             assert 'teamname' in new_team_info and 'description' in new_team_info, 422
             new_team_info['captain'] = int(user_info['id'])
@@ -362,6 +380,14 @@ def modifyTeamMembersByID(request, teamid):
             else:
                 response = JsonResponse(output[0]["members"], status=200, safe=False)
         elif request.method == 'POST':
+            get_globalSettings = GlobalSetting.objects.all()
+            teaming = False
+            if get_globalSettings.count() == 1:
+                teaming = tzd.localtime(get_globalSettings[0].teaming_end)
+            else:
+                teaming = False
+            now = datetime.datetime.now().replace(tzinfo=tzd.get_current_timezone(), microsecond=0)
+            assert systemTeamingOpen(teaming, now), 403
             targetTeam = Team.objects.get(pk=teamid)
             addInfo = is_json(request.body)
             assert type(addInfo) is dict, 422

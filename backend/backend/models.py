@@ -204,6 +204,7 @@ class GlobalSetting(models.Model):
     game_name = models.CharField(max_length = 50)
     submission_start = models.DateTimeField()
     submission_end = models.DateTimeField()
+    teaming_end = models.DateTimeField(null = True, blank=True)
 
     def __str__(self):
         return str(self.year)
@@ -214,6 +215,7 @@ class GlobalSetting(models.Model):
         output["game_name"] = self.game_name
         output["submission_start"] = tzd.localtime(self.submission_start)
         output["submission_end"] = tzd.localtime(self.submission_end)
+        output["teaming_end"] = tzd.localtime(self.teaming_end)
         return output
 
     def save(self, *args, **kwargs):
