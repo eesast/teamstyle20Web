@@ -54,8 +54,8 @@
             <h5><i class="el-icon-info"></i><span style="color:red">有效</span>指该队伍各职业代码都已经提交且都编译通过</h5>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true" v-if="loading_fight==false">发起对战</el-button>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;"  v-if="loading_fight==true" icon="el-icon-loading" disabled="true">对战中</el-button>
-            <h5>今日对战次数:{{10-battletime}}</h5>
-            <h5>剩余对战次数:{{battletime}}</h5>
+            <h5>今日对战次数:{{10-battle_time}}</h5>
+            <h5>剩余对战次数:{{battle_time}}</h5>
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
@@ -171,14 +171,14 @@ export default {
             checkList: [],
             AInum:0,//AI人数
             teamid:0,//队伍id
-            battletime:10,//
+            battle_time:10,//
             tableData: [],
             //[{
             // teamname:'划水萌新',
             // captain:'萌新1号',
             // teamid:0,
             // score:20,
-            // battletime:0,
+            // battle_time:0,
             // valid:15,//是否有效
             // }],//
             options: [{
@@ -253,7 +253,7 @@ export default {
                 if(id==this.tableData[i].membersID[j])
                 {
                   this.teamid=this.tableData[i].teamid;
-                  this.battletime=this.tableData[i].battletime;//对战次数
+                  this.battle_time=this.tableData[i].battle_time;//对战次数
                   if(this.tableData[i].valid==15)
                   {
                     this.checkList.push(this.teamid);
