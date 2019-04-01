@@ -52,8 +52,8 @@
             <h4>发起对战</h4>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true" v-if="loading_fight==false">发起对战</el-button>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;"  v-if="loading_fight==true" icon="el-icon-loading" disabled="true">对战中</el-button>
-            <h5>今日对战次数:{{10-battlechance}}</h5>
-            <h5>剩余对战次数:{{battlechance}}</h5>
+            <h5>今日对战次数:{{10-battletime}}</h5>
+            <h5>剩余对战次数:{{battletime}}</h5>
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
@@ -113,10 +113,10 @@
       <el-checkbox-group v-model="checkList" @change="handleChecked" :min="0" :max="15">
       <el-row v-for="index in tableData.length" >
       <template v-if="index%4==1">
-      <el-col :span="6"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index<tableData.length"><el-checkbox :label="tableData[index].teamid" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+1<tableData.length"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
-      <el-col :span="6" v-if="index+2<tableData.length"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="tableData[index-1].valid==15"><el-checkbox :label="tableData[index-1].teamid" style="margin:3px;">{{tableData[index-1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index<tableData.length&&tableData[index].valid==15"><el-checkbox :label="tableData[index].teamid" style="margin:3px;">{{tableData[index].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+1<tableData.length&&tableData[index+1].valid==15"><el-checkbox :label="tableData[index+1].teamid" style="margin:3px;">{{tableData[index+1].teamname}}</el-checkbox></el-col>
+      <el-col :span="6" v-if="index+2<tableData.length&&tableData[index+2].valid==15"><el-checkbox :label="tableData[index+2].teamid" style="margin:3px;">{{tableData[index+2].teamname}}</el-checkbox></el-col>
       </template>
       </el-row>
       <!-- <el-row>
@@ -169,13 +169,15 @@ export default {
             checkList: [],
             AInum:0,//AI人数
             teamid:0,//队伍id
-            battlechance:10,//
+            battletime:10,//
             tableData: [{
             teamname:'划水萌新',
             captain:'萌新1号',
             teamid:0,
             score:20,
-            }],
+            battletime:0,
+            valid:15,//是否有效
+            }],//
             options: [{
               value: 'code0',
               label: '职业1'
@@ -248,7 +250,7 @@ export default {
                 if(id==this.tableData[i].membersID[j])
                 {
                   this.teamid=this.tableData[i].teamid;
-                  this.battlechance=this.tableData[i].battlechance;//对战次数
+                  this.battletime=this.tableData[i].battletime;//对战次数
                 }
               }
             }
@@ -482,7 +484,7 @@ export default {
             body:JSON.stringify({
               "teams":this.checkList,
               "ainum":this.AInum,
-              "initiator_name":this.teamid
+              "initiator_id":this.teamid
             })
           }).then(response=>{
             if(response.status.ok)
