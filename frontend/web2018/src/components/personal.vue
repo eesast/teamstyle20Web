@@ -181,13 +181,7 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofactive[i]=resx;
-                this.$set(this.tableDataofactive,i,{ainum:resx.ainum});
-                this.$set(this.tableDataofactive,i,{initiator_id:resx.initiator_id});
-                this.$set(this.tableDataofactive,i,{rank:resx.rank});
-                this.$set(this.tableDataofactive,i,{score:resx.score});
-                this.$set(this.tableDataofactive,i,{state:resx.state});
-                this.$set(this.tableDataofactive,i,{teams:resx.teams});
-                this.$set(this.tableDataofactive,i,{winner:resx.winner});
+                this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,teams:resx.teams,winner:resx.winner});
             }).catch(()=>{this.$message.error('服务器无法响应')})
         },
         add_passive(i)
@@ -209,13 +203,7 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofpassive[i]=resx;
-                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum});
-                this.$set(this.tableDataofpassive,i,{initiator_id:resx.initiator_id});
-                this.$set(this.tableDataofpassive,i,{rank:resx.rank});
-                this.$set(this.tableDataofpassive,i,{score:resx.score});
-                this.$set(this.tableDataofpassive,i,{state:resx.state});
-                this.$set(this.tableDataofpassive,i,{teams:resx.teams});
-                this.$set(this.tableDataofpassive,i,{winner:resx.winner});
+                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,teams:resx.teams,winner:resx.winner});
             }).catch(()=>{this.$message.error('服务器无法响应')})
 
         },
@@ -261,7 +249,7 @@ export default {
             //这里是下载函数
         },
         tableRowClassName({row, rowIndex}) {
-        if (row.result=== "fail") {
+        if (row.rank!== 1) {
           return 'warning-row';
         } 
         else {
@@ -277,14 +265,14 @@ export default {
       tableStyleofactive({ row, column, rowIndex, columnIndex }) {
             if(columnIndex==0)
             {
-                if(this.tableDataofactive[rowIndex].result=='victory')return 'statecolor'
+                if(this.tableDataofactive[rowIndex].rank==1)return 'statecolor'
                 else return 'statecolor2'
             }
         },
         tableStyleofpassive({ row, column, rowIndex, columnIndex }) {
             if(columnIndex==0)
             {
-                if(this.tableDataofpassive[rowIndex].result=='victory')return 'statecolor'
+                if(this.tableDataofpassive[rowIndex].rank==1)return 'statecolor'
                 else return 'statecolor2'
             }
         },
