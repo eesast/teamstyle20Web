@@ -100,16 +100,15 @@ def run_battle():
     client = docker.from_env()
     client.containers.run(image_name, command='bash /ts20/bin/run.sh %s'%key ,tty=True, stdin_open=True, remove=True, detach=True, network_mode='host', volumes={out_volume : {'bind': in_volume}})
     
-@csrf_exempt
 def add_battle(request):
     ''' 用于添加对战 '''
     # TODO:改成POST?
-    if request.method!='POST':
-        return HttpResponse('Not POST!')
+    if request.method!='GET':
+        return HttpResponse('Not GET!')
     # 读取request，检查合法性，并且存入Battle数据库
-    team_engaged = request.POST.get('teams', None)
-    robot_num = request.POST.get('AInum', None)
-    initiator_name = request.POST.get('initiator_name',None)
+    team_engaged = request.GET.get('teams', None)
+    robot_num = request.GET.get('AInum', None)
+    initiator_name = request.GET.get('initiator_name',None)
     status = 1
     if team_engaged==None or robot_num==None or initiator_name==None :
         return HttpResponse('Lose parameters.')
