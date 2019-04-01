@@ -490,10 +490,11 @@ export default {
             },
             body:JSON.stringify({
               "teams":this.checkList,
-              "ainum":this.AInum,
+              "AInum":this.AInum,
               "initiator_id":this.teamid
             })
           }).then(response=>{
+            console.log(response);
             if(response.status.ok)
             {
               return response.json();
@@ -502,7 +503,7 @@ export default {
           }).then(res=>{
 
           }).catch(()=>{
-
+              this.$message.error('发起对战失败');
           })
           //以下将传送checkList这些标号的队伍，以及AInum个AI进行对战   *********************
 
