@@ -52,8 +52,8 @@
             <h4>发起对战</h4>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;" @click="dialogTableVisible = true" v-if="loading_fight==false">发起对战</el-button>
             <el-button size="small"type="danger" style="padding-left:20px;padding-right:20px;"  v-if="loading_fight==true" icon="el-icon-loading" disabled="true">对战中</el-button>
-            <h5>今日对战次数:</h5>
-            <h5>剩余对战次数:</h5>
+            <h5>今日对战次数:{{10-battlechance}}</h5>
+            <h5>剩余对战次数:{{battlechance}}</h5>
             <br/>
             <h4>查看代码</h4>
             <h5><i class="el-icon-info"></i>可以下载已上传的代码</h5>
@@ -126,7 +126,7 @@
       <el-checkbox label="禁用" disabled></el-checkbox>
       <el-checkbox label="选中且禁用" disabled></el-checkbox> -->
      </el-checkbox-group>
-     <h2>AI数量:<el-input-number v-model="AInum"  :min="0" :max="999" size="small" style="margin-left:5px;"></el-input-number></h2>
+     <h2>AI数量:<el-input-number v-model="AInum"  :min="0" :max="16-AInum" size="small" style="margin-left:5px;"></el-input-number></h2>
      <el-button type="danger" size="small" @click="start_fight()">开始对战</el-button>
     </el-dialog>
     <div class="empty_content"></div>
@@ -168,6 +168,8 @@ export default {
             loading_fight:false,
             checkList: [],
             AInum:0,//AI人数
+            teamid:0,//队伍id
+            battlechance:10,//
             tableData: [{
             teamname:'划水萌新',
             captain:'萌新1号',
@@ -246,6 +248,7 @@ export default {
                 if(id==this.tableData[i].membersID[j])
                 {
                   this.teamid=this.tableData[i].teamid;
+                  this.battlechance=this.tableData[i].battlechance;//对战次数
                 }
               }
             }
@@ -470,7 +473,28 @@ export default {
           this.loading_fight=true;
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
           //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname
+          fetch('/api/battle/add',{
+            method:'POST',
+            headers:{
+                "Content-Type": "application/json",
+                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+            },
+            body:JSON.stringify({
+              "teams":this.checkList,
+              "ainum":this.AInum,
+              "initiator_name":this.teamid
+            })
+          }).then(response=>{
+            if(response.status.ok)
+            {
+              return response.json();
+            }
+            else throw 'bad';
+          }).then(res=>{
 
+          }).catch(()=>{
+
+          })
           //以下将传送checkList这些标号的队伍，以及AInum个AI进行对战   *********************
 
           this.loading_fight=false;
