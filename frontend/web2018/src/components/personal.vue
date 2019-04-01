@@ -25,7 +25,7 @@
 
 
             <!-- 主动对战结果 -->
-            <el-collapse-item title="主动对战历史" name="1">
+            <el-collapse-item title="主动对战历史" name="2">
                 <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofactive"
                 empty-text="暂无对战历史"
                 >
@@ -64,7 +64,7 @@
 
             <!-- 被动对战结果 -->
             
-            <el-collapse-item title="被挑战历史" name="2">
+            <el-collapse-item title="被挑战历史" name="3">
                 <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofpassive"
                 empty-text="暂无对战历史"
                 >

@@ -126,7 +126,7 @@
       <el-checkbox label="禁用" disabled></el-checkbox>
       <el-checkbox label="选中且禁用" disabled></el-checkbox> -->
      </el-checkbox-group>
-     <h2>AI数量:<el-input-number v-model="AInum"  :min="0" :max="16-AInum" size="small" style="margin-left:5px;"></el-input-number></h2>
+     <h2>AI数量:<el-input-number v-model="AInum"  :min="0" :max="16-checkList.length" size="small" style="margin-left:5px;"></el-input-number></h2>
      <el-button type="danger" size="small" @click="start_fight()">开始对战</el-button>
     </el-dialog>
     <div class="empty_content"></div>
