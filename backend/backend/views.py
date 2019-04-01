@@ -188,12 +188,14 @@ def modifyUser(request, user_id):
     return response
 
 
-def append_team_member_name(user_info, query, showtype=0):
+def append_team_member_name(user_info, query, showtype_Input=0):
     output = list()
     get_name_head = {'Authorization': 'Bearer ' + user_info["eesast"]}
     for team in query:
         if (team.memberInTeam(user_info["id"])):
             showtype = 2
+        else:
+            showtype = int(showtype_Input >= 1)
         thisTeamInfo = team.get_teamInfo(showtype)
         thisTeamInfo["members"] = list()
         try:
