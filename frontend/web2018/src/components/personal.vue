@@ -26,7 +26,7 @@
 
             <!-- 主动对战结果 -->
             <el-collapse-item title="主动对战历史" name="2">
-                <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofactive"
+                <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
                 <el-table-column prop="color" min-width="1%" >
@@ -65,7 +65,7 @@
             <!-- 被动对战结果 -->
             
             <el-collapse-item title="被挑战历史" name="3">
-                <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" :cell-class-name="tableStyleofpassive"
+                <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
             <el-table-column prop="color" min-width="1%" >
@@ -181,7 +181,8 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofactive[i]=resx;
-                this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,teams:resx.teams,winner:resx.winner});
+                this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,winner:resx.winner});
+                this.tableDataofactive[i].teams=resx.teams;
             }).catch(()=>{this.$message.error('服务器无法响应')})
         },
         add_passive(i)
@@ -203,8 +204,9 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofpassive[i]=resx;
-                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,teams:resx.teams,winner:resx.winner});
-            }).catch(()=>{this.$message.error('服务器无法响应')})
+                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,state:resx.state,winner:resx.winner});
+                this.tableDataofpassive[i].teams=resx.teams;
+           }).catch(()=>{this.$message.error('服务器无法响应')})
 
         },
         handleChange()
