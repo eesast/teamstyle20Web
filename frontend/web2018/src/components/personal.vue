@@ -180,8 +180,14 @@ export default {
                 }
                 else throw 'bad';
             }).then(resx=>{
-                this.tableDataofactive[i]=resx;
-
+                // this.tableDataofactive[i]=resx;
+                this.$set(this.tableDataofactive,i,{ainum:resx.ainum});
+                this.$set(this.tableDataofactive,i,{initiator_id:resx.initiator_id});
+                this.$set(this.tableDataofactive,i,{rank:resx.rank});
+                this.$set(this.tableDataofactive,i,{score:resx.score});
+                this.$set(this.tableDataofactive,i,{state:resx.state});
+                this.$set(this.tableDataofactive,i,{teams:resx.teams});
+                this.$set(this.tableDataofactive,i,{winner:resx.winner});
             }).catch(()=>{this.$message.error('服务器无法响应')})
         },
         add_passive(i)
@@ -202,7 +208,14 @@ export default {
                 }
                 else throw 'bad';
             }).then(resx=>{
-                this.tableDataofpassive[i]=resx;
+                // this.tableDataofpassive[i]=resx;
+                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum});
+                this.$set(this.tableDataofpassive,i,{initiator_id:resx.initiator_id});
+                this.$set(this.tableDataofpassive,i,{rank:resx.rank});
+                this.$set(this.tableDataofpassive,i,{score:resx.score});
+                this.$set(this.tableDataofpassive,i,{state:resx.state});
+                this.$set(this.tableDataofpassive,i,{teams:resx.teams});
+                this.$set(this.tableDataofpassive,i,{winner:resx.winner});
             }).catch(()=>{this.$message.error('服务器无法响应')})
 
         },
