@@ -111,18 +111,19 @@ def add_battle(request):
     initiator_id = request.GET.get('initiator_id',None)
     status = 1
     if team_engaged==None or robot_num==None or initiator_id==None :
-        return HttpResponse('Lose parameters.')
+        return HttpResponse('Lose parameters.',status_code=406)
     robot_num = int(robot_num)
+    initiator_id = int(initiator_id)
     team_engaged = json.loads(team_engaged)
     for team_id in team_engaged:
         team = Team.objects.filter(id=team_id)
         if team.exists()==False:
-            return HttpResponse('No team:%s'%team_id)
+            return HttpResponse('No team:%s'%team_id,status_code=406)
         if team[0].valid!=15:
-            return HttpResponse('Team \"%s\" is invalid!'%(team_id))
+            return HttpResponse('Team \"%s\" is invalid!'%(team_id),status_code=406)
     ini_team = Team.objects.get(id=initiator_id)
     if ini_team.get_battle_time()==0:
-        return HttpResponse('No remaining times.')
+        return HttpResponse('No remaining times.',status_code=405)
     ini_team.battle_time -= 1
     ini_team.save()
 
