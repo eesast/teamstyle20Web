@@ -41,7 +41,13 @@
             :on-exceed="handleExceed"
             :file-list="fileList">
    
-             <div slot="tip" class="el-upload__tip">只能上传.cpp文件</div>
+             <div slot="tip" class="el-upload__tip">只能上传.cpp文件
+               <br/><span style="font-weight:600;">代码有效性:</span><br/>
+               职业1: <span v-if="valid%2==1">有效</span><span v-else>无效</span><br/>
+               职业2: <span v-if="(valid>>1)%2==1">有效</span><span v-else>无效</span><br/>
+               职业3: <span v-if="(valid>>2)%2==1">有效</span><span v-else>无效</span><br/>
+               职业4: <span v-if="(valid>>3)%2==1">有效</span><span v-else>无效</span><br/>
+             </div>
              <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
              <!-- <el-button size="small" type="primary" icon="el-icon-loading" v-if="loading_upload==true" disabled>文件上传中</el-button> -->
             </el-upload>
@@ -429,8 +435,10 @@ export default {
                   //   type: 'info',
                   //   message: `action: ${ action }`
                   // });
+                  window.location="https://teamstyle.eesast.com/battle";
                 }
-              });       
+              });
+
             }).catch(()=>{})
 
           })
@@ -483,7 +491,7 @@ export default {
           if(this.valid!=15)
           {
              this.$alert("对战发起失败，请确保所有职业代码均有效！<br/>职业一:"+(this.valid%2==1)?'有效':'无效'+"<br/>职业一:"
-             +((this.valid/2)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid/4)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid/8)%2==1)?'有效':'无效'
+             +((this.valid>>1)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid>>2)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid>>3)%2==1)?'有效':'无效'
              , '错误', {
               confirmButtonText: '确定',
               dangerouslyUseHTMLString: true,
