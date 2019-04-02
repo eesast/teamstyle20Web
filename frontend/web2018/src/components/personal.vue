@@ -142,13 +142,13 @@ export default {
         return {
             flag0: false,      //用于标记加入或创建，如果为队长，则为true--创建
             //否则，为队员，false-加入
-            intro:"jjafhadhfuka",//队伍简介  description
-            name: "test",//账号名称
+            intro:"暂无数据",//队伍简介  description
+            name: "暂无数据",//账号名称
             password:"********",
-            team: "none",//teamname
+            team: "暂无数据",//teamname
             teamid:0,
-            phone: "12345678899",//phone
-            mail: "123456789@163.com",//mail
+            phone: "暂无数据",//phone
+            mail: "暂无数据",//mail
             score: 100,//teamscore
             rank: 5,//teamrank
             activeNames: [],
