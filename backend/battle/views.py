@@ -112,19 +112,19 @@ def add_battle(request):
     initiator_id = request.GET.get('initiator_id',None)
     status = 1
     if team_engaged==None or robot_num==None or initiator_id==None :
-        return HttpResponse('Lose parameters.',status_code=406)
+        return HttpResponse('Lose parameters.',status=406)
     robot_num = int(robot_num)
     initiator_id = int(initiator_id)
     team_engaged = json.loads(team_engaged)
     for team_id in team_engaged:
         team = Team.objects.filter(id=team_id)
         if team.exists()==False:
-            return HttpResponse('No team:%s'%team_id,status_code=406)
+            return HttpResponse('No team:%s'%team_id,status=406)
         if team[0].valid!=15:
-            return HttpResponse('Team \"%s\" is invalid!'%(team_id),status_code=406)
+            return HttpResponse('Team \"%s\" is invalid!'%(team_id),status=406)
     ini_team = Team.objects.get(id=initiator_id)
     if ini_team.get_battle_time()==0:
-        return HttpResponse('No remaining times.',status_code=405)
+        return HttpResponse('No remaining times.',status=405)
     ini_team.battle_time -= 1
     ini_team.save()
 
@@ -169,14 +169,15 @@ def add_battle(request):
 def view_result(request):
     ''' 查询对战结果，传入battle_id，返回一个JSON '''
     if request.method!='GET':
-        return HttpResponse('Not GET!', status_code=406)
+        return HttpResponse('Not GET!', status=406)
     battle_id = request.GET.get('battle_id', default=-1)
     query_id  = request.GET.get('team_id', default=-1)
     if battle_id==-1 or query_id==-1 :
-        return HttpResponse('Lose parameter', status_code=406)
+        return HttpResponse('Lose parameter', status=406)
+    query_id  = int(query_id)
     battle = Battle.objects.filter(id=battle_id)
     if battle.exists()==False :
-        return HttpResponse('Not Found', status_code=404)
+        return HttpResponse('Not Found', status=404)
     battle     = battle[0]
     initiator  = battle.initiator_id
     status     = battle.status
@@ -188,7 +189,7 @@ def view_result(request):
     ret['initiator_id'] = initiator
     teams = json.loads(battle.team_engaged)
     for team_id in teams:
-        ret['teams'].append(Team.objects.get(id=team_id)).teamname
+        ret['teams'].append(Team.objects.get(id=team_id).teamname)
 
     # 返回对战队伍、AI数目、冠军、发起者排名和得分、对战是否结束
     if status!=0 :
@@ -207,7 +208,7 @@ def view_result(request):
         if id==query_id:
             virtual_id = vid
     if virtual_id==-1:
-        return HttpResponse("No such team in this battle!", status_code=404)
+        return HttpResponse("No such team in this battle!", status=404)
     for i in range(0,len(score)):
         if score[i][0]==virtual_id:
             initiator_rank  = i+1
