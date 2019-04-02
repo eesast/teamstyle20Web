@@ -166,6 +166,9 @@ def add_battle(request):
     run_battle()
     return HttpResponse('Added to queue. Battle ID:%d, Spare room: %d'%(battle_id,room))
 
+def is_AI(team_id):
+    return (team_id<AI_IND)
+
 def view_result(request):
     ''' 查询对战结果，传入battle_id，返回一个JSON '''
     if request.method!='GET':
@@ -213,7 +216,10 @@ def view_result(request):
         if score[i][0]==virtual_id:
             initiator_rank  = i+1
             initiator_score = score[i][1]
-    ret['winner'] = Team.objects.get(id=champion).teamname
+    if not is_AI(champion):
+        ret['winner'] = Team.objects.get(id=champion).teamname
+    else:
+        ret['winner'] = 'AI'
     ret['rank']   = initiator_rank
     ret['score']  = initiator_score
     return JsonResponse(ret)
@@ -242,11 +248,11 @@ def end_battle(request):
     game_score = list(result['score'])
     origin_score = [0 for i in range(len(game_score))]
     for i in range(len(game_score)):
-        if int(id_map[game_score[i][0]])<AI_IND:
+        if not is_AI(int(id_map[game_score[i][0]])):
             origin_score[i] = Team.objects.get(id=int(id_map[game_score[i][0]])).score
     origin_score = update(np.array(origin_score), np.array(list(result['score'].values())))
     for i in range(len(game_score)):
-        if int(id_map[game_score[i][0]])<AI_IND:
+        if not is_AI(int(id_map[game_score[i][0]])):
             team = Team.objects.get(id=int(id_map[game_score[i][0]]))
             team.score = origin_score[i]
             team.save()
