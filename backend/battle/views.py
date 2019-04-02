@@ -47,7 +47,12 @@ def debug_view_queue(request):
     return HttpResponse(str(Room.objects.all())+'\n'+str(Queue.objects.all()))
 
 def debug_view_team(request):
-    return HttpResponse(str(Team.objects.all()))
+    team_id=request.GET.get('team_id',default=-1)
+    if team_id==-1:
+        return HttpResponse(str(Team.objects.all()))
+    team_id=int(team_id)
+    team = Team.objects.get(id=team_id)
+    return HttpResponse(str(team))
 
 def debug_view_battle(request):
     return HttpResponse(str(Battle.objects.all()))
@@ -167,10 +172,11 @@ def add_battle(request):
     return HttpResponse('Added to queue. Battle ID:%d, Spare room: %d'%(battle_id,room))
 
 def is_AI(team_id):
-    return (team_id<AI_IND)
+    return (team_id>=AI_IND)
 
 def view_result(request):
     ''' 查询对战结果，传入battle_id，返回一个JSON '''
+    update_rank()
     if request.method!='GET':
         return HttpResponse('Not GET!', status=406)
     battle_id = request.GET.get('battle_id', default=-1)
@@ -224,6 +230,14 @@ def view_result(request):
     ret['score']  = initiator_score
     return JsonResponse(ret)
 
+def update_rank():
+    teams = Team.objects.all().order_by('-score')
+    cnt=1
+    for team in teams:
+        team.rank=cnt
+        team.save()
+        cnt+=1
+
 def end_battle(request):
     ''' 对战结束后收到的请求，注意检查key，以及删除Room '''
     if request.method!='GET':
@@ -260,6 +274,7 @@ def end_battle(request):
     battle.status=0
 
     battle.save()
+    update_rank()
     run_battle()
     return HttpResponse('End battle successfully!')
 
