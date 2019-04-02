@@ -37,19 +37,19 @@
                 <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
                     <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="rank" label="队伍排名" min-width="20%">
                      <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.rank}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="score" label="得分" min-width="20%">
                      <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.score}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="state" label="状态" min-width="20%">
@@ -84,19 +84,19 @@
             <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
                 <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                 </template>
             </el-table-column>
             <el-table-column prop="rank" label="队伍排名" min-width="20%">
                  <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.rank}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                 </template>
             </el-table-column>
             <el-table-column prop="score" label="得分" min-width="20%">
                  <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.score}}</span>
-                        <span v-else><i class="el-icon-loading"></i>/span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                 </template>
             </el-table-column>
            <el-table-column prop="state" label="状态" min-width="20%">
