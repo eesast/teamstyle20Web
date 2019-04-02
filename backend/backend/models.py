@@ -31,7 +31,9 @@ class Team(models.Model):
     history_active = models.TextField(default='[]', verbose_name='Active fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     history_passive = models.TextField(default='[]', verbose_name='Passive fighting history', help_text="Fighting history records of the team in JSON format.  If this is to be modified on django admin site, please make sure it retains valid in JSON format.")
     def __str__(self):
-        #return self.teamname
+        return self.teamname
+
+    def get_details(self):
         return 'id:%d, teamname:%s, score:%d, valid:%d, rank:%d, history_active:%s, history_passive:%s'%(self.id,self.teamname,self.score,self.valid,self.rank,self.history_active,self.history_passive)
 
     def get_member_limit(self):

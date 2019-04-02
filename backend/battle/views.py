@@ -52,7 +52,7 @@ def debug_view_team(request):
         return HttpResponse(str(Team.objects.all()))
     team_id=int(team_id)
     team = Team.objects.get(id=team_id)
-    return HttpResponse(str(team))
+    return HttpResponse(team.get_details())
 
 def debug_view_battle(request):
     return HttpResponse(str(Battle.objects.all()))
