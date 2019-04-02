@@ -171,6 +171,7 @@ export default {
             checkList: [],
             AInum:0,//AI人数
             teamid:0,//队伍id
+            valid:0,//有效
             battle_time:10,//
             tableData: [],
             //[{
@@ -254,6 +255,7 @@ export default {
                 {
                   this.teamid=this.tableData[i].teamid;
                   this.battle_time=this.tableData[i].battle_time;//对战次数
+                  this.valid=this.tableData[i].valid;//有效
                   if(this.tableData[i].valid==15)
                   {
                     this.checkList.push(this.teamid);
@@ -478,7 +480,23 @@ export default {
         {
           this.dialogTableVisible=false;//隐藏对话框
           console.log(this.checkList);//勾选的队伍
-
+          if(this.valid!=15)
+          {
+             this.$alert("对战发起失败，请确保所有职业代码均有效！<br/>职业一:"+(this.valid%2==1)?'有效':'无效'+"<br/>职业一:"
+             +((this.valid/2)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid/4)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid/8)%2==1)?'有效':'无效'
+             , '错误', {
+              confirmButtonText: '确定',
+              dangerouslyUseHTMLString: true,
+              type:"error",
+              callback: action => {
+                // this.$message({
+                //   type: 'info',
+                //   message: `action: ${ action }`
+                // });
+              }
+            })
+            return ;//不能对战
+          }
           this.loading_fight=true;
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
           //当el-checkBox 的:label绑定的是x.teamname时，checkList记录选中队伍的teamname

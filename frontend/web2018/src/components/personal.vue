@@ -200,7 +200,7 @@ export default {
                 // this.tableDataofactive[i]=resx;
                 this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner});
                 // this.tableDataofactive[i].teams=resx.teams;
-            }).catch(()=>{this.$message.error('服务器无法响应')})
+            }).catch(()=>{this.$message.error('您不在队伍中')})
         },
         add_passive(i)
         {   
@@ -223,7 +223,7 @@ export default {
                 // this.tableDataofpassive[i]=resx;
                 this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner});
                 // this.tableDataofpassive[i].teams=resx.teams;
-           }).catch(()=>{this.$message.error('服务器无法响应')})
+           }).catch(()=>{this.$message.error('您不在队伍中')})
 
         },
         handleChange()
@@ -318,6 +318,22 @@ export default {
                 {
                     return response.json();
                 }
+                else if(response.status=="401")
+                {
+                    this.$message.error("token失效，请重新登录！");
+                    if(token!=null)
+                    {
+                        delCookie("token")
+                        delCookie("id")
+                        delCookie("username")
+                        token=null
+                        username=null
+                        id=null
+                        setTimeout(() => {
+                        window.location="https://teamstyle.eesast.com/login";
+                        }, 100)
+                    }
+                }
                 else
                 {
                     this.$message.error("服务器暂时无法响应！");
@@ -341,11 +357,12 @@ export default {
                 if(response.status=="404")
                 {
                     //没有队伍
+                    this.$message.error('您没有加入队伍！');
                     this.showteaminfo=false;
                     this.team="none";
                     // throw '';
                 }
-                if (response.status=="200") {
+                else if (response.status=="200") {
                 return response.json();
                 } 
                 else if (response.status == "401") {
