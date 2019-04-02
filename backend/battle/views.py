@@ -1,10 +1,11 @@
 import docker
-import os, sys, shutil, datetime, json
+import os, sys, shutil, datetime, json, jwt
 import random, string
 import numpy as np
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from backend.models import Battle, Team
+from backend import views
 from battle.models import Room, Queue
 
 root_path=os.getcwd()
@@ -14,7 +15,7 @@ so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
 data_path = root_path+'/media/data'
 image_name = 'ts20:v1.07'                        # NOTE:记得修改
-room_lim=5  # 对战房间数，从1标号 
+room_lim=2  # 对战房间数，从1标号 
 
 chars = string.ascii_letters + string.digits
 
@@ -110,7 +111,7 @@ def add_battle(request):
     ''' 用于添加对战 '''
     # TODO:改成POST?
     if request.method!='GET':
-        return HttpResponse('Not GET!')
+        return HttpResponse('Not GET!', status=406)
     # 读取request，检查合法性，并且存入Battle数据库
     team_engaged = request.GET.get('teams', None)
     robot_num = request.GET.get('AInum', None)
@@ -121,6 +122,22 @@ def add_battle(request):
     robot_num = int(robot_num)
     initiator_id = int(initiator_id)
     team_engaged = json.loads(team_engaged)
+
+    if not 'HTTP_X_ACCESS_TOKEN' in request.META:
+        return HttpResponse('401 Unauthorized', status=401)
+    try:
+        x_access_token = views.is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        user_info = views.get_user_info(x_access_token["token"])
+        team = Team.objects.get(id=initiator_id)
+        if not team.memberInTeam(user_info["id"]):
+            return HttpResponse('401 Unauthorized: You have no permission to do this.', status=401)
+    except jwt.PyJWTError:
+        return HttpResponse('401 Unauthorized: Token invalid or expired', status=401)
+    except json.JSONDecodeError:
+        return HttpResponse('422 Unprocessible Entity: JSON Decode Error.',status=422)
+#except:
+#return HttpResponse('401 Unauthorized lala',status=401)
+    
     for team_id in team_engaged:
         team = Team.objects.filter(id=team_id)
         if team.exists()==False:
