@@ -218,7 +218,7 @@ def end_battle(request):
         return HttpResponse('Wrong key! %s'%key)
     room = Room.objects.filter(key=key)[0]
     battle_id = room.battle_id
-#room.delete()  #TODO !!!!!!!!!!!!
+    room.delete()
     battle = Battle.objects.get(id=battle_id)
     team_engaged = json.loads(battle.team_engaged)
     items = os.listdir(data_path+'/%s'%battle_id)
