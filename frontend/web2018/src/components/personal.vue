@@ -21,6 +21,7 @@
     <div class="part2" style="vertical-align: top;">
         <el-card shadow="always"  style="text-align:left;">
         <!-- <h4>分数曲线：</h4> -->
+         <h5><i class="el-icon-info"></i>对战状态分为"排队中"、"对战中"和"对战结束"，请一段时间后刷新网页更新对战状态</h5>
         <el-collapse v-model="activeNames" @change="handleChange">
 
 

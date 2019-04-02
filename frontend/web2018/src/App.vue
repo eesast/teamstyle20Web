@@ -108,5 +108,13 @@ html,body
   top:40vh;
   left:5vw;
 }
+.el-message
+{
+  /* position: fixed; */
+  /* width:90vw!important;; */
+  /* display: block; */
+  top:20vh;
+  /* left:5vw; */
+}
 }
 </style>
