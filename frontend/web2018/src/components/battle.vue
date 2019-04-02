@@ -87,7 +87,7 @@
             <el-table-column
             label="#"
             min-width="10%">
-                <template slot-scope="scope">{{scope.$index}}</template>
+                <template slot-scope="scope">{{scope.$index+1}}</template>
             </el-table-column>
             <el-table-column
             prop="teamname"
