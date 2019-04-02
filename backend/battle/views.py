@@ -8,6 +8,7 @@ from backend.models import Battle, Team
 from battle.models import Room, Queue
 
 root_path=os.getcwd()
+AI_IND = 1000
 AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修改
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
@@ -152,7 +153,7 @@ def add_battle(request):
         
     for i in range(robot_num):
         #d[cnt]='__AI%d'%i # 与队伍命名不可冲突
-        d[cnt]=100+cnt ;
+        d[cnt]=AI_IND+cnt ;
         for j in range(4):
             shutil.copyfile(AI_path,path+'/libAI_%d_%d.so'%(cnt,j))
         cnt+=1
@@ -168,21 +169,27 @@ def add_battle(request):
 def view_result(request):
     ''' 查询对战结果，传入battle_id，返回一个JSON '''
     if request.method!='GET':
-        return HttpResponse('Not GET!')
+        return HttpResponse('Not GET!', status_code=406)
     battle_id = request.GET.get('battle_id', default=-1)
-    if battle_id==-1 :
-        return HttpResponse('Lose parameter')
+    query_id  = request.GET.get('team_id', default=-1)
+    if battle_id==-1 or query_id==-1 :
+        return HttpResponse('Lose parameter', status_code=406)
     battle = Battle.objects.filter(id=battle_id)
     if battle.exists()==False :
-        return HttpResponse('Not Found')
+        return HttpResponse('Not Found', status_code=404)
     battle     = battle[0]
     initiator  = battle.initiator_id
     status     = battle.status
     ret        = {}
-    ret['teams'] = battle.team_engaged
+    #ret['teams'] = battle.team_engaged
+    ret['teams'] = []
     ret['ainum'] = battle.robot_num
     ret['state'] = status
     ret['initiator_id'] = initiator
+    teams = json.loads(battle.team_engaged)
+    for team_id in teams:
+        ret['teams'].append(Team.objects.get(id=team_id)).teamname
+
     # 返回对战队伍、AI数目、冠军、发起者排名和得分、对战是否结束
     if status!=0 :
         ret['winner'] = '-1'
@@ -195,19 +202,20 @@ def view_result(request):
     champion   = id_map[score[0][0]]
     initiator_rank  = 0
     initiator_score = 0
-    virtual_id = 0   # 发起者在房间中的id
+    virtual_id = -1   # 发起者在房间中的id
     for (vid,id) in id_map.items():
-        if id==initiator:
+        if id==query_id:
             virtual_id = vid
+    if virtual_id==-1:
+        return HttpResponse("No such team in this battle!", status_code=404)
     for i in range(0,len(score)):
         if score[i][0]==virtual_id:
             initiator_rank  = i+1
             initiator_score = score[i][1]
-    ret['winner'] = champion
+    ret['winner'] = Team.objects.get(id=champion).teamname
     ret['rank']   = initiator_rank
     ret['score']  = initiator_score
     return JsonResponse(ret)
-    
 
 def end_battle(request):
     ''' 对战结束后收到的请求，注意检查key，以及删除Room '''
@@ -233,11 +241,11 @@ def end_battle(request):
     game_score = list(result['score'])
     origin_score = [0 for i in range(len(game_score))]
     for i in range(len(game_score)):
-        if int(id_map[game_score[i][0]])<100:
+        if int(id_map[game_score[i][0]])<AI_IND:
             origin_score[i] = Team.objects.get(id=int(id_map[game_score[i][0]])).score
     origin_score = update(np.array(origin_score), np.array(list(result['score'].values())))
     for i in range(len(game_score)):
-        if int(id_map[game_score[i][0]])<100:
+        if int(id_map[game_score[i][0]])<AI_IND:
             team = Team.objects.get(id=int(id_map[game_score[i][0]]))
             team.score = origin_score[i]
             team.save()
