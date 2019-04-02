@@ -35,14 +35,22 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
-                    <!-- <template slot-scope="scope">
-                        <span v-for="(x,index) in scope.row.teams">{{x}}|</span>
-                        AI:{{scope.row.ainum}}
-                    </template> -->
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="rank" label="队伍排名" min-width="20%">
+                     <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.rank}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="score" label="得分" min-width="20%">
+                     <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.score}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="state" label="状态" min-width="20%">
                     <template slot-scope="scope">
@@ -74,14 +82,22 @@
                 </template>
             </el-table-column>
             <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
-                <!-- <template slot-scope="scope">
-                    <span v-for="(x,index) in scope.row.teams">{{x}}|</span>
-                    AI:{{scope.row.ainum}}
-                </template> -->
+                <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                </template>
             </el-table-column>
             <el-table-column prop="rank" label="队伍排名" min-width="20%">
+                 <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.rank}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                </template>
             </el-table-column>
             <el-table-column prop="score" label="得分" min-width="20%">
+                 <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.score}}</span>
+                        <span v-else><i class="el-icon-loading"></i>/span>
+                </template>
             </el-table-column>
            <el-table-column prop="state" label="状态" min-width="20%">
                 <template slot-scope="scope">
@@ -129,6 +145,7 @@ export default {
             name: "test",//账号名称
             password:"********",
             team: "none",//teamname
+            teamid:0,
             phone: "12345678899",//phone
             mail: "123456789@163.com",//mail
             score: 100,//teamscore
@@ -164,7 +181,7 @@ export default {
     methods: {
         add_active(i)
         {
-            fetch('/api/battle/result?battle_id='+this.history_active[i],{
+            fetch('/api/battle/result?battle_id='+this.history_active[i]+'&team_id='+this.teamid,{
                 method:'GET',
                 headers:{
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -187,7 +204,7 @@ export default {
         },
         add_passive(i)
         {   
-            fetch('/api/battle/result?battle_id='+this.history_passive[i],{
+            fetch('/api/battle/result?battle_id='+this.history_passive[i]+'&team_id='+this.teamid,{
                 method:'GET',
                 headers:{
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -367,7 +384,7 @@ export default {
                 this.rank=ans.rank; 
                 this.history_active=ans.history_active;
                 this.history_passive=ans.history_passive;
-
+                this.teamid=ans.teamid;
 
                 //更新active和passive
                 for(var i=0;i<this.history_active.length;i++)
