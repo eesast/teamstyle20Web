@@ -53,7 +53,7 @@
             </el-upload>
             <!-- <el-input type="file" @onchange="jsReadFiles(this.files)"/> -->
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
-            <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:4/18 12:00</span></h5>
+            <!-- <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:4/18 12:00</span></h5> -->
             <br/>
             <h4>发起对战</h4>
             <h5><i class="el-icon-info"></i>仅可以选择代码<span style="color:red">有效</span>的队伍进行对战</h5>
