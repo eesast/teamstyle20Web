@@ -30,13 +30,13 @@
                 <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
-                <el-table-column prop="battle_id" min-width="5%" >
+                <el-table-column prop="battle_id" label="对战编号" min-width="10%" >
                    <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
                         <span v-else><i class="el-icon-loading"></i></span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
+                <el-table-column prop="winner" label="吃鸡队伍" min-width="20%" v-if="mobile==false">
                     <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
                         <span v-else><i class="el-icon-loading"></i></span>
@@ -61,7 +61,7 @@
                         <span v-if="scope.row.state==0">对战结束</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="download" min-width="40%">
+                <el-table-column prop="download" min-width="30%">
                     <template slot-scope="scope">
                     <el-button  size="small" @click="perdownload(scope.$index,1)" :disabled="scope.row.state!=0">下载回放</el-button>
                     <el-button  size="small" @click="perdetail(scope.$index,1)" :disabled="scope.row.state!=0">查看详情</el-button>
@@ -78,13 +78,13 @@
                 <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
-            <el-table-column prop="battle_id" min-width="1%" >
+            <el-table-column prop="battle_id" min-width="10%" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
                     <span v-else><i class="el-icon-loading"></i></span>
                 </template>
             </el-table-column>
-            <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
+            <el-table-column prop="winner" label="吃鸡队伍" min-width="20%" v-if="mobile==false">
                 <template slot-scope="scope">
                         <span v-if="scope.row.state==0">{{scope.row.winner}}</span>
                         <span v-else><i class="el-icon-loading"></i></span>
@@ -109,7 +109,7 @@
                     <span v-if="scope.row.state==0">对战结束</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="download" min-width="40%">
+            <el-table-column prop="download" min-width="30%">
                 <template slot-scope="scope">
                 <el-button  size="small" @click="perdownload(scope.$index,2)" :disabled="scope.row.state!=0">下载回放</el-button>
                 <el-button  size="small" @click="perdetail(scope.$index,2)" :disabled="scope.row.state!=0">查看详情</el-button>
@@ -148,6 +148,7 @@ export default {
             name: "暂无数据",//账号名称
             password:"********",
             team: "暂无数据",//teamname
+            mobile:false,
             teamid:0,
             phone: "暂无数据",//phone
             mail: "暂无数据",//mail
@@ -165,6 +166,7 @@ export default {
             //     state: 0,
             //     initiator_id: 2,
             //     winner: "yyr2",
+            //     battle_id:2,
             //     rank: 2,
             //     score: 300
             // }],
@@ -319,6 +321,10 @@ export default {
     },
     created: function()
     {
+        if(window.screen.width<768)
+        {
+        this.mobile=true;
+        }
         let cur1 = document.querySelectorAll("div[class='part2']");
         let cur2 = document.querySelectorAll("div[class='part2']");
         cur2.height=cur1.height;
