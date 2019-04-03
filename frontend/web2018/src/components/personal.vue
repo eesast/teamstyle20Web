@@ -267,6 +267,24 @@ export default {
         },
         perdownload(idx,num){
             //这里是下载函数
+            var battle_id=(num==1)?this.history_active[idx]:this.history_passive[idx];
+            fetch('/api/playback/'+battle_id,{
+                method:'GET',
+                headers:{
+                      "content-type": "application/octet-stream",
+              "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                }
+            }).then(res => res.blob().then(blob => { 
+              var a = document.createElement('a'); 
+              var url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+              var filename = res.headers.get('Content-Disposition'); 
+              a.href = url; 
+              a.download = "对战编号:"+filename.substring(filename.length-8); 
+              a.click(); 
+              window.URL.revokeObjectURL(url);
+          })).catch(()=>{
+            this.$message.error('您没有权限!');
+          })
         },
         tableRowClassName({row, rowIndex}) {
         if (row.rank!== 1) {
@@ -402,6 +420,8 @@ export default {
                 this.rank=ans.rank; 
                 this.history_active=ans.history_active;
                 this.history_passive=ans.history_passive;
+                this.history_active.reverse();
+                this.history_passive.reverse();
                 this.teamid=ans.teamid;
 
                 //更新active和passive
