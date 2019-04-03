@@ -445,7 +445,7 @@ export default {
                 }
               });
 
-            }).catch(()=>{})
+            }).catch(()=>{this.loading_upload=false;})
 
           })
       },
