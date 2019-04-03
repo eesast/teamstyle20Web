@@ -201,7 +201,7 @@ export default {
               value: 'code3',
               label: '职业4'
             }],
-            value: 'code0',
+            value: '0',
             codeoptions: [{
               value: '0',
               label: '职业1'

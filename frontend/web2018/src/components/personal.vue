@@ -201,7 +201,7 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofactive[i]=resx;
-                this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner});
+                this.$set(this.tableDataofactive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner,battle_id:resx.battle_id});
                 // this.tableDataofactive[i].teams=resx.teams;
             }).catch(()=>{this.$message.error('您不在队伍中')})
         },
@@ -224,7 +224,7 @@ export default {
                 else throw 'bad';
             }).then(resx=>{
                 // this.tableDataofpassive[i]=resx;
-                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner});
+                this.$set(this.tableDataofpassive,i,{ainum:resx.ainum,initiator_id:resx.initiator_id,rank:resx.rank,score:resx.score,teams:resx.teams,state:resx.state,winner:resx.winner,battle_id:resx.battle_id});
                 // this.tableDataofpassive[i].teams=resx.teams;
            }).catch(()=>{this.$message.error('您不在队伍中')})
 
