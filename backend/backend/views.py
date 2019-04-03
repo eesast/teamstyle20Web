@@ -7,6 +7,7 @@ from django.template import *
 import requests
 import hashlib, uuid
 from django.db.models import Q
+import os
 import django.utils.timezone as tzd
 import datetime, time
 import jwt
@@ -659,4 +660,53 @@ def getGlobalSettings(request):
             response = JsonResponse(query[0].get_globalSetting(), status=200)
         else:
             response = HttpResponse("404 Not found: Global Settings of this event are not yet configured.", status=404)
+    return response
+
+
+@csrf_exempt
+def battlePlayback(request, battle_id):
+    try:
+        assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
+        assert request.method == 'GET', 405
+        x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        assert x_access_token["token"], 401
+        user_info = get_user_info(x_access_token["token"])
+        has_permission = 0
+        if(user_info["role"] == "root"):
+            has_permission = 1
+        if(has_permission == 0):
+            target_team = get_teamid_by_userid(user_info["id"])
+            target_battle = Battle.objects.get(id = battle_id)
+            target_battle_team_engaged = json.loads(target_battle.team_engaged)
+            if(target_team in target_battle_team_engaged):
+                has_permission = 1
+        assert has_permission, 4011
+        response = HttpResponse("404 Not Found: Unknown error occured so that playback file could not be found.", status=404)
+        path = os.path.join(settings.MEDIA_ROOT, "data", "%s"%battle_id)
+        for file in os.listdir(path):
+            if file.endswith(".pb.7z"):
+                response = FileResponse(open(os.path.join(path, file), 'rb'), status=200)
+                response['Content-Type'] = 'application/octet-stream'
+                filename = str(target_team) + '_' + str(battle_id) + '.pb.7z'
+                response['Content-Disposition'] = 'attachment;filename = ' + urlquote(filename)
+    except AssertionError as error:
+        err_status = int(error.__str__())
+        msg = get_error_msg(err_status)
+        err_status = 401 if err_status == 4011 else err_status
+        err_status = 404 if err_status == 4043 else err_status
+        response = HttpResponse(msg, status=err_status)
+    except jwt.PyJWTError:
+        msg = get_error_msg(4011)
+        response = HttpResponse(msg, status=401)
+    except json.JSONDecodeError:
+        msg = get_error_msg(4221)
+        response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    except Battle.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested battle id.", status=404)
+    except FileNotFoundError:
+        response = HttpResponse("404 Not Found: File not found.", status=404)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
     return response

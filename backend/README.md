@@ -116,7 +116,7 @@
   创建新用户
 
     * header
-    
+  
   | key | value |
   |-------|------|
   | content-type |application/json|
@@ -542,10 +542,11 @@
 | ----- |----------|---------|
 | /api/codes/teams/:id | POST | 对应id的队伍上传代码(会覆盖之前的) |
 | /api/codes/teams/:id/:type | GET |对应id的队伍获取本队代码|
+| /api/playback/:battle_id | GET |对应battle_id的playback|
 
 * /api/codes/teams/:id    POST
     * header
-    
+
     | key | value |
     |-------|------|
     | x-access-token |用户token|
@@ -590,6 +591,24 @@
     
     - application/octet-stream
     - filename：(:id)_(:type).cpp
+    ```
+
+    /api/playback/:battle_id    GET
+    返回相应battle id的playback文件
+
+    - header
+
+    | key            | value     |
+    | -------------- | --------- |
+    | x-access-token | 用户token |
+
+    - response
+      若身份为root，或该位使用者为在相应battle_id的engaged_team中的队长或队员，并且请求成功，返回状态码200，和对应playback 文件:
+
+    ```
+    
+    - application/octet-stream
+    - filename：(:team_id)_(:battle_id).cpp
     ```
 
 
