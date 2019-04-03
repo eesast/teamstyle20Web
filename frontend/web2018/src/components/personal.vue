@@ -78,7 +78,7 @@
                 <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
-            <el-table-column prop="battle_id" min-width="10%" >
+            <el-table-column prop="battle_id" label="对战编号" min-width="10%" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
                     <span v-else><i class="el-icon-loading"></i></span>
