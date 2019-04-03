@@ -201,7 +201,7 @@ export default {
               value: 'code3',
               label: '职业4'
             }],
-            value: '',
+            value: 'code0',
             codeoptions: [{
               value: '0',
               label: '职业1'
@@ -431,11 +431,12 @@ export default {
                 confirmButtonText: '确定',
                 dangerouslyUseHTMLString: true,
                 callback: action => {
+                  this.valid|=1<<parseInt(this.value[this.value.length-1]);
                   // this.$message({
                   //   type: 'info',
                   //   message: `action: ${ action }`
                   // });
-                  window.location="https://teamstyle.eesast.com/battle";
+                  // window.location="https://teamstyle.eesast.com/battle";
                 }
               });
 

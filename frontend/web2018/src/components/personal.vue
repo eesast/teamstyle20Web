@@ -30,9 +30,10 @@
                 <el-table :data="tableDataofactive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
-                <el-table-column prop="color" min-width="1%" >
-                    <template slot-scope="scope">
-                    <div class="nothing" >&nbsp;</div>
+                <el-table-column prop="battle_id" min-width="5%" >
+                   <template slot-scope="scope">
+                        <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
+                        <span v-else><i class="el-icon-loading"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
@@ -77,9 +78,10 @@
                 <el-table :data="tableDataofpassive" style="width: 100%"  max-height="300" 
                 empty-text="暂无对战历史"
                 >
-            <el-table-column prop="color" min-width="1%" >
+            <el-table-column prop="battle_id" min-width="1%" >
                 <template slot-scope="scope">
-                <div class="nothing" >&nbsp;</div>
+                    <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
+                    <span v-else><i class="el-icon-loading"></i></span>
                 </template>
             </el-table-column>
             <el-table-column prop="winner" label="吃鸡队伍" min-width="20%">
