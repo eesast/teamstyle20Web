@@ -201,7 +201,7 @@ export default {
               value: 'code3',
               label: '职业4'
             }],
-            value: '0',
+            value: '',
             codeoptions: [{
               value: '0',
               label: '职业1'
@@ -322,8 +322,13 @@ export default {
       },
       myUpload(content)
       {
-          
-          this.$confirm('若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码，是否确定上传?',"提示",
+          if(this.value=='')
+          {
+            this.$message.error('请先选择职业!');
+            this.fileList=[];
+            return ;
+          }
+          this.$confirm('是否确定上传?<br/><span style="font-size:10px;">若之前已经上传过该职业的代码，上传代码会覆盖之前已有的代码</span>',"提示",
           {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
