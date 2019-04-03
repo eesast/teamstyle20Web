@@ -213,6 +213,7 @@ def view_result(request):
     ret['ainum'] = battle.robot_num
     ret['state'] = status
     ret['initiator_id'] = initiator
+    ret['battle_id'] = battle_id
     teams = json.loads(battle.team_engaged)
     for team_id in teams:
         ret['teams'].append(Team.objects.get(id=team_id).teamname)
