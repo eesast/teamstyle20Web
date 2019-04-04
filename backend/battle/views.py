@@ -301,23 +301,24 @@ def compile(request):
     ''' 给定队伍编号team_id以及职业编号(0~3)ind，进行代码编译并放入/media/Codes/output '''
     out_volume = root_path+'/media/temp'+generate_key(10)
     in_volume = '/MyVolume'
-    try:
-        team_id = int(request.GET.get('team_id',None))
-        ind = int(request.GET.get('ind',None))
-        if team_id==None or ind==None:
-            return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
-        if Team.objects.filter(id=team_id).exists()==False:
-            return HttpResponse('No such team !')
-        origin_path = codes_path+'/%d_%d.cpp'%(team_id,ind)
-        target_path = so_path+'/%d_%d.so'%(team_id,ind)
-        if os.path.exists(origin_path)==False:
-            return HttpResponse('No corresponding .cpp file!')
-        if os.path.exists(codes_path+'/output')==False:
-            os.makedirs(codes_path+'/output')
+    team_id = int(request.GET.get('team_id',None))
+    ind = request.GET.get('ind',None)
+    if team_id==None or ind==None:
+        return HttpResponse('Wrong parameter! Please specify the team_id and ind.')
+    if Team.objects.filter(id=team_id).exists()==False:
+        return HttpResponse('No such team !')
+    ind = int(ind)
+    origin_path = codes_path+'/%d_%d.cpp'%(team_id,ind)
+    target_path = so_path+'/%d_%d.so'%(team_id,ind)
+    if os.path.exists(origin_path)==False:
+        return HttpResponse('No corresponding .cpp file!')
+    if os.path.exists(codes_path+'/output')==False:
+        os.makedirs(codes_path+'/output')
     #if os.path.isfile(target_path):
     #    os.remove(target_path)
     # 不删除原本的.so文件，避免队伍恶意拒绝参赛
-        os.makedirs(out_volume)
+    os.makedirs(out_volume)
+    try:
         shutil.copyfile(origin_path, out_volume+'/code.cpp')
         
         client = docker.from_env()
