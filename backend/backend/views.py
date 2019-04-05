@@ -104,15 +104,11 @@ def auth(request):
     # response = HttpResponse("520 Unknown Error", status=520)
     return response
 
-
 @csrf_exempt
 def users(request):
     try:
         if request.method == 'POST':
             # return JsonResponse({'result':str(request.body)}) #test where is class
-            
-
-
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
             # return JsonResponse({'result':str(request.body)}) #test where is class
@@ -220,16 +216,17 @@ def append_team_member_name(user_info, query, showtype_Input=0):
         output.append(thisTeamInfo)
     return output
 
-def get_teams_by_cache():
-    output = list()
-    thisTeamInfo['captain'] = 'yyr'
-    thisTeamInfo['teamname'] = 'TEST'
-    thisTeamInfo['score'] = 1000
-    output.append(thisTeamInfo)
+def get_teams_by_cache(user_info, query, showtype_Input=0):
+    output=list()
+    GlobalSetting.teams_last_update
+    for team in query:
+        if (team.memberInTeam(user_info["id"])):
+            showtype = 2
+        else:
+            showtype = int(showtype_Input >= 1)
+        thisTeamInfo = team.get_teamInfo(showtype)
+        output.append(thisTeamInfo)
     return output 
-
-    
-
 
 def get_teamid_by_userid(user_id):
     user_id = int(user_id)
@@ -252,6 +249,38 @@ def systemTeamingOpen(teaming, now):
         return True
 
 
+def teams_cached(request):
+    try:
+        assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
+        x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        assert x_access_token["token"], 401
+        user_info = get_user_info(x_access_token["token"])
+        # head = {'Authorization': 'Bearer ' + user_info["eesast"]}
+        if request.method == 'GET':
+            if 'detailInfo' in request.GET:
+                showtype = int(request.GET['detailInfo'] == 'True' or request.GET['detailInfo'] == 'true')
+            else:
+                showtype = 0
+            query = Team.objects.all()
+            output = get_teams_by_cache(user_info, query, showtype)
+            response = JsonResponse(output, status=200, safe=False)
+        else:
+            assert False, 405
+    except AssertionError as error:
+        err_status = int(error.__str__())
+        msg = get_error_msg(err_status)
+        err_status = 401 if err_status == 4011 else err_status
+        response = HttpResponse(msg, status=err_status)
+    except jwt.PyJWTError:
+        msg = get_error_msg(4011)
+        response = HttpResponse(msg, status=401)
+    except json.JSONDecodeError:
+        msg = get_error_msg(4221)
+        response = HttpResponse(msg, status=422)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
+    return response
+
 
 @csrf_exempt
 def teams(request):
@@ -268,7 +297,7 @@ def teams(request):
                 showtype = 0
             query = Team.objects.all()
             output = append_team_member_name(user_info, query, showtype)
-#output = get_teams_by_cache()
+# output = get_teams_by_cache(user_info, query, showtype)
             response = JsonResponse(output, status=200, safe=False)
         elif request.method == 'POST':
             get_globalSettings = GlobalSetting.objects.all()
