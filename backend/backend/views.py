@@ -672,6 +672,7 @@ def battlePlayback(request, battle_id):
         assert x_access_token["token"], 401
         user_info = get_user_info(x_access_token["token"])
         has_permission = 0
+        target_team = 0
         if(user_info["role"] == "root"):
             has_permission = 1
         if(has_permission == 0):
