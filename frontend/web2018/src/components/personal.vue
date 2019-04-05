@@ -32,8 +32,8 @@
                 >
                 <el-table-column prop="battle_id" label="对战编号" min-width="10%" >
                    <template slot-scope="scope">
-                        <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
-                        <span v-else><i class="el-icon-loading"></i></span>
+                        <span>{{scope.row.battle_id}}</span>
+                        <!-- <span v-else><i class="el-icon-loading"></i></span> -->
                     </template>
                 </el-table-column>
                 <el-table-column prop="winner" label="吃鸡队伍" min-width="20%" v-if="mobile==false">
@@ -81,8 +81,8 @@
                 >
             <el-table-column prop="battle_id" label="对战编号" min-width="10%" >
                 <template slot-scope="scope">
-                    <span v-if="scope.row.state==0">{{scope.row.battle_id}}</span>
-                    <span v-else><i class="el-icon-loading"></i></span>
+                    <span>{{scope.row.battle_id}}</span>
+                    <!-- <span v-else><i class="el-icon-loading"></i></span> -->
                 </template>
             </el-table-column>
             <el-table-column prop="winner" label="吃鸡队伍" min-width="20%" v-if="mobile==false">
