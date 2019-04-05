@@ -280,7 +280,7 @@ export default {
 
 
 
-        fetch("/api/teams", {
+        fetch("/api/teams_cached", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
