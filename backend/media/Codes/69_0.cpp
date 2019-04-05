@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <unistd.h>
 
 using namespace ts20;
 

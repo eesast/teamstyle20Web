@@ -270,10 +270,18 @@ def end_battle(request):
     battle = Battle.objects.get(id=battle_id)
     team_engaged = json.loads(battle.team_engaged)
     items = os.listdir(data_path+'/%s'%battle_id)
-    json_name = ''
+    json_name = None
     for name in items:
         if name.endswith('.json'):
             json_name=name
+    if(json_name==None):
+        battle.status=3
+        team = Team.objects.get(id=battle.initiator_id)
+        team.battle_time += 1
+        team.save()
+        battle.save()
+        run_battle()
+        return HttpResponse('Battle Error!')
     result=open(data_path+'/%d/%s'%(battle_id,json_name)).read()
     result=json.loads(result)
     result['battle_id']=battle_id
