@@ -2,6 +2,8 @@
 # yyr: 更改Team的输出，更改score默认值为1000
 
 # yyr: 增加Team返回信息的valid和battle_time(剩余挑战次数)，Team模型中增加last_update表示上一次更新battle_time的日期
+
+# yyr: add DataTimeField teams_last_update to GlobalSetting
 from django.db import models
 import json
 from django.core.exceptions import ValidationError
@@ -206,6 +208,7 @@ class GlobalSetting(models.Model):
     submission_start = models.DateTimeField()
     submission_end = models.DateTimeField()
     teaming_end = models.DateTimeField(null = True, blank=True)
+    teams_last_update = models.DateTimeField(default = datetime.datetime.now())
 
     def __str__(self):
         return str(self.year)
