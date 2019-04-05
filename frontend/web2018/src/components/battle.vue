@@ -552,12 +552,12 @@ export default {
           console.log(this.checkList);//勾选的队伍
           if(this.valid!=15)
           {
-             this.$alert("对战发起失败，请确保所有职业代码均有效！<br/>职业一:"+(this.valid%2==1)?'有效':'无效'+"<br/>职业一:"
-             +((this.valid>>1)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid>>2)%2==1)?'有效':'无效'+"<br/>职业一:"+((this.valid>>3)%2==1)?'有效':'无效'
+             this.$alert("对战发起失败，请确保所有职业代码均有效！<br/>职业一:"+((this.valid%2==1)?'有效':'<span style="color:red;">无效</span>')+"<br/>职业二:"
+             +(((this.valid>>1)%2==1)?'有效':'<span style="color:red;">无效</span>')+"<br/>职业三:"+(((this.valid>>2)%2==1)?'有效':'<span style="color:red;">无效</span>')+"<br/>职业四:"+(((this.valid>>3)%2==1)?'有效':'<span style="color:red;">无效</span>')
              , '错误', {
               confirmButtonText: '确定',
               dangerouslyUseHTMLString: true,
-              type:"error",
+              // type:"error",
               callback: action => {
                 // this.$message({
                 //   type: 'info',
@@ -566,6 +566,11 @@ export default {
               }
             })
             return ;//不能对战
+          }
+          else if(this.checkList.length+this.AInum<2)
+          {
+            this.$message.error("至少需要2支队伍才能参赛!");
+            return ;
           }
           this.loading_fight=true;
           //需要根据勾选的队伍，传送一场比赛  checkList里面记录的是选中的队伍的ID，当且仅当el-checkBox的:label绑定的是x.id;   
