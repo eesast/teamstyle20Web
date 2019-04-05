@@ -56,6 +56,7 @@
                 </el-table-column>
                 <el-table-column prop="state" label="状态" min-width="20%">
                     <template slot-scope="scope">
+                        <span v-if="scope.row.state==3"><i class="el-icon-error"></i>对战异常</span>
                         <span v-if="scope.row.state==2"><i class="el-icon-loading"></i>对战中</span>
                         <span v-if="scope.row.state==1"><i class="el-icon-loading"></i>排队中</span>
                         <span v-if="scope.row.state==0">对战结束</span>
@@ -104,6 +105,7 @@
             </el-table-column>
            <el-table-column prop="state" label="状态" min-width="20%">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.state==3"><i class="el-icon-error"></i>对战异常</span>
                     <span v-if="scope.row.state==2"><i class="el-icon-loading"></i>对战中</span>
                     <span v-if="scope.row.state==1"><i class="el-icon-loading"></i>排队中</span>
                     <span v-if="scope.row.state==0">对战结束</span>

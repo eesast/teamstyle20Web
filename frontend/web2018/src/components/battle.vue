@@ -394,56 +394,26 @@ export default {
           .then(() => {
             // console.log(content);
             this.loading_upload=true;
-          console.log(content.file);
-          // console.log(this.fileList);
-          console.log(typeof content.file);
-          // console.log(this.value.toString());
+            console.log(content.file);
+            // console.log(this.fileList);
+            console.log(typeof content.file);
+            // console.log(this.value.toString());
 
-          // var filepath="C:/Users/nikelong/Desktop/1.cpp";
-    
-          // var file = new File(filepath,"ok");
-          // console.log(file);
+            // var filepath="C:/Users/nikelong/Desktop/1.cpp";
+      
+            // var file = new File(filepath,"ok");
+            // console.log(file);
 
-          var fileobj=content.file;
-          // var URL=;
-          // var form=new FormData();
-          // form.append(this.value.toString(),content.file);
+            var fileobj=content.file;
+            // var URL=;
+            // var form=new FormData();
+            // form.append(this.value.toString(),content.file);
 
-          var form = new FormData();
-          form.append(this.value.toString(),content.file);
-          console.log(form.get('code0'));
+            var form = new FormData();
+            form.append(this.value.toString(),content.file);
+            console.log(form.get('code0'));
 
 
-          // this.$http.post("/api/codes/teams/"+this.teamid,form,{
-          //   emulateJSON:true,
-          //   headers:{
-          //      "Content-Type": "multipart/form-data",
-          //     "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
-          //   },
-          //   }).then(function(res){
-          //     // document.write(res.body);    
-          // },function(res){
-          //     console.log(res.status);
-          // });
-          // var settings = {
-          //   "async": true,
-          //   "crossDomain": true,
-          //   "url": "https://teamstyle.eesast.com/api/codes/teams/"+this.teamid,
-          //   "method": "POST",
-          //   "headers": {
-          //     "x-access-token": JSON.stringify({"token":token,"id":id,"username":username,"auth":true}),
-          //     "cache-control": "no-cache",
-          
-          //   },
-          //   "processData": false,
-          //   "contentType": false,
-          //   "mimeType": "multipart/form-data",
-          //   "data": form
-          // }
-
-          // $.ajax(settings).done(function (response) {
-          //   console.log(response);
-          // });
 
           fetch("/api/codes/teams/"+this.teamid,{
             method:'POST',
@@ -503,6 +473,8 @@ export default {
 
             }).catch(()=>{this.loading_upload=false;})
 
+          }).catch(()=>{
+            this.fileList=[];
           })
       },
       handleRemove(file, fileList) {
