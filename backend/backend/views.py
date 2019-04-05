@@ -110,6 +110,9 @@ def users(request):
     try:
         if request.method == 'POST':
             # return JsonResponse({'result':str(request.body)}) #test where is class
+            
+
+
             add_URL = 'https://api.eesast.com/v1/users'
             user_profile = is_json(request.body)
             # return JsonResponse({'result':str(request.body)}) #test where is class
@@ -217,6 +220,16 @@ def append_team_member_name(user_info, query, showtype_Input=0):
         output.append(thisTeamInfo)
     return output
 
+def get_teams_by_cache():
+    output = list()
+    thisTeamInfo['captain'] = 'yyr'
+    thisTeamInfo['teamname'] = 'TEST'
+    thisTeamInfo['score'] = 1000
+    output.append(thisTeamInfo)
+    return output 
+
+    
+
 
 def get_teamid_by_userid(user_id):
     user_id = int(user_id)
@@ -255,6 +268,7 @@ def teams(request):
                 showtype = 0
             query = Team.objects.all()
             output = append_team_member_name(user_info, query, showtype)
+#output = get_teams_by_cache()
             response = JsonResponse(output, status=200, safe=False)
         elif request.method == 'POST':
             get_globalSettings = GlobalSetting.objects.all()
