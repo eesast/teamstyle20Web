@@ -221,6 +221,65 @@ export default {
     },
     created: function()
     {
+        fetch('/api/teams/0/members/'+id,
+            {
+                method:'GET',
+                headers: {
+                "Content-Type": "application/json",
+                "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
+                }
+            }).then(response=>
+            {
+                if(response.status=="404")
+                {
+                    //没有队伍
+                    this.$message.error('您没有加入队伍！');
+                   
+                    
+                    // throw '';
+                }
+                else if (response.status=="200") {
+                return response.json();
+                } 
+                else if (response.status == "401") {
+                this.$message.error("token失效，请重新登录！");
+                if(token!=null)
+                {
+                    delCookie("token")
+                    delCookie("id")
+                    delCookie("username")
+                    token=null
+                    username=null
+                    id=null
+                    setTimeout(() => {
+                      window.location="https://teamstyle.eesast.com/login";
+                    }, 100)
+                }
+                }
+                else
+                {
+                    this.$message.error("服务器暂时无法响应！");
+                }
+                throw 'bad';
+            },error=>
+            {
+                this.$message.error("加载失败，请稍后刷新页面重试！")
+            }).then(res=>
+            {
+                  this.teamid=res.teamid;
+                  this.battle_time=res.battle_time;//对战次数
+                  this.valid=res.valid;//有效
+                  if(this.valid==15)
+                  {
+                    this.checkList.push(this.teamid);
+                  }
+            }).catch(()=>{
+
+            })
+
+
+
+
         fetch("/api/teams", {
           method: "GET",
           headers: {
@@ -255,20 +314,17 @@ export default {
           })
           .then(res => {
             this.tableData = res;
-            for (var i = 0; i < this.tableData.length; i++) {
-              for (var j = 0; j < this.tableData[i].membersID.length; j++) {
-                if(id==this.tableData[i].membersID[j])
-                {
-                  this.teamid=this.tableData[i].teamid;
-                  this.battle_time=this.tableData[i].battle_time;//对战次数
-                  this.valid=this.tableData[i].valid;//有效
-                  if(this.tableData[i].valid==15)
-                  {
-                    this.checkList.push(this.teamid);
-                  }
-                }
-              }
-            }
+            // for (var i = 0; i < this.tableData.length; i++) {
+            //   for (var j = 0; j < this.tableData[i].membersID.length; j++) {
+            //     // if(id==this.tableData[i].membersID[j])
+            //     // {
+            //     //   if(this.tableData[i].valid==15)
+            //     //   {
+            //     //     this.checkList.push(this.teamid);
+            //     //   }
+            //     // }
+            //   }
+            // }
           },error=>{
             this.$message.error("获取队伍信息失败！")
           })
