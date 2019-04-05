@@ -126,7 +126,7 @@ export default {
         {
             // idx+=1
             idx=this.tableData[idx]['id'];
-            // console.log(idx);
+            // //console.log(idx);
             // this.$set(this.index,1);
             this.index=1;//面包屑上显示公告详情
             this.detail=1;
@@ -140,7 +140,7 @@ export default {
                 },
             }).then(response=>
             {
-                console.log(response.status)
+                //console.log(response.status)
                 if(response.ok)
                 {
                     return response.json()
@@ -169,7 +169,7 @@ export default {
         },
       }).then(response=>
       {
-        console.log(response)
+        //console.log(response)
         if(response.ok)
         {
           return response.json();
@@ -181,13 +181,13 @@ export default {
       }).then(res=>
       {
         if (res==undefined) return
-        console.log(res)
+        //console.log(res)
         this.tableData=res;
         for(var i=0;i<this.tableData.length;i++)
         {
             this.tableData[i]['last_update_date']=datetodate(this.tableData[i]['last_update_date'])
         }
-        console.log(this.tableData[0])
+        //console.log(this.tableData[0])
     })
     }
 }

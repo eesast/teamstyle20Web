@@ -16,7 +16,7 @@ export default {
   {
     selectnav(selectindex)
     {
-      console.log(selectindex);
+      //console.log(selectindex);
       // let selectedindex=selectindex;
       // localStorage.setItem('id',selectedindex);
     }

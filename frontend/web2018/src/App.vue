@@ -32,7 +32,7 @@ import navbar from './components/nav'
 import logotitle from './components/logotitle'
 import foot from './components/foot'
 
-console.log(getCookie('token'));
+//console.log(getCookie('token'));
 if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
 {
   navbar.navflag=false;
@@ -44,14 +44,14 @@ export default {
   components:{navbar, foot,logotitle},
    watch:{
   $route(to,from){
-    console.log(to.path);
+    //console.log(to.path);
     if(to.path=="/")
     {
       // 跳转到首页
       window.location="http://teamstyle.eesast.com";
        
     }
-    console.log(getCookie('token'));
+    //console.log(getCookie('token'));
    if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
     {
       navbar.navflag=false;
@@ -61,8 +61,8 @@ export default {
   },
   mounted:function()
   {
-    console.log(this.$route.name);
-    console.log(getCookie('token'));
+    //console.log(this.$route.name);
+    //console.log(getCookie('token'));
     if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
     {
       navbar.navflag=false;

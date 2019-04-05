@@ -288,7 +288,7 @@ export default {
           }
         })
           .then(response => {
-            console.log(response.status);
+            //console.log(response.status);
             if (response.ok) {
               return response.json();
             } else if (response.status == "401") {
@@ -333,7 +333,7 @@ export default {
       jsReadFiles(file)
       {
           var file = files[0];
-          console.log(file);
+          //console.log(file);
       },
       lookcode()//查看代码
       {
@@ -345,7 +345,7 @@ export default {
               "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             }
           }).then(res=>{
-              console.log(res);
+              //console.log(res);
               this.$confirm(res,"浏览",
               {
                 confirmButtonText: "确定",
@@ -392,17 +392,17 @@ export default {
             type: "warning"
           })
           .then(() => {
-            // console.log(content);
+            // //console.log(content);
             this.loading_upload=true;
-            console.log(content.file);
-            // console.log(this.fileList);
-            console.log(typeof content.file);
-            // console.log(this.value.toString());
+            //console.log(content.file);
+            // //console.log(this.fileList);
+            //console.log(typeof content.file);
+            // //console.log(this.value.toString());
 
             // var filepath="C:/Users/nikelong/Desktop/1.cpp";
       
             // var file = new File(filepath,"ok");
-            // console.log(file);
+            // //console.log(file);
 
             var fileobj=content.file;
             // var URL=;
@@ -411,7 +411,7 @@ export default {
 
             var form = new FormData();
             form.append(this.value.toString(),content.file);
-            console.log(form.get('code0'));
+            //console.log(form.get('code0'));
 
 
 
@@ -457,7 +457,7 @@ export default {
               this.$message.error('上传失败!');
             }
           }).then(res=>{
-                console.log(res);
+                //console.log(res);
                 this.$alert(res[0].status+'<br/>'+res[0].information, '编译结果', {
                 confirmButtonText: '确定',
                 dangerouslyUseHTMLString: true,
@@ -478,10 +478,10 @@ export default {
           })
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        //console.log(file, fileList);
       },
       handlePreview(file) {
-        console.log(file);
+        //console.log(file);
       },
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -512,7 +512,7 @@ export default {
         //   },
           // handleCurrentChange: function(currentPage){
           //       this.currentPage = currentPage;
-          //       // console.log(this.currentPage)  //点击第几页
+          //       // //console.log(this.currentPage)  //点击第几页
         // },
         handleChecked(value) {
         let checkedCount = value.length;
@@ -521,7 +521,7 @@ export default {
         start_fight()  //发起一场战斗
         {
           this.dialogTableVisible=false;//隐藏对话框
-          console.log(this.checkList);//勾选的队伍
+          //console.log(this.checkList);//勾选的队伍
           if(this.valid!=15)
           {
              this.$alert("对战发起失败，请确保所有职业代码均有效！<br/>职业一:"+((this.valid%2==1)?'有效':'<span style="color:red;">无效</span>')+"<br/>职业二:"
@@ -559,7 +559,7 @@ export default {
             //   // "initiator_id":this.teamid
             // })
           }).then(response=>{
-            console.log(response);
+            //console.log(response);
             if(response.ok)
             {
               // return response.json();

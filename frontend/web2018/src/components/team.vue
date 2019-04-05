@@ -172,12 +172,12 @@ if(token==null)
 }
 var username = getCookie("username");
 var id = parseInt(getCookie("id"));
-console.log(id);
+//console.log(id);
 
 export default {
   name: "team",
   data() {
-    // console.log(2);
+    // //console.log(2);
     return {
       inteam: false, //是否在队伍中  影响“我的队伍”显示界面
       iscaptain: true, //该成员是否为队长  影响“我的队伍”是否出现踢人选项
@@ -330,7 +330,7 @@ export default {
         var ans=res;//取出object
 
         if(ans.captainID==id){
-            console.log(id);
+            //console.log(id);
             this.iscaptain = true;
             this.inteam = true;
             this.detailData["teamname"] = ans["teamname"];
@@ -370,7 +370,7 @@ export default {
       }
     })
       .then(response => {
-        console.log(response.status);
+        //console.log(response.status);
         if (response.ok) {
           return response.json();
         } else if (response.status == "401") {
@@ -396,7 +396,7 @@ export default {
         this.tableData = res;
         // for (var i = 0; i < this.tableData.length; i++) {
         //   if (id == this.tableData[i].captainID) {
-        //     console.log(id);
+        //     //console.log(id);
         //     this.iscaptain = true;
         //     this.inteam = true;
         //     this.detailData["teamname"] = this.tableData[i]["teamname"];
@@ -435,10 +435,10 @@ export default {
       this.form.description = "";
     },
     createTeam() {
-      // console.log(this.form['teamname']);
-      // console.log(this.form['description']);
-      console.log(nowdate);
-      console.log(finaldate)
+      // //console.log(this.form['teamname']);
+      // //console.log(this.form['description']);
+      //console.log(nowdate);
+      //console.log(finaldate)
       if(nowdate>finaldate)
       {
         this.$message.error('报名已截至，不可创建队伍!');
@@ -466,7 +466,7 @@ export default {
             })
           })
             .then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if (response.ok) {
                 return response.json();
               } else if (response.status == "401") {
@@ -547,7 +547,7 @@ export default {
           .then(() => {
               //some change *****
 
-              console.log(this.detailData.membersID[index])
+              //console.log(this.detailData.membersID[index])
               var FETCH_URL="/api/teams/"+this.team_id+"/members/"+this.detailData.membersID[index];
               
             fetch(FETCH_URL, {
@@ -557,7 +557,7 @@ export default {
             "x-access-token":JSON.stringify({"token":token,"id":id,"username":username,"auth":true})
             },
             }).then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if(response.status=="204")
               {
                 this.$message.success("删除队员成功!");
@@ -630,15 +630,15 @@ export default {
     },
     joinTeam(index)//加入第几个队伍 
       {
-        console.log(nowdate);
-        console.log(finaldate)
+        //console.log(nowdate);
+        //console.log(finaldate)
         if(nowdate>finaldate)
         {
           this.$message.error('报名已截至，不可加入队伍!');
           return ;
         }
 
-      console.log(this.tableData[index].teamid)//为加入队伍的标号
+      //console.log(this.tableData[index].teamid)//为加入队伍的标号
       this.$prompt("请输入邀请码", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
@@ -659,8 +659,8 @@ export default {
             })
             })
             .then(response => {
-              console.log(response);
-              console.log(response.status);
+              //console.log(response);
+              //console.log(response.status);
               if(response.status=="201")
               {
                 this.$message.success("加入队伍成功!");
@@ -750,7 +750,7 @@ export default {
               }
             })
             .then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if(response.status=="204")
               {
                 this.$message.success("删除队员成功!");
@@ -837,7 +837,7 @@ export default {
             }
           })
             .then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if(response.status=="204")
               {
                 this.$message.success("删除队员成功!");
@@ -921,7 +921,7 @@ export default {
             })
          })
             .then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if (response.ok) {
                 // return response.json();
                 return ;
@@ -976,7 +976,7 @@ export default {
     }, 
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
-      // console.log(this.currentPage)  //点击第几页
+      // //console.log(this.currentPage)  //点击第几页
     }
   }
 };

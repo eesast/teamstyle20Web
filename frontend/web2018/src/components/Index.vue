@@ -57,7 +57,7 @@ export default {
   mounted:function()
   {
     // EventBus.$on("send-msg", ({newx}) => {
-    //   console.log(newx);
+    //   //console.log(newx);
     //             window.location="http://127.0.0.1:8090";
     //             }
     //         )
@@ -164,7 +164,7 @@ function loop() {
 }
 
 }
-// console.log(this.$route.path);
+// //console.log(this.$route.path);
 
 </script>
 
