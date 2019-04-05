@@ -107,7 +107,7 @@ export default {
             var data=new Array();
             for (var i=0;i<this.tableData.length;i++)
             {
-                console.log(this.tableData[i]);
+                //console.log(this.tableData[i]);
                 data.push('/static/files/'+this.tableData[i].download);
             }
             const zip = new JSZip()
@@ -140,7 +140,7 @@ export default {
             }
           })
             .then(response => {
-              console.log(response.status);
+              //console.log(response.status);
               if (response.ok) {
                 return response.json();
               } else {
@@ -168,7 +168,7 @@ export default {
             //     //     },
             //     //   })
             //     //   .then(response => {
-            //     //     console.log(response.status);
+            //     //     //console.log(response.status);
             //     //     if (response.ok) {
             //     //         return response.json();
             //     //     } else {

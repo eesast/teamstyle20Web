@@ -239,7 +239,7 @@ export default {
         },
         perdetail(idx,num){
             //这里是弹出一个框显示对战结果
-            console.log(idx);
+            //console.log(idx);
 
             if(num==1)//active
             {

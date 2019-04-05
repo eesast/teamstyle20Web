@@ -37,25 +37,25 @@ export default {
     },
      watch:{
   $route(to,from){
-    console.log(to.path);
+    //console.log(to.path);
     // if(to.path=="/")
     // {
     //   // 跳转到首页
     //   window.location="http://teamstyle.eesast.com";
     // }
-    console.log(getCookie('token'));
+    //console.log(getCookie('token'));
     if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
     {
       this.navflag=false;
       this.name=getCookie('username');
-      console.log(1);
+      //console.log(1);
     }
     else this.navflag=true;
   }
   },
   methods: {
         handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+            //console.log(key, keyPath);
             if(key=='#')
             {
 
@@ -84,19 +84,19 @@ export default {
     }
   },
   mounted(){
-            console.log(getCookie('token'));
+            //console.log(getCookie('token'));
            if(getCookie('token')!='null'&&getCookie('token')!=null&&getCookie('token')!='')
             {
               this.navflag=false;
               this.name=getCookie('username');
-              console.log(1);
+              //console.log(1);
             }
             else this.navflag=true;
             // EventBus.$on("send-msg", ({flag}) => {
             //     this.navflag =flag;}
             // )
             var width=window.screen.width;
-            // console.log(width);
+            // //console.log(width);
             if(width<720)
             {
               this.showmenu=false;

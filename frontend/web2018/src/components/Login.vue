@@ -168,7 +168,7 @@ export default {
         )
       }).then(response=>
       {
-        // console.log(response)
+        // //console.log(response)
         if(response.ok)
         {
           return response.json();
@@ -210,9 +210,9 @@ export default {
       })
     },
     create:function(){
-      // console.log(this.form.name)
-      // console.log(this.form.password);
-      // console.log(this.form.password1);
+      // //console.log(this.form.name)
+      // //console.log(this.form.password);
+      // //console.log(this.form.password1);
      
       var reg=/.*[\u4e00-\u9fa5]+.*$/;   /*定义验证表达式*/
       var rightname=reg.test(this.form.name);     /*进行验证*/
@@ -252,8 +252,8 @@ export default {
         )
       }).then(response=>
       {
-        // console.log(response.status)
-        // console.log(response)
+        // //console.log(response.status)
+        // //console.log(response)
         if(response.status=='201'||response.status=='200')
         {
           return response.json();
@@ -281,7 +281,7 @@ export default {
         // }, 500);
       }).then(res=>
       {
-        // console.log(res)
+        // //console.log(res)
         this.form.token=res['token']
         this.form.id=res['id']
         this.form.username=res['username']
@@ -305,7 +305,7 @@ export default {
         this.$router.push({path: '/',query: {flag : false,ifnull : true}})
     },
     handleClick(tab, event) {
-        // console.log(tab, event);
+        // //console.log(tab, event);
         //init所有formdata
         // form:{
           this.form.realname=""
