@@ -276,6 +276,9 @@ def end_battle(request):
             json_name=name
     if(json_name==None):
         battle.status=3
+        team = Team.objects.get(id=battle.initiator_id)
+        team.battle_time += 1
+        team.save()
         battle.save()
         run_battle()
         return HttpResponse('Battle Error!')
