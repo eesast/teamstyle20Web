@@ -14,7 +14,7 @@ AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
 data_path = root_path+'/media/data'
-image_name = 'ts20:v1.11'                        # NOTE:记得修改
+image_name = 'ts20:v1.16'                        # NOTE:记得修改
 room_lim=2  # 对战房间数，从1标号 
 
 chars = string.ascii_letters + string.digits
