@@ -106,7 +106,7 @@ def run_battle():
     Room.objects.create(room_id=room_id, battle_id=battle_id, key=key)
 
     client = docker.from_env()
-    client.containers.run(image_name, command='bash /ts20/bin/run.sh %s'%key ,tty=True, stdin_open=True, remove=True, detach=True, network_mode='host', volumes={out_volume : {'bind': in_volume}})
+    client.containers.run(image_name, command='bash /ts20/bin/run.sh %s %d'%(key,battle_id) ,tty=True, stdin_open=True, remove=True, detach=True, network_mode='host', volumes={out_volume : {'bind': in_volume}})
     
 def add_battle(request):
     ''' 用于添加对战 '''
