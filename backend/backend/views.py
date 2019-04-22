@@ -754,3 +754,51 @@ def battlePlayback(request, battle_id):
     # else:
     #  response = HttpResponse("520 Unknown Error", status=520)
     return response
+
+@csrf_exempt
+def battleLog(request, battle_id):
+    try:
+        assert 'HTTP_X_ACCESS_TOKEN' in request.META, 4011
+        assert request.method == 'GET', 405
+        x_access_token = is_json(request.META['HTTP_X_ACCESS_TOKEN'])
+        assert x_access_token["token"], 401
+        user_info = get_user_info(x_access_token["token"])
+        has_permission = 0
+        target_team = 0
+        if(user_info["role"] == "root"):
+            has_permission = 1
+        if(has_permission == 0):
+            target_team = get_teamid_by_userid(user_info["id"])
+            target_battle = Battle.objects.get(id = battle_id)
+            target_battle_team_engaged = json.loads(target_battle.team_engaged)
+            if(target_team in target_battle_team_engaged):
+                has_permission = 1
+        assert has_permission, 4011
+        response = HttpResponse("404 Not Found: Unknown error occured so that playback file could not be found.", status=404)
+        path = os.path.join(settings.MEDIA_ROOT, "data", "%s"%battle_id, "log")
+        for file in os.listdir(path):
+            response = FileResponse(open(os.path.join(path, file), 'rb'), status=200)
+            response['Content-Type'] = 'application/octet-stream'
+            filename = "log_" + str(target_team) + '_' + str(battle_id) + '.txt'
+            response['Content-Disposition'] = 'attachment;filename = ' + urlquote(filename)
+    except AssertionError as error:
+        err_status = int(error.__str__())
+        msg = get_error_msg(err_status)
+        err_status = 401 if err_status == 4011 else err_status
+        err_status = 404 if err_status == 4043 else err_status
+        response = HttpResponse(msg, status=err_status)
+    except jwt.PyJWTError:
+        msg = get_error_msg(4011)
+        response = HttpResponse(msg, status=401)
+    except json.JSONDecodeError:
+        msg = get_error_msg(4221)
+        response = HttpResponse(msg, status=422)
+    except Team.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested team number.", status=404)
+    except Battle.DoesNotExist:
+        response = HttpResponse("404 Not Found: No record for requested battle id.", status=404)
+    except FileNotFoundError:
+        response = HttpResponse("404 Not Found: File not found.", status=404)
+    # else:
+    #  response = HttpResponse("520 Unknown Error", status=520)
+    return response
