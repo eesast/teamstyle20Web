@@ -728,10 +728,10 @@ def battlePlayback(request, battle_id):
         response = HttpResponse("404 Not Found: Unknown error occured so that playback file could not be found.", status=404)
         path = os.path.join(settings.MEDIA_ROOT, "data", "%s"%battle_id)
         for file in os.listdir(path):
-            if file.endswith(".pb.7z"):
+            if file.endswith(".7z"):
                 response = FileResponse(open(os.path.join(path, file), 'rb'), status=200)
                 response['Content-Type'] = 'application/octet-stream'
-                filename = str(target_team) + '_' + str(battle_id) + '.pb.7z'
+                filename = "playback_" + str(target_team) + '_' + str(battle_id) + '.7z'
                 response['Content-Disposition'] = 'attachment;filename = ' + urlquote(filename)
     except AssertionError as error:
         err_status = int(error.__str__())
