@@ -335,7 +335,7 @@ export default {
             this.tableData=[];
             for(var i=0;i<res.length;i++)
             {
-              if(res[i].valid!=15)
+              if(res[i].valid==15)
               {
                 this.tableData.push(res[i]);
               }
