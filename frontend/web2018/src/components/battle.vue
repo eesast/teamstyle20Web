@@ -331,7 +331,15 @@ export default {
             }
           })
           .then(res => {
-            this.tableData = res;
+            // this.tableData = res;
+            this.tableData=[];
+            for(var i=0;i<res.length;i++)
+            {
+              if(res[i].valid!=15)
+              {
+                this.tableData.push(res[i]);
+              }
+            }
             // for (var i = 0; i < this.tableData.length; i++) {
             //   for (var j = 0; j < this.tableData[i].membersID.length; j++) {
             //     // if(id==this.tableData[i].membersID[j])
