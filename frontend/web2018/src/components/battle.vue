@@ -222,7 +222,7 @@ export default {
     },
     created: function()
     {
-      this.finaldate=new Date("2019-04-01T00:00:00+08:00");
+      this.finaldate=new Date("2019-04-25T12:00:00+08:00");
       fetch('/api/global',{
         method:'GET',
         headers:{
@@ -401,6 +401,7 @@ export default {
           if(nowdate>this.finaldate)
           {
             this.$message.error('代码上传已截止!');
+            this.fileList=[];
             return ;
           }
           if(this.value=='')
