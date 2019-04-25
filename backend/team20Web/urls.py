@@ -41,5 +41,6 @@ urlpatterns = [
     path('api/file/download/<int:file_id>', views.downloadFileAPI),
     path('api/global', views.getGlobalSettings),
     path('api/battle/', include('battle.urls')),
-    path('api/playback/<int:battle_id>', views.battlePlayback)
+    path('api/playback/<int:battle_id>', views.battlePlayback),
+    path('api/log/<int:battle_id>', views.battleLog),
 ]
