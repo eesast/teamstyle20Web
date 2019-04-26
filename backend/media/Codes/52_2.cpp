@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <fstream>
 #include <cmath>
 
 using namespace ts20;
@@ -12,167 +13,95 @@ extern std::vector<int> teammates;
 extern int frame;
 extern PlayerInfo info;
 
-int sgn(double x)
-{
-	if (x > 0)
-		return 1;
-	else if (x < 0)
-		return -1;
-	else
-		return 0;
-}
+std::ofstream out("info.txt");
+std::ofstream process("process.txt");
+void print_info(int level);
 
-bool barrier(double x, double y,block b)
-{
-	if (b.shape == CIRCLE)
-	{
-		if ((x - b.x0) * (x - b.x0) + (y - b.y0) * (y - b.y0) <= b.r * b.r)
-			return true;
-	}
-	if (b.shape == RECTANGLE)
-	{
-		if (x>=x0 && y>=y0 && x<=x1 && y<=y1)
-			return true;
-	}
-}
-
-void diymove(double view_angle)
-{
-	double move_angle = view_angle;
-	int x = floor(info.self.xy_pos.x);
-	int y = floor(info.self.xy_pos.y);
-	bool has_barrier = true;
-	int n = 1;
-	int j = 1;
-	while(has_barrier)
-	{
-		has_barrier = false;
-		for (int id = 0; id < info.landform_IDs.size(); id++)
-		{
-			block current_block = get_landform(info.landform_IDs[id]);
-			if (current_block.type = DEEP_WATER || RECTANGLE_BUILDING || CIRCLE_BUILDING || WALL || TREE)
-			{
-				int xb = x;
-				int yb = y;
-				for (int k = 1; k <= 5; k++)
-				{
-					xb = floor(x + k cos(view_angle));
-					yb = floor(y + k sin(view_angle));
-					if (barrier(xb, yb, current_block) || barrier(xb + sgn(cos(move_angle)), yb, current_block) || barrier(xb, yb + sgn(sin(move_angle)), current_block))
-						has_barrier = true;
-				}
-			}
-		}
-		if (has_barrier)
-		{
-			view_angle = move_angle + n * 10;
-			j++;
-			n = pow(-1,j-1)*floor(j/2);
-		}
-	}
-	move(move_angle, view_angle)
-}
 void play_game()
 {
 	update_info();
-	std::cout << "player:frame" << frame << "\nhp:" << info.self.hp << std::endl;
-	std::cout << "positon" << info.self.xy_pos.x << ' ' << info.self.xy_pos.y << std::endl;
-	
-	//ÌøÉ¡
+	print_info(0);
+	process << "frame:" << frame << std::endl;
+
+	//ï¿½ï¿½É¡
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
 		XYPosition landing_point = { 150 + rand() % 100, 150 + rand() % 100 };
-		parachute(SNIPER, landing_point);
+		parachute(HACK, landing_point);
 		return;
 	}
 	else
-	{
 		srand(time(nullptr) + info.player_ID*frame);
-	}
 
-	//ÊÇ·ñÂäµØ
+	//ï¿½Ç·ï¿½Î´ï¿½ï¿½ï¿½
 	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
 	{
-		std::cout << "jumping" << std::endl;
+		process << "jumping" << std::endl;
 		return;
 	}
 
-	//ÅÐ¶ÏÖÜÎ§ÓÐÃ»ÓÐÈË
+	//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (info.others.empty())
 	{
-		std::cout << "no others" << std::endl;
-		//ÅÐ¶ÏÖÜÎ§ÓÐÃ»ÓÐÎïÆ·
+		process << "no others" << std::endl;
 		if (info.items.empty())
 		{
-			std::cout << "no items" << std::endl;
-			//½øÐÐÒÆ¶¯
 			if (info.self.status != MOVING)
 			{
-				double move_angle = 0;
+				double x = info.poison.current_center.x - info.self.xy_pos.x;
+				double y = info.poison.current_center.y - info.self.xy_pos.y;
+				double move_angle = (x < 0)*(atan(y / x) + rand() % 135);
 				double view_angle = move_angle;
-				if (PoisonInfo::move_flag == 1 || PoisonInfo::move_flag == 2)
-				{
-					double x = info.poison.current_center.x - info.self.xy_pos.x;
-					double y = info.poison.current_center.y - info.self.xy_pos.y;
-					move_angle = (x < 0) * (atan(y / x);
-					view_angle = move_angle;
-				}
-				diymove(move_angle, view_angle);
-				std::cout << "move" << move_angle << std::endl;
+				move(move_angle, view_angle);
+				process << "move" << move_angle << std::endl;
 			}
 		}
 		else
-			//¼ñ¶«Î÷
 		{
 			Item closest_item;
 			closest_item.polar_pos.distance = 100000;
+
 			for (int i = 0; i < info.items.size(); ++i)
-			{
 				if (info.items[i].polar_pos.distance < closest_item.polar_pos.distance)
-				{
 					closest_item = info.items[i];
-				}
-			}
-			std::cout << "status" << info.self.status << std::endl;
-			std::cout << "**closest item angle" << closest_item.polar_pos.angle << "distance" << closest_item.polar_pos.distance << "**" << std::endl;
+
+			process << "status" << info.self.status << std::endl;
+			process << "**closest item angle" << closest_item.polar_pos.angle << "distance" << closest_item.polar_pos.distance << "**" << std::endl;
 			if (closest_item.polar_pos.distance < 1)
 			{
 				pickup(closest_item.item_ID);
-				std::cout << "try pickup" << closest_item.item_ID << std::endl;
+				process << "try pickup" << closest_item.item_ID << std::endl;
 			}
 			else if (info.self.status != MOVING)
 			{
 				move(closest_item.polar_pos.angle, closest_item.polar_pos.angle);
-				std::cout << "move" << closest_item.polar_pos.angle << std::endl;
+				process << "move" << closest_item.polar_pos.angle << std::endl;
 			}
 		}
+	}
 	else
 	{
-		//ÓÐµÐÈË
 		bool has_enemy = false;
 		OtherInfo closest_enemy;
 		closest_enemy.polar_pos.distance = 100000;
-		//ÅÐ¶ÏÓÑ¾üorµÐ¾ü
+		//check teammate
 		for (int i = 0; i < info.others.size(); ++i)
 		{
 			bool is_friend = false;
 			for (int teammate = 0; teammate < teammates.size(); ++teammate)
-			{
 				if (info.others[i].player_ID == teammates[teammate])
 				{
 					is_friend = true;
 					break;
 				}
-			}
+
 			if (!is_friend && info.others[i].polar_pos.distance < closest_enemy.polar_pos.distance)
 			{
 				closest_enemy = info.others[i];
 				has_enemy = true;
-				radio(teammates[0], 1);
 			}
 		}
-		//ÓÐµÐ¾ü
 		if (has_enemy)
 		{
 			ITEM weapon = FIST;
@@ -185,24 +114,26 @@ void play_game()
 				}
 			}
 			if (closest_enemy.polar_pos.distance > ITEM_DATA[weapon].range)
-			{
 				move(closest_enemy.polar_pos.angle, closest_enemy.polar_pos.angle);
-			}//ÏòµÐÈË¿¿½ü
 			else
-			{
 				shoot(weapon, closest_enemy.polar_pos.angle);
-			}//Éä»÷
-		}
-		else
-		{
-			if (info.self.status != MOVING)
-			{
-				double move_angle = 0;
-				double view_angle = move_angle;
-				move(move_angle, view_angle);
-				std::cout << "move" << move_angle << std::endl;
-			}
 		}
 	}
 	return;
+}
+
+void print_info(int level)
+{
+	out << "frame:" << frame << std::endl;
+
+	for (int temp = 0; temp < info.others.size(); temp++)
+		out << "others:" << info.others[temp].player_ID << std::endl;
+	for (int temp = 0; temp < info.sounds.size(); temp++)
+		out << "sounds:" << info.sounds[temp].type << std::endl;
+	for (int temp = 0; temp < info.self.bag.size(); temp++)
+		out << "items:" << info.self.bag[temp].type << std::endl;
+
+	out << "self:" << info.self.hp << std::endl;
+	out << "self:" << info.self.xy_pos.x << " " << info.self.xy_pos.y << std::endl;
+	out << std::endl;
 }

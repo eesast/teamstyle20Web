@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 using namespace ts20;
 

@@ -2677,10 +2677,6 @@ static uk_enemy ukenemy[60];
 static int enemynum = 0;
 static int soundnum = 0;
 static ItemInfo itemneed[100];
-static int medic_id = teammates[0];
-static int signalman_id = teammates[1];
-static int hack_id = teammates[2];
-static int sniper_id = teammates[3];
 static XYPosition medic_pos = { 600,600 };
 static XYPosition signalman_pos = { 500,500 };
 static XYPosition hack_pos = { 400,600 };
@@ -3035,7 +3031,7 @@ void play_game()
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
-		XYPosition landing_point = { 350,250 };
+		XYPosition landing_point = { 300,200 };
 		parachute(SIGNALMAN, landing_point);
 		return;
 	}
