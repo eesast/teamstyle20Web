@@ -4,6 +4,7 @@
 #include <ctime>
 #include <algorithm>
 #include <fstream>
+#include <cmath>
 
 using namespace ts20;
 
