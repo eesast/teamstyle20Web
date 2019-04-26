@@ -2548,7 +2548,7 @@ void play_game()
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
-		XYPosition landing_point = { 350,250 };
+		XYPosition landing_point = { 353,713 };
 		parachute(HACK, landing_point);
 		return;
 	}
@@ -2556,6 +2556,5 @@ void play_game()
 	{
 		srand(time(nullptr) + info.player_ID*frame);
 	}
-	block_move(info.poison.next_center);
 	return;
 }

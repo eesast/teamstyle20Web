@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include <fstream>
+#include <cmath>
 
 using namespace ts20;
 
@@ -14,7 +14,7 @@ extern PlayerInfo info;
 
 constexpr auto pi = 3.1415926535897932384626;;
 
-const bool b_sea_1[101][101]=
+const bool b_sea_1[101][101] =
 {
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -119,7 +119,7 @@ const bool b_sea_1[101][101]=
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 }
 ;
-const bool b_hill_1[101][101]=
+const bool b_hill_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -224,7 +224,7 @@ const bool b_hill_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_pool_1[101][101]=
+const bool b_pool_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -329,7 +329,7 @@ const bool b_pool_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_beach_1[101][101]=
+const bool b_beach_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -434,7 +434,7 @@ const bool b_beach_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_city_1[101][101]=
+const bool b_city_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -539,7 +539,7 @@ const bool b_city_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const bool b_farmland_1[101][101]=
+const bool b_farmland_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -644,7 +644,7 @@ const bool b_farmland_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_roada_1[101][101]=
+const bool b_roada_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -749,7 +749,7 @@ const bool b_roada_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_roadb_1[101][101]=
+const bool b_roadb_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -854,7 +854,7 @@ const bool b_roadb_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const bool b_grass_1[101][101]=
+const bool b_grass_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -959,7 +959,7 @@ const bool b_grass_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const bool b_forest_1[101][101]=
+const bool b_forest_1[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1064,7 +1064,7 @@ const bool b_forest_1[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 }
 ;
-const int b_sea_2[101][101]=
+const int b_sea_2[101][101] =
 {
 {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
 {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
@@ -1169,7 +1169,7 @@ const int b_sea_2[101][101]=
 {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
 }
 ;
-const int b_hill_2[101][101]=
+const int b_hill_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1274,7 +1274,7 @@ const int b_hill_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_pool_2[101][101]=
+const int b_pool_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1379,7 +1379,7 @@ const int b_pool_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_beach_2[101][101]=
+const int b_beach_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1484,7 +1484,7 @@ const int b_beach_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_city_2[101][101]=
+const int b_city_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1589,7 +1589,7 @@ const int b_city_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_farmland_2[101][101]=
+const int b_farmland_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1694,7 +1694,7 @@ const int b_farmland_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_roada_2[101][101]=
+const int b_roada_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1799,7 +1799,7 @@ const int b_roada_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_roadb_2[101][101]=
+const int b_roadb_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -1904,7 +1904,7 @@ const int b_roadb_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_grass_2[101][101]=
+const int b_grass_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
@@ -2009,7 +2009,7 @@ const int b_grass_2[101][101]=
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 }
 ;
-const int b_forest_2[101][101]=
+const int b_forest_2[101][101] =
 {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -2118,7 +2118,7 @@ const int b_forest_2[101][101]=
 class landform_pos
 {
 public:
-	landform_pos(double x1=0,double y1=0,AREA landform1=SEA){x = x1; y = y1; landform = landform1;}
+	landform_pos(double x1 = 0, double y1 = 0, AREA landform1 = SEA) { x = x1; y = y1; landform = landform1; }
 	landform_pos abs_landpos(XYPosition abs_pos)
 	{
 		double dx, dy;
@@ -2126,7 +2126,7 @@ public:
 		dx = abs_pos.x - (int)abs_pos.x / 100 * 100;
 		dy = abs_pos.y - (int)abs_pos.y / 100 * 100;
 		l = (int)abs_pos.x / 100 + 10 * ((int)abs_pos.y / 100);
-		return landform_pos(dx,dy,MAP[l]);
+		return landform_pos(dx, dy, MAP[l]);
 	}
 	double x;
 	double y;
@@ -2135,7 +2135,7 @@ public:
 //地形_坐标类（坐标相对地形左下角，以（100，100）为上界），abs_landpos为转换函数
 bool point_block(XYPosition abs_pos)
 {
-	landform_pos aim= aim.abs_landpos(abs_pos);
+	landform_pos aim = aim.abs_landpos(abs_pos);
 	switch (aim.landform)
 	{
 	case SEA: return 1;
@@ -2187,7 +2187,7 @@ bool straight_block(XYPosition abs_pos)
 	}
 	else if (dx < 0 && fabs(k) <= 1)
 	{
-		x1 = (int)info.self.xy_pos.x ;
+		x1 = (int)info.self.xy_pos.x;
 		for (; x1 > mark.x; x1--)
 		{
 			y1 = (int)(k*x1 + b) + 0.0; y2 = y1 + 1;
@@ -2228,11 +2228,11 @@ double shoot_block(XYPosition abs_pos)
 		for (; x1 < mark.x; x1++)
 		{
 			y1 = (int)(k*x1 + b) + 0.0; y2 = y1 + 1;
-			if (point_landform({ x1,y1 })==2 || point_landform({ x1,y2 })==2) return 0;
-			else if ((point_landform({ x1,y1 }) == 3 && point_landform({ x1 - dx / fabs(dx),y1 }) != 3) || 
-					 (point_landform({ x1,y2 }) == 3 && point_landform({ x1 - dx / fabs(dx),y2 }) != 3) ||
-					 (point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) || 
-					 (point_landform({ x1,y2 }) == 3 && point_landform({ x1,y2 - dy / fabs(dy) }) != 3)) mingzhonglv/=2;
+			if (point_landform({ x1,y1 }) == 2 || point_landform({ x1,y2 }) == 2) return 0;
+			else if ((point_landform({ x1,y1 }) == 3 && point_landform({ x1 - dx / fabs(dx),y1 }) != 3) ||
+				(point_landform({ x1,y2 }) == 3 && point_landform({ x1 - dx / fabs(dx),y2 }) != 3) ||
+				(point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
+				(point_landform({ x1,y2 }) == 3 && point_landform({ x1,y2 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
 		}
 	}
 	else if (dx < 0 && fabs(k) <= 1)
@@ -2243,9 +2243,9 @@ double shoot_block(XYPosition abs_pos)
 			y1 = (int)(k*x1 + b) + 0.0; y2 = y1 + 1;
 			if (point_landform({ x1,y1 }) == 2 || point_landform({ x1,y2 }) == 2) return 0;
 			else if ((point_landform({ x1,y1 }) == 3 && point_landform({ x1 - dx / fabs(dx),y1 }) != 3) ||
-					 (point_landform({ x1,y2 }) == 3 && point_landform({ x1 - dx / fabs(dx),y2 }) != 3) ||
-					 (point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
-					 (point_landform({ x1,y2 }) == 3 && point_landform({ x1,y2 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
+				(point_landform({ x1,y2 }) == 3 && point_landform({ x1 - dx / fabs(dx),y2 }) != 3) ||
+				(point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
+				(point_landform({ x1,y2 }) == 3 && point_landform({ x1,y2 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
 		}
 	}
 	else if (dy > 0 && fabs(k) > 1)
@@ -2256,9 +2256,9 @@ double shoot_block(XYPosition abs_pos)
 			x1 = (int)((y1 - b) / k) + 0.0; x2 = x1 + 1;
 			if (point_landform({ x1,y1 }) == 2 || point_landform({ x2,y1 }) == 2) return 0;
 			else if ((point_landform({ x1,y1 }) == 3 && point_landform({ x1 - dx / fabs(dx),y1 }) != 3) ||
-					 (point_landform({ x2,y1 }) == 3 && point_landform({ x2 - dx / fabs(dx),y1 }) != 3) ||
-					 (point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
-					 (point_landform({ x2,y1 }) == 3 && point_landform({ x2,y1 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
+				(point_landform({ x2,y1 }) == 3 && point_landform({ x2 - dx / fabs(dx),y1 }) != 3) ||
+				(point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
+				(point_landform({ x2,y1 }) == 3 && point_landform({ x2,y1 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
 		}
 	}
 	else if (dy < 0 && fabs(k) > 1)
@@ -2269,9 +2269,9 @@ double shoot_block(XYPosition abs_pos)
 			x1 = (int)((y1 - b) / k) + 0.0; x2 = x1 + 1;
 			if (point_landform({ x1,y1 }) == 2 || point_landform({ x2,y1 }) == 2) return 0;
 			else if ((point_landform({ x1,y1 }) == 3 && point_landform({ x1 - dx / fabs(dx),y1 }) != 3) ||
-					 (point_landform({ x2,y1 }) == 3 && point_landform({ x2 - dx / fabs(dx),y1 }) != 3) ||
-					 (point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
-					 (point_landform({ x2,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
+				(point_landform({ x2,y1 }) == 3 && point_landform({ x2 - dx / fabs(dx),y1 }) != 3) ||
+				(point_landform({ x1,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3) ||
+				(point_landform({ x2,y1 }) == 3 && point_landform({ x1,y1 - dy / fabs(dy) }) != 3)) mingzhonglv /= 2;
 		}
 	}
 	if (point_landform(abs_pos) == 1)mingzhonglv /= 2;
@@ -2336,7 +2336,7 @@ XYPosition pol_abs(PolarPosition pol_pos)
 void move(XYPosition abs_pos, double view_angle = 0)
 {
 	double dangle = abs_pol(abs_pos).angle;
-	move(dangle, view_angle, -1);
+	if (frame % 2) move(dangle, view_angle, -1);
 }
 //直线移动至指定点（误差1米）
 void block_move(XYPosition abs_pos, double view_angle = 0)
@@ -2345,7 +2345,7 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 	{
 		double dy = abs_pos.y - info.self.xy_pos.y;
 		double dx = abs_pos.x - info.self.xy_pos.x;
-		if (point_block(abs_pos)) { std::cout << "下个毒圈中心在无法到达的地形" << std::endl;  }
+		//if (point_block(abs_pos)) { std::cout << "下个毒圈中心在无法到达的地形" << std::endl; }
 		if (dx)
 		{
 			double k = dy / dx, b = info.self.xy_pos.y - info.self.xy_pos.x*k;
@@ -2368,9 +2368,9 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						x1 = (int)info.self.xy_pos.x;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
 				move(mark, view_angle);
-				std::cout << "1 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+				//std::cout << "1 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 			else if (dx < 0 && fabs(k) <= 1)
 			{
@@ -2391,9 +2391,9 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						x1 = (int)info.self.xy_pos.x + 1;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
 				move(mark, view_angle);
-				std::cout << "2 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+			//	std::cout << "2 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 			else if (dy < 0 && fabs(k) > 1)
 			{
@@ -2408,15 +2408,15 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						int i;
 						for (i = 0;; i++)
 						{
-							if (point_block({ x1 - i,y1 }) == 0) { mark = { x1 - i-1,y1 }; break; }
-							else if (point_block({ x2 + i,y1 }) == 0) { mark = { x2 + i+1,y1 }; break; }
+							if (point_block({ x1 - i,y1 }) == 0) { mark = { x1 - i - 1,y1 }; break; }
+							else if (point_block({ x2 + i,y1 }) == 0) { mark = { x2 + i + 1,y1 }; break; }
 						}
 						y1 = (int)info.self.xy_pos.y + 1;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
 				move(mark, view_angle);
-				std::cout << "3 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+				//std::cout << "3 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 			else if (dy > 0 && fabs(k) > 1)
 			{
@@ -2437,9 +2437,9 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						y1 = (int)info.self.xy_pos.y;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
-				move(mark,view_angle);
-				std::cout << "4 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				move(mark, view_angle);
+				//std::cout << "4 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 		}
 		else
@@ -2459,15 +2459,15 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						int i;
 						for (i = 0;; i++)
 						{
-							if (point_block({ x1 - i,y1 }) == 0) { mark = { x1 - i-1,y1 }; break; }
-							else if (point_block({ x2 + i,y1 }) == 0) { mark = { x2 + i+1,y1 }; break; }
+							if (point_block({ x1 - i,y1 }) == 0) { mark = { x1 - i - 1,y1 }; break; }
+							else if (point_block({ x2 + i,y1 }) == 0) { mark = { x2 + i + 1,y1 }; break; }
 						}
 						y1 = (int)info.self.xy_pos.y;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
-				move(mark,view_angle);
-				std::cout << "5 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				move(mark, view_angle);
+				//std::cout << "5 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 			else if (dy < 0)
 			{
@@ -2488,9 +2488,9 @@ void block_move(XYPosition abs_pos, double view_angle = 0)
 						y1 = (int)info.self.xy_pos.y + 1;
 					}
 				}
-				std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
-				move(mark,view_angle);
-				std::cout << "6 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
+				//std::cout << "距离当前目标点距离为：" << sqrt(pow((mark.x - info.self.xy_pos.x), 2) + pow((mark.y - info.self.xy_pos.y), 2)) << std::endl;
+				move(mark, view_angle);
+				//std::cout << "6 AIM:(" << mark.x << "," << mark.y << ")" << std::endl;
 			}
 		}
 	}
@@ -2514,7 +2514,7 @@ void view_pickup()
 		}
 	if (!flag)
 	{
-		double minidistance= info.items[0].polar_pos.distance;
+		double minidistance = info.items[0].polar_pos.distance;
 		for (int i = 0; i < info.items.size(); i++)
 		{
 			if (info.items[i].polar_pos.distance < minidistance) { flag = i; minidistance = info.items[0].polar_pos.distance; }
@@ -2536,188 +2536,19 @@ bool shoot_dpf(XYPosition abs_pos)//定点射击函数，不带捡枪！
 		for (k = 0; k < info.self.bag.size(); k++) if (info.self.bag[k].type == i) break;
 		if (dpf[i] > max_dpf && ITEM_DATA[i].range >= pol_pos.distance && info.self.bag[k].durability > 0) { max_dpf = dpf[i]; j = i; }
 	}
-	if (shoot_block(abs_pos)<=0.25 || j == -1) { std::cout << "无法攻击到目标点或者攻击收益过低" << std::endl; return 0; }
+	if (shoot_block(abs_pos) <= 0.25 || j == -1) { std::cout << "无法攻击到目标点或者攻击收益过低" << std::endl; return 0; }
 	else { shoot((ITEM)j, pol_pos.angle, -1); return 1; }
 }
 //定点射击
-
-void info_write(VOCATION v)
-{
-	if (frame % 2)
-	{
-		if (v == HACK)
-		{
-			std::ofstream ofile1("selfhack.dat", std::ios::out | std::ios::binary);
-			ofile1 << frame << " " << info.self.xy_pos.x << " " << info.self.xy_pos.y;
-			ofile1.close();
-			std::ofstream ofile2("enemy 2.dat", std::ios::out | std::ios::binary);
-			ofile2 << frame << " ";
-			if (!info.others.empty())
-			{
-				for (int i = 0; i < info.others.size(); i++)
-				{
-					bool flag = 1;
-					for (int j = 0; j < 3; j++) if (info.others[i].player_ID == teammates[j]) flag = 0;
-					if (flag == 0) continue;
-					long long int enemyinfo = (int)info.others[i].vocation + 10 * info.others[i].move_angle + pow(10, 4)*pol_abs(info.others[i].polar_pos).y + pow(10, 7)*pol_abs(info.others[i].polar_pos).x + pow(10, 10)*info.others[i].player_ID;
-					ofile2 << enemyinfo << " ";
-				}
-			}
-			ofile2.close();
-			std::ofstream ofile3("picklist 2.dat", std::ios::out | std::ios::binary);
-			ofile3 << frame << " ";
-			if (!info.items.empty())
-			{
-				for (int i = 0; i < info.items.size(); i++)
-				{
-					long long int pickinfo = pol_abs(info.items[i].polar_pos).y + 1000 * pol_abs(info.items[i].polar_pos).x + 1000000 * (int)info.items[i].type + 100000000 * info.items[i].item_ID ;
-					ofile2 << pickinfo << " ";
-				}
-			}
-			ofile3.close();
-		}
-		if (v == SNIPER)
-		{
-			std::ofstream ofile1("selfsnip.dat", std::ios::out | std::ios::binary);
-			ofile1 << frame << " " << info.self.xy_pos.x << " " << info.self.xy_pos.y;
-			ofile1.close();
-			std::ofstream ofile2("enemy 3.dat", std::ios::out | std::ios::binary);
-			ofile2 << frame << " ";
-			if (!info.others.empty())
-			{
-				for (int i = 0; i < info.others.size(); i++)
-				{
-					bool flag = 1;
-					for (int j = 0; j < 3; j++) if (info.others[i].player_ID == teammates[j]) flag = 0;
-					if (flag == 0) continue;
-					long long int enemyinfo = (int)info.others[i].vocation + 10 * info.others[i].move_angle + pow(10, 4)*pol_abs(info.others[i].polar_pos).y + pow(10, 7)*pol_abs(info.others[i].polar_pos).x + pow(10, 10)*info.others[i].player_ID;
-					ofile2 << enemyinfo << " ";
-				}
-			}
-			ofile2.close();
-			std::ofstream ofile3("picklist 3.dat", std::ios::out | std::ios::binary);
-			ofile3 << frame << " ";
-			if (!info.items.empty())
-			{
-				for (int i = 0; i < info.items.size(); i++)
-				{
-					long long int pickinfo = pol_abs(info.items[i].polar_pos).y + 1000 * pol_abs(info.items[i].polar_pos).x + 1000000 * (int)info.items[i].type + 100000000 * info.items[i].item_ID;
-					ofile2 << pickinfo << " ";
-				}
-			}
-			ofile3.close();
-		}
-		if (v == MEDIC)
-		{
-			std::ofstream ofile1("selfmedic.dat", std::ios::out | std::ios::binary);
-			ofile1 << frame << " " << info.self.xy_pos.x << " " << info.self.xy_pos.y;
-			ofile1.close();
-			std::ofstream ofile2("enemy 0.dat", std::ios::out | std::ios::binary);
-			ofile2 << frame << " ";
-			if (!info.others.empty())
-			{
-				for (int i = 0; i < info.others.size(); i++)
-				{
-					bool flag = 1;
-					for (int j = 0; j < 3; j++) if (info.others[i].player_ID == teammates[j]) flag = 0;
-					if (flag == 0) continue;
-					long long int enemyinfo = (int)info.others[i].vocation + 10 * info.others[i].move_angle + pow(10, 4)*pol_abs(info.others[i].polar_pos).y + pow(10, 7)*pol_abs(info.others[i].polar_pos).x + pow(10, 10)*info.others[i].player_ID;
-					ofile2 << enemyinfo << " ";
-				}
-			}
-			ofile2.close();
-			std::ofstream ofile3("picklist 0.dat", std::ios::out | std::ios::binary);
-			ofile3 << frame << " ";
-			if (!info.items.empty())
-			{
-				for (int i = 0; i < info.items.size(); i++)
-				{
-					long long int pickinfo = pol_abs(info.items[i].polar_pos).y + 1000 * pol_abs(info.items[i].polar_pos).x + 1000000 * (int)info.items[i].type + 100000000 * info.items[i].item_ID;
-					ofile2 << pickinfo << " ";
-				}
-			}
-			ofile3.close();
-		}
-		if (v == SIGNALMAN)
-		{
-			std::ofstream ofile1("selfsign.dat", std::ios::out | std::ios::binary);
-			ofile1 << frame << " " << info.self.xy_pos.x << " " << info.self.xy_pos.y;
-			ofile1.close();
-			std::ofstream ofile2("enemy 1.dat", std::ios::out | std::ios::binary);
-			ofile2 << frame << " ";
-			if (!info.others.empty())
-			{
-				for (int i = 0; i < info.others.size(); i++)
-				{
-					bool flag = 1;
-					for (int j = 0; j < 3; j++) if (info.others[i].player_ID == teammates[j]) flag = 0;
-					if (flag == 0) continue;
-					long long int enemyinfo = (int)info.others[i].vocation + 10 * info.others[i].move_angle + pow(10, 4)*pol_abs(info.others[i].polar_pos).y + pow(10, 7)*pol_abs(info.others[i].polar_pos).x + pow(10, 10)*info.others[i].player_ID;
-					ofile2 << enemyinfo << " ";
-				}
-			}
-			ofile2.close();
-			std::ofstream ofile3("picklist 1.dat", std::ios::out | std::ios::binary);
-			ofile3 << frame << " ";
-			if (!info.items.empty())
-			{
-				for (int i = 0; i < info.items.size(); i++)
-				{
-					long long int pickinfo = pol_abs(info.items[i].polar_pos).y + 1000 * pol_abs(info.items[i].polar_pos).x + 1000000 * (int)info.items[i].type + 100000000 * info.items[i].item_ID;
-					ofile2 << pickinfo << " ";
-				}
-			}
-			ofile3.close();
-		}
-	}
-}
-
-void data_write()
-{
-	std::ifstream ifile1("picklist 0.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile2("picklist 1.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile3("picklist 2.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile4("picklist 3.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile5("enemy 0.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile6("enemy 1.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile7("enemy 2.dat", std::ios::in | std::ios::binary);
-	std::ifstream ifile8("enemy 3.dat", std::ios::in | std::ios::binary);
-	std::ofstream ofile1;
-
-}
-
-enum MODE
-{
-
-};
-
-MODE mode()
-{
-	//先进行信息存储与处理
-
-	//
-}
-
-bool act(MODE m)
-{
-
-}
-
-
 void play_game()
 {
 	/* Your code in this function */
 	/* sample AI */
-	//clock_t start, end;
-	//start = clock();
 	update_info();
-	std::cout << "frame=" << frame <<std::endl<< "  positon:(" << info.self.xy_pos.x << ',' << info.self.xy_pos.y << ")" << std::endl;
-	/*std::cout << "当前毒圈中心:(" << info.poison.current_center.x << "," << info.poison.current_center.y << ")" << std::endl;
-	std::cout << "下个毒圈中心:(" << info.poison.next_center.x << "," << info.poison.next_center.y << ")" << std::endl;*/
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
-		XYPosition landing_point = { 345,255 };
+		XYPosition landing_point = { 610,660 };
 		parachute(SNIPER, landing_point);
 		return;
 	}
@@ -2725,29 +2556,5 @@ void play_game()
 	{
 		srand(time(nullptr) + info.player_ID*frame);
 	}
-	if (info.self.status == ON_PLANE || info.self.status == JUMPING) return;
-	/*int num = 0;
-	for (int i = 0; i < info.self.bag.size(); i++)
-	{
-		if (info.self.bag[i].type <= 9 && info.self.bag[i].type >= 1 && info.self.bag[i].type != 8)
-			num += info.self.bag[i].durability;
-	}
-	std::cout << "现在背包中有 " << num << " 颗子弹" << std::endl;
-	if (num >= 50 || info.items.empty())
-	{
-		block_move({ 360,260 });
-	}
-	else view_pickup();
-	if (info.self.xy_pos.x < 400 && info.self.xy_pos.y < 300)shoot_dpf({ 350,250 });*/
-
-	/*std::ifstream ifile("111", std::ios::in | std::ios::binary);
-	if (!ifile) return;
-	int x; int y;
-	ifile >> x >> y;
-	std::cout << x << " " << y << std::endl;
-	block_move({ double(x),double(y) });
-	end = clock();
-	//std::cout << "运行时间：" << end - start << "ms" << std::endl;
-	if (end - start >= 50)std::cout << "需要优化！" << std::endl;*/
 	return;
 }

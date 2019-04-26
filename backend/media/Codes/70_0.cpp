@@ -1,4 +1,3 @@
-#define outputinfo 0
 #include "api.h"
 #include "base.h"
 #include <cstdlib>
@@ -6,7 +5,7 @@
 #include <math.h>
 #include <queue>
 #include <set>
-#define profession MEDIC
+#define profession HACK
 #define it1 multiset < Node*, QueueCompare >::iterator
 
 using namespace ts20;
@@ -18,7 +17,7 @@ extern PlayerInfo info;//ËùÓÐÐÅÏ¢µÄ¾ÛºÏ
 const double pi = 3.14159265358979;
 const double boundMax = 50.0;
 const double boundMin = 20.0;
-/*const int unitValue[ITEM_SZ] = {//ITEM_SZ = 21,
+/*const int unitValue[ITEM_SZ] = {
 	1,//FIST = 0,
 	5,//HAND_GUN = 1,
 	16,//SUBMACHINE_GUN = 2,
@@ -48,7 +47,7 @@ int landform[1000][1000];//landform[x][y]
 enum STATUS nowStatus;//µ±Ç°×´Ì¬£¨ÓÅÓÚinfo.self.status£©
 int demandPercent[ITEM_SZ];//Demandº¯ÊýÍ¨ÐÅ
 XYPosition destination, shrink;//Ä¿µÄµØ£¨¶¾È¦ÖÐÐÄ£©
-int follow, delay, bfsdelay;
+int follow, delay;
 int inside;//0£ºcurOut£¬nextOut¡£1£ºcurIn£¬nextOut¡£2£ºcurIn£¬nextIn
 int seeEnemy, collectGarbage;//Á½º¯Êý·µ»ØÖµ
 bool wantMove, wantShoot;
@@ -201,7 +200,7 @@ struct Node
 };
 struct QueueCompare
 {
-	bool operator () (Node* n1, Node* n2)
+	bool operator () (const Node *n1, const Node *n2) const
 	{
 		return (n1->f < n2->f) || ((n1->f == n2->f) && (n1->y < n2->y)) || ((n1->f == n2->f) && (n1->y == n2->y) && (n1->x < n2->x));
 	}
@@ -298,7 +297,7 @@ public:
 	void CheckPoint(int x, int y, it1 father, int g);
 	void NextStep(it1 currentPoint);
 	void CountGHF(Node* sNode, Node* eNode, int g);
-	static bool Compare(Node* n1, Node* n2);
+	static bool Compare(const Node* n1, const Node* n2);
 	bool UnWalk(int x, int y);
 	void RecordPath(Node* current);
 	multiset < Node*, QueueCompare > openList;
@@ -415,7 +414,7 @@ void Astar::CountGHF(Node* sNode, Node* eNode, int g)
 	sNode->h = h;
 	sNode->g = currentg;
 }
-bool Astar::Compare(Node* n1, Node* n2)
+bool Astar::Compare(const Node* n1, const Node* n2)
 {
 	return n1->f < n2->f;
 }
@@ -448,7 +447,7 @@ bool IsFriend(int id)
 			return true;
 	return false;
 }
-bool HaveItem(ITEM_TYPE a)
+bool HaveItem(ITEM a)
 {
 	for (int i = 0; i < info.self.bag.size(); i++)
 	{
@@ -462,7 +461,7 @@ int HaveWeapon(double searchDist = 3.0)//searchdist=3²»ËãfistºÍ»¢ÌÎ´¸£¬·µ»ØÄÜ´òÖ
 	int num = -1, damageMax = 0, demandMin = 100;
 	for (int i = 0; i <= 9; i++)
 	{
-		if ((searchDist <= ITEM_DATA[i].range) && HaveItem((ITEM_TYPE)i) && damageMax <= ITEM_DATA[i].damage / ITEM_DATA[i].cd)
+		if ((searchDist <= ITEM_DATA[i].range) && HaveItem((ITEM)i) && damageMax <= ITEM_DATA[i].damage / ITEM_DATA[i].cd)
 		{
 			num = i;
 			damageMax = ITEM_DATA[i].damage;
@@ -639,11 +638,9 @@ Node Shrink(XYPosition des)//¿ÉÓÅ»¯
 			return Node(close);
 	}
 	BFS finder;
-	int time = clock();
 	polar.distance = boundMax;
 	close = PolarToXY(polar);
 	close = finder.SearchAccess(close);
-	bfsdelay = clock() - time;
 	return Node(close);
 }
 bool MoveToDes(int parameter = -1)
@@ -656,7 +653,9 @@ bool MoveToDes(int parameter = -1)
 		return Move(XYToPolar(destination).angle, XYToPolar(destination).angle);
 	Node a = Shrink(destination);
 	shrink.x = a.x, shrink.y = a.y;
-	astar.Search(&Node(info.self.xy_pos), &a);
+	Node b(info.self.xy_pos);
+	Node *pNodea = &a, *pNodeb = &b;
+	astar.Search(pNodeb, pNodea);
 	if (!path.empty())
 	{
 		if (follow == 2)
@@ -665,7 +664,6 @@ bool MoveToDes(int parameter = -1)
 			return Move(XYToPolar(path[0]).angle, XYToPolar(path[0]).angle, parameter);
 		else
 			return Move(XYToPolar(path[0]).angle, VOCATION_DATA[info.self.vocation].angle - 1.0, parameter);
-		//if (ObstacleDetect(5))
 		/*int sz = Min(2, (int)path.size());//È¡Ç°Èý¸öµãÆ½¾ù
 		XYPosition average;
 		average.x = 0, average.y = 0;
@@ -854,9 +852,59 @@ int CollectGarbage()//¼ñÆðÀ´ÁË·µ»Ø3£¬¿ÉÒÔ¼ñÃ»¼ñÆðÀ´·µ»Ø2£¬¿´¼ûÁË¹»²»µ½·µ»Ø1£¬Ã»¿
 			return 0;
 	}
 }
-void YangYongXin()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½´ïµÄµã
+void YYX()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½´ïµÄµã
 {
-	if (info.self.status == ON_PLANE || info.self.status == JUMPING || frame < 5)
+//	BFS finder;
+	/*if (frame <= 210)
+	{
+		inside = 2;
+	}
+	else
+	{
+		inside = 0;
+		if (Dist(info.self.xy_pos, info.poison.current_center) <= info.poison.current_radius * 0.7 + info.poison.next_radius * 0.3)
+			inside++;
+		if (Dist(info.self.xy_pos, info.poison.next_center) <= info.poison.next_radius * 0.95)
+			inside++;
+	}
+	if (inside == 0)
+	{
+		destination = info.poison.current_center;//finder.SearchAccess(info.poison.current_center);//ÐèÒªBFS
+		return;
+	}
+	else if (inside == 1)
+	{
+		destination = info.poison.next_center;//finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
+		return;
+	}
+	else//ÒÔÏÂÎªinside == 2
+	{//½øÀ´Ò»¶¨return
+		seeEnemy = SeeEnemy();
+		collectGarbage = CollectGarbage();
+		if (collectGarbage <= 0)//²»ÏëÈ¥ÕÒÈË/¶«Î÷
+		{
+			if (info.poison.next_radius > 120)//È¦»¹½Ï´ó
+			{
+				if (!(Dist(destination, info.poison.next_center) < 0.8 * info.poison.next_radius && Dist(destination, info.poison.next_center) > 0.1 * info.poison.next_radius && Dist(destination, info.self.xy_pos) < 10.0 && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
+				{
+					//BFS finder;
+					double dx = (double)(rand() % (int)(0.8 * info.poison.next_radius)), dy = (double)(rand() % (int)(0.8 * info.poison.next_radius));
+					destination.x = LimitBound(info.poison.next_center.x + dx);
+					destination.y = LimitBound(info.poison.next_center.y + dy);
+					//destination = finder.SearchAccess(destination);
+				}
+				return;
+			}
+			else
+			{
+				destination = info.poison.next_center;//finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
+				return;
+			}
+		}
+		else
+			return;
+	}*/
+	if (frame < 5 || info.self.status == ON_PLANE || info.self.status == JUMPING)
 		return;
 	if (frame <= 200)
 	{//½øÀ´Ò»¶¨return
@@ -869,18 +917,15 @@ void YangYongXin()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½
 			const double radius = 100;
 			XYPosition org;
 			org.x = org.y = 500;
-			if (!(Dist(destination, org) < radius && Dist(destination, org) > 0.6 * radius && Dist(destination, info.self.xy_pos) > 15.0 && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
+			if (!(Dist(destination, org) < radius && Dist(destination, org) > 0.6 * radius && Dist(destination, info.self.xy_pos) > 15.0 && Reachable(destination) && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
 			{
-				BFS finder;
 				double dx = (double)(rand() % (int)radius), dy = (double)(rand() % (int)radius);
 				destination.x = LimitBound(org.x + dx);
 				destination.y = LimitBound(org.y + dy);
-				destination = finder.SearchAccess(destination);
 			}
 		}
 		return;
-	}//ÒÔÏÂÎªframe>200
-	BFS finder;
+	}//ÒÔÏÂÎªframe>200*/
 	inside = 0;
 	if (frame <= 900)
 	{
@@ -898,16 +943,12 @@ void YangYongXin()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½
 	}//ÒÔÉÏÎª¼ÆËãinside
 	if (inside == 0)
 	{
-		int time = clock();
-		destination = finder.SearchAccess(info.poison.current_center);//ÐèÒªBFS
-		bfsdelay = clock() - time;
+		destination = info.poison.current_center;//ÐèÒªBFS
 		return;
 	}
 	else if (inside == 1)
 	{
-		int time = clock();
-		destination = finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
-		bfsdelay = clock() - time;
+		destination = info.poison.next_center;//ÐèÒªBFS
 		return;
 	}
 	else//ÒÔÏÂÎªinside == 2
@@ -920,19 +961,15 @@ void YangYongXin()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½
 			{
 				if (!(Dist(destination, info.poison.next_center) < 0.8 * info.poison.next_radius && Dist(destination, info.poison.next_center) > 0.1 * info.poison.next_radius && Dist(destination, info.self.xy_pos) < 10.0 && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
 				{
-					BFS finder;
 					double dx = (double)(rand() % (int)(0.8 * info.poison.next_radius)), dy = (double)(rand() % (int)(0.8 * info.poison.next_radius));
 					destination.x = LimitBound(info.poison.next_center.x + dx);
 					destination.y = LimitBound(info.poison.next_center.y + dy);
-					destination = finder.SearchAccess(destination);
 				}
 				return;
 			}
 			else
 			{
-				int time = clock();
-				destination = finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
-				bfsdelay = clock() - time;
+				destination = info.poison.next_center;//ÐèÒªBFS
 				return;
 			}
 		}
@@ -950,10 +987,7 @@ void Heal()
 			{
 				if (frame % 8 == 0)
 				{
-					if (info.self.vocation == MEDIC)
-						Shoot(info.self.bag[i].type, 0.0, info.player_ID);
-					else
-						Shoot(info.self.bag[i].type, 0.0);
+					Shoot(info.self.bag[i].type, 0.0, info.player_ID);
 					return;
 				}
 			}
@@ -961,17 +995,14 @@ void Heal()
 			{
 				if (frame % 5 == 0)
 				{
-					if (info.self.vocation == MEDIC)
-						Shoot(info.self.bag[i].type, 0.0, info.player_ID);
-					else
-						Shoot(info.self.bag[i].type, 0.0);
+					Shoot(info.self.bag[i].type, 0.0, info.player_ID);
 					return;
 				}
 			}
 		}
 	}
 }
-void File()
+/*void File()
 {
 	if (frame <= 1)
 		return;
@@ -1053,246 +1084,13 @@ void File()
 	}
 	fprintf(fp, "\n\n\n");
 	fclose(fp);
-}
+}*/
 void play_game()
 {
-	bfsdelay = 0;
-	int a = clock();
 	update_info();
 	Initial();
 	Demand();
-	YangYongXin();
+	YYX();
 	MoveToDes();
 	Heal();
-	delay = clock() - a;
-#if outputinfo
-	File();
-#endif
 }
-
-/*bool LookAround(XYPosition p)//Ç°½ø£¬ËÄÖÜ¿´
-{
-	Gotoxy(40, 41);
-	printf("warning\n");
-	wantlook = 1;
-	return MoveToDes(p, VOCATION_DATA[info.self.vocation].angle - 1.0);
-}
-bool LookAround()//²»Ç°½ø
-{
-	Gotoxy(40, 41);
-	printf("warning\n");
-	wantlook = 1;
-	return Move(0, VOCATION_DATA[info.self.vocation].angle - 1.0, NOMOVE);
-}
-int HearOthers()////Î´Íê³É
-{
-	for (int i = 0; i < info.sounds.size(); i++)
-	{
-		if (info.sounds[i].sender == -1 && info.sounds[i].delay > 0)//±ðÈË·¢³öµÄÉùÒô
-		{
-			return -1;
-		}
-		else if (info.sounds[i].sender != -1)//¶ÓÓÑµÄÎÞÏßµç
-		{
-			return 1;////RadioProcess();
-		}
-		else
-			return 0;
-	}
-}
-bool Stuck()
-{
-	static XYPosition p[4];
-	static STATUS s[4];
-	if (frame == 0)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			p[i].x = p[i].y = 0;
-			s[i] = RELAX;
-		}
-	}
-	s[3] = s[2];
-	s[2] = s[1];
-	s[1] = s[0];
-	s[0] = info.self.status;
-	p[3] = p[2];
-	p[2] = p[1];
-	p[1] = p[0];
-	p[0] = info.self.xy_pos;
-	if (frame <= 5)
-		return 0;
-	if (Dist(destination, info.self.xy_pos) <= 1 || Dist(thing, info.self.xy_pos) <= 1)
-		return 0;
-	for (int i = 0; i < 4; i++)
-	{
-		if (s[i] == MOVING || s[i] == MOVING_SHOOTING)
-		{
-			;
-		}
-		else
-			return 0;
-	}
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
-			if (i != j && Dist(p[i], p[j]) > 1.5)
-				return 0;
-	return 1;
-}
-void DeStuck()
-{
-	isStuck = Stuck();
-	if (isStuck)
-	{
-		boundLimit -= 20;
-		if (boundLimit <= 30)
-			boundLimit = 30;
-		if (!path.empty())
-			Move(AngleLimit(-1 * XYToPolar(path[0]).angle), AngleLimit(-1 * XYToPolar(path[0]).angle));
-		else
-			Move(180, 180);
-	}
-	else
-		boundLimit = 150;
-}
-bool ObstacleDetect(int r)//¿ÉÓÅ»¯ÎªÇ°½ø·½Ïò
-{
-	int flag = 0;
-	int xmin = LimitBound(DoubleToInt(info.self.xy_pos.x) - r), xmax = LimitBound(DoubleToInt(info.self.xy_pos.x) + r);
-	int ymin = LimitBound(DoubleToInt(info.self.xy_pos.y) - r), ymax = LimitBound(DoubleToInt(info.self.xy_pos.y) + r);
-	for (int j = ymin; j <= ymax; j++)
-		for (int i = xmin; i < xmax; i++)
-			if (landform[i][j] > 2)
-				flag++;
-	return (flag != 0);
-}
-void File()
-{
-	FILE *fp;
-	char round[100];
-	int landfile[1000][1000];
-	sprintf(round, "a%d.txt", frame);
-	fp = fopen(round, "w");
-	memcpy(landfile, landform, sizeof(landfile));
-	for (int i = 0; i < path.size(); i++)
-		landfile[DoubleToInt(path[i].x)][DoubleToInt(path[i].y)] = 8;
-	for (int j = 1000 - 1; j >= 0; j--)
-	{
-		for (int i = 0; i < 1000; i++)
-		{
-			fprintf(fp, "%d", landfile[i][j]);
-		}
-		fprintf(fp, "\n");
-	}
-	fclose(fp);
-}*/
-/*
-#include <windows.h>
-void Gotoxy(int x, int y)
-{
-	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-	HANDLE hConsoleOut;
-	hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	GetConsoleScreenBufferInfo(hConsoleOut, &csbiInfo);
-	csbiInfo.dwCursorPosition.X = 2 * x;
-	csbiInfo.dwCursorPosition.Y = y;
-	SetConsoleCursorPosition(hConsoleOut, csbiInfo.dwCursorPosition);
-}
-void Print()
-{
-	if (info.self.vocation != MEDIC)
-		return;
-	static int offset = 48;
-	int y = 0;
-	if (frame % 160 == 0)
-		system("cls");
-	Gotoxy(offset, y++);
-	switch (info.self.vocation)
-	{
-	case MEDIC:
-		printf("Medic ");
-		break;
-	case HACK:
-		printf("Hack  ");
-		break;
-	case SIGNALMAN:
-		printf("Signal");
-		break;
-	case SNIPER:
-		printf("Sniper");
-		break;
-	}
-	printf(":  %5d,  %3d,  %2d,  %2d,  %3d", frame, delay, seeEnemy, collectGarbage, path.size());
-	Gotoxy(offset, y++);
-	printf("Heal:%6.1f /%6.1f  Pos :%6.1f ,%6.1f", info.self.hp, info.self.hp_limit, info.self.xy_pos.x, info.self.xy_pos.y);
-	Gotoxy(offset, y++);
-	printf("Cen :%6.1f ,%6.1f  Next:%6.1f ,%6.1f", info.poison.current_center.x, info.poison.current_center.y, info.poison.next_center.x, info.poison.next_center.y);
-	Gotoxy(offset, y++);
-	printf("Rad :%6.1f ,%6.1f  Rest:%6d ", info.poison.current_radius, info.poison.next_radius, info.poison.rest_frames);
-	if (info.poison.move_flag == 3)
-		printf("to point ");
-	if (info.poison.move_flag == 2)
-		printf("to move  ");
-	else if (info.poison.move_flag == 1)
-		printf("to finish");
-	else
-		printf("to start ");
-	Gotoxy(offset, y++);
-	printf("Ang :%6.1f ,%6.1f  Stat: %d  ", info.self.move_angle, info.self.view_angle, inside);
-	switch (info.self.status)
-	{
-	case RELAX:
-		printf("Relax"); break;
-	case ON_PLANE:
-		printf("Fly  "); break;
-	case JUMPING:
-		printf("Jump "); break;
-	case MOVING:
-		printf("Move "); break;
-	case SHOOTING:
-		printf("Shoot"); break;
-	case MOVING_SHOOTING:
-		printf("Mv&St"); break;
-	case DEAD:
-		printf("Dying"); break;
-	case REAL_DEAD:
-		printf("Dead "); break;
-	}
-	Gotoxy(offset, y++);
-	printf("ToCr:%6.1f ,%6.1f  Want:", Dist(info.self.xy_pos, info.poison.current_center) - info.poison.current_radius, Dist(info.self.xy_pos, info.poison.next_center) - info.poison.next_radius);
-	if (wantMove)
-		printf("Move  ");
-	else
-		printf("      ");
-	if (wantShoot)
-		printf("Shoot ");
-	else
-		printf("      ");
-	Gotoxy(offset, y++);
-	printf("Dest:%6.1f ,%6.1f  Dist:%6.1f", destination.x, destination.y, Dist(info.self.xy_pos, destination));
-	Gotoxy(offset, y++);
-	printf("Shrk:%6.1f ,%6.1f  ", shrink.x, shrink.y);
-	if (path.size() > 0)
-		printf("Pace:%6.3lf ,%6.3lf", path[0].x - info.self.xy_pos.x, path[0].y - info.self.xy_pos.y);
-	else
-		printf("            ");
-	for (int i = 1; i < ITEM_SZ; i++)//Demand
-	{
-		if ((i - 1) % 5 == 0)
-			Gotoxy(offset, y++);
-		if (demandPercent[i] > 0)
-			printf("%3d%%   ", demandPercent[i]);
-		else
-			printf("---%%   ");
-	}
-	int xx = DoubleToInt(info.self.xy_pos.x), yy = DoubleToInt(info.self.xy_pos.y), r = 1;
-	int xmin = LimitBound(xx - r), xmax = LimitBound(xx + r), ymin = LimitBound(yy - r), ymax = LimitBound(yy + r);
-	for (int j = ymax; j >= ymin; j--)
-	{
-		Gotoxy(offset + 17, y - 4 + j - ymin);
-		for (int i = xmin; i <= xmax; i++)
-			printf("%d  ", landform[i][j]);
-	}
-	Gotoxy(0, 0);
-}
-*/

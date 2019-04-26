@@ -62,6 +62,44 @@ void play_game()
 	{
 		std::cout << "no others" << std::endl;
 		//没看见东西
+		//吃药
+		if (info.self.attack_cd == 0 && info.self.hp < 60)
+		{
+			bool GetBondage = false, GetFirst_Aid_Case = false;
+			for (int i = 0; i < info.self.bag.size(); ++i)
+			{
+				if (info.self.bag.at(i).type == BONDAGE)
+				{
+					GetBondage = true;
+				}
+				if (info.self.bag.at(i).type == FIRST_AID_CASE)
+				{
+					GetFirst_Aid_Case = true;
+				}
+				if (GetBondage == true && GetFirst_Aid_Case == true)
+				{
+					break;
+				}
+			}
+			if (info.self.hp < 20)
+			{
+				if (GetFirst_Aid_Case == true)
+				{
+					shoot(FIRST_AID_CASE, 0, info.player_ID);
+				}
+				if (GetBondage == true)
+				{
+					shoot(BONDAGE, 0, info.player_ID);
+				}
+			}
+			else if (info.self.hp < 60)
+			{
+				if (GetBondage == true)
+				{
+					shoot(BONDAGE, 0, info.player_ID);
+				}
+			}
+		}
 		if (info.items.empty())
 		{
 			if (info.self.status != MOVING)

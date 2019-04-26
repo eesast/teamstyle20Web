@@ -20,7 +20,7 @@ extern PlayerInfo info;
 #define self_radius  (VOCATION_DATA[info.self.vocation].radius+0.001+0.2*VOCATION_DATA[info.self.vocation].move)
 #define selfx info.self.xy_pos.x
 #define selfy info.self.xy_pos.y
-
+#define allowed_pick_distance (18-frame/100)
 std::ofstream out;
 
 
@@ -108,59 +108,65 @@ inline bool isstick()
 XYPosition Convertion(PolarPosition polar_pos)
 {
 	XYPosition xy_pos;
-	xy_pos.x = info.self.xy_pos.x + polar_pos.distance*cos((polar_pos.angle + info.self.view_angle)/180*PI);
-	xy_pos.y = info.self.xy_pos.y + polar_pos.distance*sin((polar_pos.angle + info.self.view_angle)/180*PI);
+	xy_pos.x = selfx + polar_pos.distance*cos((polar_pos.angle + info.self.view_angle) / 180 * PI);
+	xy_pos.y = selfy + polar_pos.distance*sin((polar_pos.angle + info.self.view_angle) / 180 * PI);
 	return xy_pos;
 }
 
+PolarPosition Convertion(XYPosition xy_pos)
+{
+	PolarPosition polar_pos;
+	polar_pos.distance = distance(info.self.xy_pos, xy_pos);
+	if (xy_pos.x - selfx > 0)polar_pos.angle = mod360(atan2(xy_pos.y - selfy, xy_pos.x - selfx) / PI * 180);
+	else polar_pos.angle = mod360(atan2(xy_pos.y - selfy, xy_pos.x - selfx) / PI * 180 + 180);
+	return polar_pos;
+}
 void update_target()//finished
 {
 	move_target = Convertion(closest_item.polar_pos);
-	if (frame >= 200)
+	if (frame > 200)
 	{
-		if (closest_item.polar_pos.distance > 15)
+		if (closest_item.item_ID == -1 || closest_item.polar_pos.distance > allowed_pick_distance)
 		{
-			if ( inpoison()||info.poison.current_radius < 0.703)  move_target = info.poison.current_center;
-			else move_target= info.poison.next_center;
+			if (inpoison() || info.poison.current_radius < 0.703)  move_target = info.poison.current_center;
+			else move_target = info.poison.next_center;
 		}
 	}
-	if(move_target.y - selfy>0)move_angle = mod360(atan((move_target.y - selfy) / (move_target.x - selfx))*180/PI);
-	else move_angle = mod360(atan((move_target.y - selfy) / (move_target.x - selfx)) * 180 / PI + 180);
+	if (closest_item.item_ID == -1 && frame <= 200)move_target = info.poison.next_center;
+	move_angle = Convertion(move_target).angle;
 }
 
-Item find_closest_item()
+void find_closest_item()
 {
-	Item closest_item;
-	closest_item.polar_pos.distance = 100000;
-	if (frame < 200)
+	out << "item list\n";
+	for (register int i = 0; i < info.items.size(); i++)out << info.items[i].type << ' ' << info.items[i].polar_pos.distance << ' ' << info.items[i].polar_pos.angle << std::endl;
+	closest_item.polar_pos.distance = 0x3f3f3f3f;
+	closest_item.item_ID = -1;
+	if (frame <= 200)
 	{
-		for (int i = 0; i < info.items.size(); ++i)
+		if (!info.items.empty())
 		{
-			if (info.items[i].polar_pos.distance < closest_item.polar_pos.distance)
-			{
-				closest_item = info.items[i];
-			}
+			closest_item = info.items[0];
+			return;
 		}
 	}
 	else
 	{
 		for (int i = 0; i < info.items.size(); ++i)
 		{
-			double x1 = info.items[i].polar_pos.distance - closest_item.polar_pos.distance;
-			double x2 = info.items[i].polar_pos.distance - 15.000;
 			double angle = fabs(info.self.move_angle - info.items[i].polar_pos.angle);
-			if (x1 < 0 && x2 < 0 && angle < 60)
+			if (angle < 60)
 			{
 				closest_item = info.items[i];
+				return;
 			}
 		}
 	}
-	return closest_item;	
 }
 
 void init()
 {
-	closest_item = find_closest_item();
+	find_closest_item();
 
 }
 
@@ -849,7 +855,7 @@ bool if_to_use_drug()
 	else if (info.self.hp > 42)
 	{
 		int flag = 0;
-		for (int i = 0;i < info.self.bag.size();i++)
+		for (int i = 0; i < info.self.bag.size(); i++)
 		{
 			if (ITEM_DATA[info.self.bag[i].type].number == 15)
 				drug_to_use = info.self.bag[i];
@@ -860,13 +866,13 @@ bool if_to_use_drug()
 	else
 	{
 		int flag = 0;
-		for (int i = 0;i < info.self.bag.size();i++)
+		for (int i = 0; i < info.self.bag.size(); i++)
 		{
 			if (ITEM_DATA[info.self.bag[i].type].number == 15)
 				drug_to_use = info.self.bag[i];
 			flag++;
 		}
-		for (int i = 0;i < info.self.bag.size();i++)
+		for (int i = 0; i < info.self.bag.size(); i++)
 		{
 			if (ITEM_DATA[info.self.bag[i].type].number == 16)
 				drug_to_use = info.self.bag[i];
@@ -887,7 +893,7 @@ ACTION judge_action()
 	{
 		return USE_DRUG;
 	}
-	if (closest_item.polar_pos.distance < 1 - mindisplacement)
+	if (closest_item.item_ID != -1 && closest_item.polar_pos.distance < 1 - mindisplacement)
 	{
 		return PICK_UP;
 	}
@@ -997,7 +1003,7 @@ void my_attack()
 			{
 				for (int j = 0; j < info.self.bag.size(); j++)
 				{
-					if (ITEM_DATA[info.self.bag[j].type].number == i && info.self.bag[j].durability > 0)
+					if (ITEM_DATA[info.self.bag[j].type].number == weapon_order[i] && info.self.bag[j].durability > 0)
 					{
 						weapon = info.self.bag[j].type;
 						flag = 1;
@@ -1019,7 +1025,8 @@ void my_attack()
 				position = Convertion(closest_enemy.polar_pos);
 				nextposition = next_position(position, closest_enemy.move_angle, 0.2);
 				shoot_angle = work_out_angle(nextposition);
-				shoot(weapon, shoot_angle);
+				if (info.self.attack_cd == 0)
+					shoot(weapon, shoot_angle);
 			}
 		}
 	}
@@ -1082,7 +1089,7 @@ void my_attack()
 					{
 						for (int j = 0; j < info.self.bag.size(); j++)
 						{
-							if (ITEM_DATA[info.self.bag[j].type].number == i && info.self.bag[j].durability > 0)
+							if (ITEM_DATA[info.self.bag[j].type].number == weapon_order[i] && info.self.bag[j].durability > 0)
 							{
 								weapon = info.self.bag[j].type;
 								flag = 1;
@@ -1103,7 +1110,8 @@ void my_attack()
 						position = Convertion(closest_enemy.polar_pos);
 						nextposition = next_position(position, closest_enemy.move_angle, 0.2);
 						shoot_angle = work_out_angle(nextposition);
-						shoot(weapon, shoot_angle);
+						if (info.self.attack_cd == 0)
+							shoot(weapon, shoot_angle);
 					}
 				}
 				if (enemy_fighting_mode == 2)
@@ -1113,7 +1121,7 @@ void my_attack()
 					{
 						for (int j = 0; j < info.self.bag.size(); j++)
 						{
-							if (ITEM_DATA[info.self.bag[j].type].number == i && info.self.bag[j].durability > 0)
+							if (ITEM_DATA[info.self.bag[j].type].number == weapon_order[i] && info.self.bag[j].durability > 0)
 							{
 								weapon = info.self.bag[j].type;
 								flag = 1;
@@ -1129,7 +1137,8 @@ void my_attack()
 					}
 					else
 					{
-						shoot(weapon, closest_enemy.polar_pos.angle);
+						if (info.self.attack_cd == 0)
+							shoot(weapon, closest_enemy.polar_pos.angle);
 					}
 				}
 
@@ -1162,7 +1171,8 @@ void my_attack()
 					position = Convertion(closest_enemy.polar_pos);
 					nextposition = next_position(position, closest_enemy.move_angle, 0.2);
 					shoot_angle = work_out_angle(nextposition);
-					shoot(weapon, shoot_angle);
+					if (info.self.attack_cd == 0)
+						shoot(weapon, shoot_angle);
 				}
 
 
@@ -1185,24 +1195,23 @@ void my_attack()
 void play_game()
 {
 	update_info();
-	out.open("E:\\test2.txt", std::ios_base::app);
+	out.open("test.txt", std::ios_base::app);
 	out << "player:frame" << frame << "\nhp:" << info.self.hp << std::endl;
-	out << "XYposition: " << info.self.xy_pos.x << ' ' << info.self.xy_pos.y << std::endl;
+	out << "XYposition: " << selfx << ' ' << selfy << std::endl;
 	out << "Poisoninfo " << info.poison.current_center.x << ' ' << info.poison.current_center.y << ' ' << info.poison.current_radius << std::endl;
 	ip = noimpede;
 	init();
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
-		XYPosition landing_point = { 700,300 };
-		parachute(SNIPER, landing_point);
+		XYPosition landing_point = { 840,380 };
+		parachute(HACK, landing_point);
 		out.close();
 		my_last_position = info.self.xy_pos;
 		return;
 	}
 	else
 	{
-		out << VOCATION_DATA[info.self.vocation].radius << std::endl;
 		srand(time(nullptr) + info.player_ID*frame);
 	}
 	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
@@ -1219,8 +1228,8 @@ void play_game()
 		MyMove();
 		my_attack();
 		break;
-	case USE_DRUG:use_drug();break;
-	case PICK_UP:my_pick();break;
+	case USE_DRUG:use_drug(); break;
+	case PICK_UP:my_pick(); break;
 	}
 	my_last_position = info.self.xy_pos;
 	out << std::endl;
