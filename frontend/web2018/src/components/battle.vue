@@ -555,9 +555,14 @@ export default {
         start_fight()  //发起一场战斗
         {
           //关闭对战
-          this.$message.error('对战截止时间:2019/4/25 12:00');
-          return ;
-
+          //this.$message.error('对战截止时间:2019/4/25 12:00');
+          //return ;
+		  var nowdate=new Date();
+          if(nowdate>this.finaldate)
+          {
+            this.$message.error('对战已截止!');
+            return ;
+          }
           this.dialogTableVisible=false;//隐藏对话框
           //console.log(this.checkList);//勾选的队伍
           if(this.valid!=15)
