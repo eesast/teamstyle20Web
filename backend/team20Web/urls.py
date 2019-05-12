@@ -30,6 +30,8 @@ urlpatterns = [
     path('api/users/<int:user_id>', views.modifyUser),
     path('api/teams', views.teams),
     path('api/teams/', views.teams),
+    path('api/teams_cached', views.teams_cached),
+    path('api/teams_cached/', views.teams_cached),
     path('api/teams/<int:teamid>', views.modifyTeamByID),
     path('api/teams/<int:teamid>/members', views.modifyTeamMembersByID),
     path('api/teams/<int:teamid>/members/<int:userid>', views.personalTeamActions),

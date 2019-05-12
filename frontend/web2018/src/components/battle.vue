@@ -53,7 +53,7 @@
             </el-upload>
             <!-- <el-input type="file" @onchange="jsReadFiles(this.files)"/> -->
             <h5><i class="el-icon-info"></i>系统仅保留最后一次上传的结果</h5>
-            <h5><span style="color:red"><i class="el-icon-info"></i>代码提交截止日期:4/25 12:00</span></h5>
+            <h5><span style="color:red"><i class="el-icon-info"></i>代码与对战截止日期:{{finaldate.toString()}}</span></h5>
             <br/>
             <h4>发起对战</h4>
             <h5><i class="el-icon-info"></i>仅可以选择代码<span style="color:red">有效</span>的队伍进行对战</h5>
@@ -142,7 +142,6 @@
 </template>
 
 <script>
-
 function getCookie(cname) {
   var name = cname + "=";
   var ca = document.cookie.split(";");
@@ -555,9 +554,14 @@ export default {
         start_fight()  //发起一场战斗
         {
           //关闭对战
-          this.$message.error('对战截止时间:2019/4/25 12:00');
-          return ;
-
+          //this.$message.error('对战截止时间:2019/4/25 12:00');
+          //return ;
+		  var nowdate=new Date();
+          if(nowdate>this.finaldate)
+          {
+            this.$message.error('对战已截止!');
+            return ;
+          }
           this.dialogTableVisible=false;//隐藏对话框
           //console.log(this.checkList);//勾选的队伍
           if(this.valid!=15)

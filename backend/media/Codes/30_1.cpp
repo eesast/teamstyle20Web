@@ -1,11 +1,10 @@
 #include "api.h"
 #include "base.h"
-// #include "enum_name.h"
-// #include "move.h"
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
+#include <cmath>
 #include <fstream>
+#include <algorithm>
 
 using namespace ts20;
 
@@ -31,7 +30,7 @@ inline PolarPosition XY_to_polar(const XYPosition dst)
 	double angle = atan2(d_y, d_x) * 180 / acos(-1) - info.self.view_angle; // -540 ~ 180
 	while (angle < 0)
 		angle += 360;
-	return PolarPosition{ hypot(d_x,d_y), angle };
+	return PolarPosition{ hypot(d_x, d_y), angle };
 }
 
 void walk(PolarPosition polar)
@@ -260,10 +259,9 @@ const char* AREA_N[] =
 
 void play_game()
 {
-	/* Your code in this function */
-	/* sample AI */
 	static bool see_item = false;
 	static bool attacking = false;
+	bool healing = true;
 
 	update_info();
 
@@ -278,23 +276,38 @@ void play_game()
 		fout << ITEM_N[a.type] << ',';
 	fout << ']' << std::endl;
 
-	//if (info.self.bag.size() > 1)
-	//	fout << "pick succeed" << std::endl;
 	if (frame == 0)
 	{
 		srand(time(nullptr) + teammates[0]);
-		XYPosition landing_point = { 150 + rand() % 100, 150 + rand() % 100 };
+		XYPosition landing_point = { 450.0 + rand() % 100, 250.0 + rand() % 100 };
 		parachute(HACK, landing_point);
 		return;
 	}
 	else
 	{
-		srand(time(nullptr) + info.player_ID*frame);
+		srand(time(nullptr) + info.player_ID * frame);
 	}
 	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
 	{
 		fout << "jumping" << std::endl;
 		return;
+	}
+	if (info.self.hp < 30)
+	{
+		bool has_bondage = false, has_first_aid = false;
+		for (auto &_item : info.self.bag)
+		{
+			if (_item.type == BONDAGE)
+				has_bondage = true;
+			if (_item.type == FIRST_AID_CASE)
+				has_first_aid = true;
+		}
+		if (has_first_aid)
+			shoot(FIRST_AID_CASE, 0.0);
+		else if (has_bondage)
+			shoot(BONDAGE, 0.0);
+		else
+			healing = false;
 	}
 	if (!attacking && info.poison.current_radius > 0 && hypot(info.self.xy_pos.x - info.poison.current_center.x, info.self.xy_pos.y - info.poison.current_center.y) > info.poison.current_radius - 100)
 	{
@@ -329,7 +342,6 @@ void play_game()
 				closest_item.polar_pos.distance = 100000;
 			for (int i = 0; i < info.items.size(); ++i)
 			{
-				//if ((info.self.vocation == HACK || info.items[i].type != CODE_CASE) && info.items[i].polar_pos.distance < closest_item.polar_pos.distance)// XY_to_polar(closest_item_pos).distance)
 				if ((info.self.vocation == HACK || info.items[i].type != CODE_CASE) && info.items[i].polar_pos.distance < XY_to_polar(closest_item_pos).distance)
 				{
 					closest_item = info.items[i];
@@ -353,7 +365,6 @@ void play_game()
 			}
 			else if (info.self.status != MOVING)
 			{
-				//walk(XY_to_polar(closest_item_pos));
 				walk(closest_item.polar_pos);
 			}
 		}
@@ -399,20 +410,10 @@ void play_game()
 			fout << ITEM_N[weapon] << std::endl;
 			if (closest_enemy.polar_pos.distance > ITEM_DATA[weapon].range)
 			{
-				/*double r = closest_enemy.polar_pos.angle + static_cast<double>(rand()) / 65536 * 30 - 15;
-				double x1 = info.self.xy_pos.x - cur_pos.x, y1 = info.self.xy_pos.y - cur_pos.y;
-				if (x1 * x1 + y1 * y1 <= 0.2)
-					r += (rand() % 2 ? -1 : 1) * 60;
-				if (r < 0)
-					r += 360;
-				else if (r >= 360)
-					r -= 360;
-				move(r, closest_enemy.polar_pos.angle);*/
 				walk(closest_enemy.polar_pos);
 			}
-			else
+			else if (!healing)
 			{
-				// fout << "****" << ITEM_N[info.self.bag[i].type] << "****" << info.self.bag[i].durability << std::endl;
 				shoot(weapon, closest_enemy.polar_pos.angle);
 				attacking = true;
 			}
@@ -439,7 +440,6 @@ void play_game()
 					closest_item.polar_pos.distance = 100000;
 				for (int i = 0; i < info.items.size(); ++i)
 				{
-					//if ((info.self.vocation == HACK || info.items[i].type != CODE_CASE) && info.items[i].polar_pos.distance < closest_item.polar_pos.distance) //closest_item.polar_pos.distance)
 					if ((info.self.vocation == HACK || info.items[i].type != CODE_CASE) && info.items[i].polar_pos.distance < XY_to_polar(closest_item_pos).distance)
 					{
 						closest_item = info.items[i];
@@ -463,158 +463,10 @@ void play_game()
 				}
 				else if (info.self.status != MOVING)
 				{
-					//walk(XY_to_polar(closest_item_pos));
 					walk(closest_item.polar_pos);
 				}
-				//if (closest_item.polar_pos.distance < 1)
-				//{
-				//	pickup(closest_item.item_ID);
-				//	fout << "try pickup" << closest_item.item_ID << ' ' << ITEM_N[closest_item.type] << std::endl;
-				//}
-				//else if (info.self.status != MOVING)
-				//{
-				//	/*double r = closest_item.polar_pos.angle + static_cast<double>(rand()) / 65536 * 30 - 15;
-				//	double x1 = info.self.xy_pos.x - cur_pos.x, y1 = info.self.xy_pos.y - cur_pos.y;
-				//	if (x1 * x1 + y1 * y1 <= 0.2)
-				//		r += (rand() % 2 ? -1 : 1) * 60;
-				//	if (r < 0)
-				//		r += 360;
-				//	else if (r >= 360)
-				//		r -= 360;
-				//	move(r, closest_item.polar_pos.angle);
-				//	fout << "move" << closest_item.polar_pos.angle << std::endl;*/
-				//	walk(XY_to_polar(closest_item_pos));
-				//}
 			}
 		}
 	}
 	return;
 }
-
-//#include "api.h"
-//#include "base.h"
-//#include <cstdlib>
-//#include <ctime>
-//#include <algorithm>
-//#include <fstream>
-//
-//using namespace ts20;
-//
-//extern XYPosition start_pos, over_pos;
-//extern std::vector<int> teammates;
-//extern int frame;
-//extern PlayerInfo info;
-//
-//void play_game()
-//{
-//	/* Your code in this function */
-//	/* sample AI */
-//	update_info();
-//	std::ofstream fout;
-//	const std::string out_name = std::to_string(info.player_ID) + std::string(".txt");
-//	fout.open(out_name, std::ios::app);
-//	fout << "player:frame" << frame << "\nhp:" << info.self.hp << std::endl;
-//	fout << "positon" << info.self.xy_pos.x << ' ' << info.self.xy_pos.y << std::endl;
-//	if (info.self.bag.size() > 1)
-//		fout << "pick succeed" << std::endl;
-//	if (frame == 0)
-//	{
-//		srand(time(nullptr) + teammates[0]);
-//		XYPosition landing_point = { 150 + rand() % 100, 150 + rand() % 100 };
-//		parachute(HACK, landing_point);
-//		return;
-//	}
-//	else
-//	{
-//		srand(time(nullptr) + info.player_ID*frame);
-//	}
-//	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
-//	{
-//		fout << "jumping" << std::endl;
-//		return;
-//	}
-//	if (info.others.empty())
-//	{
-//		fout << "no others" << std::endl;
-//		if (info.items.empty())
-//		{
-//			//see nothing
-//			if (info.self.status != MOVING)
-//			{
-//				double move_angle = 0;
-//				double view_angle = move_angle;
-//				move(move_angle, view_angle);
-//				fout << "move" << move_angle << std::endl;
-//			}
-//		}
-//		else
-//		{
-//			Item closest_item;
-//			closest_item.polar_pos.distance = 100000;
-//			for (int i = 0; i < info.items.size(); ++i)
-//			{
-//				if (info.items[i].polar_pos.distance < closest_item.polar_pos.distance)
-//				{
-//					closest_item = info.items[i];
-//				}
-//			}
-//			fout << "status" << info.self.status << std::endl;
-//			fout << "**closest item angle" << closest_item.polar_pos.angle << "distance" << closest_item.polar_pos.distance << "**" << std::endl;
-//			if (closest_item.polar_pos.distance < 1)
-//			{
-//				pickup(closest_item.item_ID);
-//				fout << "try pickup" << closest_item.item_ID << std::endl;
-//			}
-//			else if (info.self.status != MOVING)
-//			{
-//				move(closest_item.polar_pos.angle, closest_item.polar_pos.angle);
-//				fout << "move" << closest_item.polar_pos.angle << std::endl;
-//			}
-//		}
-//	}
-//	else
-//	{
-//		bool has_enemy = false;
-//		OtherInfo closest_enemy;
-//		closest_enemy.polar_pos.distance = 100000;
-//		//check teammate
-//		for (int i = 0; i < info.others.size(); ++i)
-//		{
-//			bool is_friend = false;
-//			for (int teammate = 0; teammate < teammates.size(); ++teammate)
-//			{
-//				if (info.others[i].player_ID == teammates[teammate])
-//				{
-//					is_friend = true;
-//					break;
-//				}
-//			}
-//			if (!is_friend && info.others[i].polar_pos.distance < closest_enemy.polar_pos.distance)
-//			{
-//				closest_enemy = info.others[i];
-//				has_enemy = true;
-//			}
-//		}
-//		if (has_enemy)
-//		{
-//			ITEM weapon = FIST;
-//			for (int i = 0; i < info.self.bag.size(); ++i)
-//			{
-//				if (ITEM_DATA[info.self.bag[i].type].type == WEAPON && info.self.bag[i].durability > 0)
-//				{
-//					weapon = info.self.bag[i].type;
-//					break;
-//				}
-//			}
-//			if (closest_enemy.polar_pos.distance > ITEM_DATA[weapon].range)
-//			{
-//				move(closest_enemy.polar_pos.angle, closest_enemy.polar_pos.angle);
-//			}
-//			else
-//			{
-//				shoot(weapon, closest_enemy.polar_pos.angle);
-//			}
-//		}
-//	}
-//	return;
-// }
