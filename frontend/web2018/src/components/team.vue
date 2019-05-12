@@ -53,7 +53,9 @@
                     <tr class='table_th2'>
                         <th ><img src="../../static/img/edit-square.svg" class="svg"></img>队伍简介</th>
                         <td colspan="1">
-                          <el-input type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" :readonly="isediting"></el-input>
+                          <el-input v-if="isediting==true" type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" :readonly="isediting"></el-input>
+                          <el-input v-if="isediting==false" type="textarea" :rows="6" resize="none"  v-model="detailData.description" autocomplete="off" ></el-input>
+        
                         </td>
                         <td v-if="iscaptain">
                           <el-button v-if="isediting==true" size="small" type="primary" icon="el-icon-edit" style="float:right;top:5px;position:relative;" @click="edit_description()">修改简介</el-button>

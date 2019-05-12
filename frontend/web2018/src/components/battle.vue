@@ -222,7 +222,7 @@ export default {
     },
     created: function()
     {
-      this.finaldate=new Date("2019-04-25T12:00:00+08:00");
+      this.finaldate=new Date("2019-05-16T12:00:00+08:00");
       fetch('/api/global',{
         method:'GET',
         headers:{
