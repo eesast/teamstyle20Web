@@ -210,14 +210,14 @@ export default {
       },
       formLabelWidth: "100px", //对话框宽度
       //若当前用户已有队伍，则其队伍信息
-      detailData: {},
-      // {
-      //   teamname: "划水大法好",
-      //   captain: "萌新0号",
-      //   invitecode: "1z2x3c4v",
-      //   description: "我们最爱划水",
-      //   members: ["好人", "萌新"]
-      // },
+      detailData:
+      {
+        teamname: "划水大法好",
+        captain: "萌新0号",
+        invitecode: "1z2x3c4v",
+        description: "我们最爱划水",
+        members: ["好人", "萌新"]
+      },
       currentPage: 1, //初始页
       pagesize: 5, //    每页的数据
       //加入队伍中所有队伍信息
