@@ -14,7 +14,7 @@ AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
 data_path = root_path+'/media/data'
-image_name = 'ts20:v1.17'                        # NOTE:记得修改
+image_name = 'ts20:v1.28'                        # NOTE:记得修改
 room_lim=2  # 对战房间数，从1标号 
 
 chars = string.ascii_letters + string.digits
@@ -130,8 +130,8 @@ def add_battle(request):
         x_access_token = views.is_json(request.META['HTTP_X_ACCESS_TOKEN'])
         user_info = views.get_user_info(x_access_token["token"])
         team = Team.objects.get(id=initiator_id)
-        if (not team.memberInTeam(user_info["id"])) or (initiator_id not in team_engaged):
-            return HttpResponse('401 Unauthorized: You have no permission to do this.', status=401)
+#if (not team.memberInTeam(user_info["id"])): # or (initiator_id not in team_engaged): NOTE
+#           return HttpResponse('401 Unauthorized: You have no permission to do this.', status=401)
     except jwt.PyJWTError:
         return HttpResponse('401 Unauthorized: Token invalid or expired', status=401)
     except json.JSONDecodeError:
