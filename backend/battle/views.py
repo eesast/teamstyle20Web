@@ -14,8 +14,8 @@ AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
 data_path = root_path+'/media/data'
-image_name = 'ts20:v1.29'                        # NOTE:记得修改
-room_lim=2  # 对战房间数，从1标号 
+image_name = 'ts20:v1.30'                        # NOTE:记得修改
+room_lim=1  # 对战房间数，从1标号 
 
 chars = string.ascii_letters + string.digits
 
@@ -85,6 +85,73 @@ def debug_add_team(request):
     id=Team.objects.get(teamname=teamname).id
     return HttpResponse('Create successfully! teamname:%s, id:%d'%(teamname,id))
 
+final_list = [30,37,39,40,42,45,50,51,52,54,58,60,64,68,70,71]
+
+def start_finals():
+    room_size=len(Room.objects.all())
+    if(room_size!=0):
+        return HttpResponse('room_num is not zero')
+    team_engaged = []
+    for i in final_list:
+        team_engaged.append(i)
+    robot_num = 0
+    initiator_id = 30
+    status = 1
+        
+    battle = Battle.objects.create(team_engaged=json.dumps(team_engaged), robot_num=robot_num, status=status, initiator_id=initiator_id)
+    battle_id=battle.id # 对战ID
+    path = root_path+'/media/data/%d'%battle_id ;
+    os.makedirs(path)
+    d = {}
+    cnt = 0
+    for team_id in team_engaged:
+        team = Team.objects.get(id=team_id)
+        team_name = team.teamname
+        d[cnt]=team_id
+        for j in range(4):
+            shutil.copyfile(so_path+'/%d_%d.so'%(team.id,j),path+'/libAI_%d_%d.so'%(cnt,j))
+        cnt+=1
+        if team_id!=initiator_id: # 更改对战历史
+            tmp=json.loads(team.history_passive)
+            tmp.append(battle_id)
+            team.history_passive=json.dumps(tmp)
+        else:
+            tmp=json.loads(team.history_active)
+            tmp.append(battle_id)
+            team.history_active=json.dumps(tmp)
+        team.save()
+        
+    for i in range(robot_num):
+        #d[cnt]='__AI%d'%i # 与队伍命名不可冲突
+        d[cnt]=AI_IND+cnt ;
+        for j in range(4):
+            shutil.copyfile(AI_path,path+'/libAI_%d_%d.so'%(cnt,j))
+        cnt+=1
+    id_map = json.dumps(d)
+    battle.id_map=id_map
+    battle.save()
+    
+    random.seed()
+    room_id=get_room()
+    out_volume=root_path+'/media/data/%d'%battle_id # 卷路径
+    in_volume='/MyVolume'
+
+    battle.status=2
+    battle.start_time=datetime.datetime.now()
+    battle.save()
+    key=generate_key()
+    Room.objects.create(room_id=room_id, battle_id=battle_id, key=key)
+
+    client = docker.from_env()
+    client.containers.run(image_name, command='bash /ts20/bin/run.sh %s %d'%(key,battle_id) ,tty=True, stdin_open=True, remove=True, detach=True, network_mode='host', volumes={out_volume : {'bind': in_volume}})
+    return HttpResponse('Successful!')
+        
+def start_finals_trig(request):
+    a=len(Room.objects.all())
+    if a>=1:
+        return HttpResponse('Running!')
+    return start_finals()
+
 def run_battle():
     ''' 检查队列是否为空，不为空则进行一次对战 '''
     random.seed()
@@ -111,6 +178,11 @@ def run_battle():
 def add_battle(request):
     ''' 用于添加对战 '''
     # TODO:改成POST?
+
+    # NOTE for finals
+    return HttpResponse('Final!', status=406)
+    # end for finals
+
     if request.method!='GET':
         return HttpResponse('Not GET!', status=406)
     # 读取request，检查合法性，并且存入Battle数据库
@@ -302,7 +374,8 @@ def end_battle(request):
 
     battle.save()
     update_rank()
-    run_battle()
+#run_battle() NOTE  for finals
+    start_finals()
     return HttpResponse('End battle successfully!')
 
 def compile(request):

@@ -5,6 +5,7 @@ urlpatterns = [
     path('add', views.add_battle),
     path('end', views.end_battle),
     path('compile', views.compile),  #暂时写在battle里面
+    path('start_finals', views.start_finals_trig),
     path('debug/view/queue', views.debug_view_queue),
     path('debug/view/team', views.debug_view_team),
     path('debug/view/battle', views.debug_view_battle),
