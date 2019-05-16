@@ -41,7 +41,7 @@ void play_game()
 	{
 		srand(time(nullptr) + teammates[0]);
 		XYPosition landing_point = {250+ rand()% 50 ,300 + rand()%50};
-		parachute(HACK, landing_point);
+		parachute(SIGNALMAN, landing_point);
 		return;
 	}
 	else

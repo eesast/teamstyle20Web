@@ -1,56 +1,99 @@
 #include "api.h"
 #include "base.h"
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
-#include <math.h>
+#include <cmath>
 #include <queue>
 #include <set>
-#define profession SNIPER
 #define it1 multiset < Node*, QueueCompare >::iterator
-
 using namespace ts20;
 using namespace std;
+struct Thing;
+struct ChangedItem;
+
+const double pi = 3.14159265358979;
+const double boundMax = 35.0, boundMin = 7.0;
+const double collectLimit = 37.0;
+const double predictEnemyPace = 0.2;
+const double poisonRatio[VOCATION_SZ][3][3] = {//Ö°Òµ,Ê±¼ä¶Î,µÚ¼¸¸ö²ÎÊý 
+{ {0.70, 0.30, 1.00}, {0.15, 0.85, 0.75}, {0.00, 0.95, 0.60} },  //medic
+{ {0.65, 0.35, 0.95}, {0.10, 0.90, 0.70}, {0.00, 0.90, 0.55} },  //signalman
+{ {0.60, 0.40, 0.90}, {0.05, 0.95, 0.65}, {0.00, 0.85, 0.50} },  //hack
+{ {0.50, 0.50, 0.82}, {0.00, 0.98, 0.57}, {0.00, 0.80, 0.42} } };//sniper
+const int valueEarlier[ITEM_SZ][VOCATION_SZ] = {//Ç¹½ÏÉÙ£¬¼Ó´óÇ¹±ÈÖØ
+	//	MEDIC    SIGALMAN	  HACK	   SNIPER			 NAME				   NUM
+		{0,         0,         0,        0 },			//FIST					0
+		{5,         5,		   5,		 5 },			//HAND_GUN				1
+		{25,		25,		   25,		 25},			//SUBMACHINE_GUN		2
+		{10,	    10,		   10,		 10},			//SEMI_AUTOMATIC_RILE	3
+		{16,		16,		   16,		 16},			//ASSAULT_RIFLE			4
+		{60,		60,		   60,		 60},			//MACHINE_GUN			5
+		{10,		10,		   10,		 14},			//SNIPER_RILFE			6
+		{10,		10,		   10,		 14},			//SNIPER_BARRETT		7
+		{0,			0,		   0,		 0 },			//TIGER_BILLOW_HAMMER	8
+		{6,		    6,		   6,		 6 },			//CROSSBOW				9
+
+		{5,			5,		   5,		 5 },			//VEST_1				10
+		{10,		10,		   10,		 10},			//VEST_2				11
+		{15,		15,		   15,		 15},			//VEST_3				12
+		{8,			8,		   8,		 8 },			//INSULATED_CLOTHING	13
+
+		{10,		10,		   10,		 10},			//MUFFLER				14
+		{6,		    6,		   6,		 6 },			//BONDAGE				15
+		{25,		25,		   25,		 25},			//FIRST_AID_CASE		16
+		{0,         0,         9,        0 },			//CODE_CASE				17
+		{0,         0,         0,        0 },			//SCOPE_2				18
+		{0,         0,         0,        0 },			//SCOPE_4				19
+		{0,         0,         0,        0 } };			//SCOPE_8				20
+const int valueLater[ITEM_SZ][VOCATION_SZ] = {
+	//	MEDIC    SIGALMAN	  HACK	   SNIPER			  NAME				   NUM
+		{0,         0,         0,        0 },			//FIST					0
+		{0,         0,		   0,		 0 },			//HAND_GUN				1
+		{10,		10,		   10,		 10},			//SUBMACHINE_GUN		2
+		{8,		    8,		   8,		 8 },			//SEMI_AUTOMATIC_RILE	3
+		{15,		15,		   15,		 15},			//ASSAULT_RIFLE			4
+		{30,		30,		   30,		 30},			//MACHINE_GUN			5
+		{6,			6,		   6,		 12},			//SNIPER_RILFE			6
+		{6,			6,		   6,		 12},			//SNIPER_BARRETT		7
+		{0,			0,		   0,		 0 },			//TIGER_BILLOW_HAMMER	8
+		{0,		    0,		   0,		 0 },			//CROSSBOW				9
+
+		{5,			5,		   5,		 5 },			//VEST_1				10
+		{10,		10,		   10,		 10},			//VEST_2				11
+		{15,		15,		   15,		 15},			//VEST_3				12
+		{8,			8,		   8,		 8 },			//INSULATED_CLOTHING	13
+
+		{10,		10,		   10,		 10},			//MUFFLER				14
+		{6,		    6,		   6,		 6 },			//BONDAGE				15
+		{25,		25,		   25,		 25},			//FIRST_AID_CASE		16
+		{0,         0,         9,        0 },			//CODE_CASE				17
+		{0,         0,         0,        0 },			//SCOPE_2				18
+		{0,         0,         0,        0 },			//SCOPE_4				19
+		{0,         0,         0,        0 } };			//SCOPE_8				20
+
 extern XYPosition start_pos, over_pos;//º½ÏßµÄÆðµãÓëÖÕµãµÄXY×ø±ê
-extern std::vector<int> teammates;//¶ÓÓÑID
+extern std::vector <int> teammates;//¶ÓÓÑID
 extern int frame;//µ±Ç°Ö¡Êý£¨´Ó0¿ªÊ¼¼ÆÊý£©
 extern PlayerInfo info;//ËùÓÐÐÅÏ¢µÄ¾ÛºÏ
-const double pi = 3.14159265358979;
-const double boundMax = 50.0;
-const double boundMin = 20.0;
-/*const int unitValue[ITEM_SZ] = {
-	1,//FIST = 0,
-	5,//HAND_GUN = 1,
-	16,//SUBMACHINE_GUN = 2,
-	14,//SEMI_AUTOMATIC_RILE = 3,
-	40,//ASSAULT_RIFLE = 4,
-	40,//MACHINE_GUN = 5,
-	300,//SNIPER_RILFE = 6,
-	960,//SNIPER_BARRETT = 7,
-	3,//TIGER_BILLOW_HAMMER = 8,
-	12,//CROSSBOW = 9,
-
-	20000,//VEST_1 = 10,
-	40000,//VEST_2 = 11,
-	60000,//VEST_3 = 12,
-	30000,//INSULATED_CLOTHING = 13,
-
-	10000,//MUFFLER = 14,
-	20000,//BONDAGE = 15,
-	45000,//FIRST_AID_CASE = 16,
-	-1,//CODE_CASE = 17,Ò½Éú²»ÒªÏä×Ó
-	5000,//SCOPE_2 = 18,
-	10000,//SCOPE_4 = 19,
-	30000//SCOPE_8 = 20,
-};*/
-vector <XYPosition> path;
-int landform[1000][1000];//landform[x][y]
+vector <ChangedItem> change;
+vector <XYPosition> path, itemPath;
+priority_queue <Thing, vector<Thing>> todo, todoPrint;
 enum STATUS nowStatus;//µ±Ç°×´Ì¬£¨ÓÅÓÚinfo.self.status£©
-int demandPercent[ITEM_SZ];//Demandº¯ÊýÍ¨ÐÅ
-XYPosition destination, shrink;//Ä¿µÄµØ£¨¶¾È¦ÖÐÐÄ£©
-int follow, delay;
+XYPosition destination, shrink, pace, enemyPace, myPace, grassPos;
+int landform[1000][1000], landformValue[1000][1000];
+int wCost[1000][1000], whCost[1000][1000];
+int demand[6];
+int durability[ITEM_SZ];
+int delay, lastMoveCd;
+int follow;//ÊÇ·ñ¶¢×ÅÎïÆ·
 int inside;//0£ºcurOut£¬nextOut¡£1£ºcurIn£¬nextOut¡£2£ºcurIn£¬nextIn
 int seeEnemy, collectGarbage;//Á½º¯Êý·µ»ØÖµ
-bool wantMove, wantShoot;
+int totalHurt, totalHeal;//µ±Ç°ÉíÉÏÎäÆ÷ÄÜÔì³ÉµÄ×ÜÉËº¦
+int parachutePos;//1234
+double nowViewAng;//µ±Ç°ÊÓ½Ç£¬ÏÈÓÚinfo.self.view_angle¸üÐÂ
+double idealMove, idealView;
+bool isStop;
 
 int LimitBound(int x)
 {
@@ -95,65 +138,129 @@ int DoubleToInt(double a)
 	else
 		return (int)((a * 2 - 1) / 2);
 }
-bool DoubleEqual(double a, double b)
+bool DoubleEqual(double a, double b, double limit = 1e-3)
 {
-	if (fabs(a - b) < 1e-3)
+	if (fabs(a - b) < limit)
 		return true;
 	else
 		return false;
 }
-PolarPosition XYToPolar(XYPosition finish)//×¢ÒâÓëÊÓ½ÇÓÐ¹Ø£¬¿ÉÓÅ»¯
+PolarPosition XYToPolar(XYPosition finish)//×¢ÒâÓëÊÓ½ÇÓÐ¹Ø
 {
 	PolarPosition a;
 	a.distance = sqrt((finish.x - info.self.xy_pos.x)*(finish.x - info.self.xy_pos.x) + (finish.y - info.self.xy_pos.y)*(finish.y - info.self.xy_pos.y));
-	/*if (fabs(finish.x - info.self.xy_pos.x) < 0.01)
-	{
-		if (fabs(finish.y - info.self.xy_pos.y) > 0.08)
-		{
-			if (finish.y - info.self.xy_pos.y > 0.0)
-				a.angle = 90.0;
-			else
-				a.angle = 270.0;
-			return a;
-		}
-	}
-	if (fabs(finish.y - info.self.xy_pos.y) < 0.01)
-	{
-		if (fabs(finish.x - info.self.xy_pos.x) > 0.08)
-		{
-			if (finish.x - info.self.xy_pos.x > 0.0)
-				a.angle = 0.0;
-			else
-				a.angle = 180.0;
-			return a;
-		}
-	}*/
-	a.angle = AngleLimit(180.0 * atan2(finish.y - info.self.xy_pos.y, finish.x - info.self.xy_pos.x) / pi - info.self.view_angle);
+	a.angle = AngleLimit(180.0 * atan2(finish.y - info.self.xy_pos.y, finish.x - info.self.xy_pos.x) / pi - nowViewAng);
 	return a;
 }
-XYPosition PolarToXY(PolarPosition p)//×¢ÒâÓëÊÓ½ÇÓÐ¹Ø
+XYPosition PolarToXY(PolarPosition p, bool nowAng = true)//×¢ÒâÓëÊÓ½ÇÓÐ¹Ø
 {
 	XYPosition a;
-	a.x = LimitBound(info.self.xy_pos.x + p.distance * cos(((p.angle + info.self.view_angle) / 180.0) * pi));
-	a.y = LimitBound(info.self.xy_pos.y + p.distance * sin(((p.angle + info.self.view_angle) / 180.0) * pi));
+	double ang = nowViewAng;
+	if (nowAng != true)
+		ang = info.self.view_angle;
+	a.x = LimitBound(info.self.xy_pos.x + p.distance * cos(((p.angle + ang) / 180.0) * pi));
+	a.y = LimitBound(info.self.xy_pos.y + p.distance * sin(((p.angle + ang) / 180.0) * pi));
 	return a;
 }
-enum Order
+enum ToDoType
 {
-	meInfo = 0,
-	itemInfo = 1,
-	enemyInfo = 2,
-	demandInfo = 3,
-	wantInfo = 4,
-	healInfo = 5,
+	SHOOT = 6,
+	HEAL = 5,
+	RUN = 4,
+	COLLECT = 3,
+	CHASE_ENEMY = 2,
+	CHASE_ITEM = 1,
+	WANDER = 0,
+	SZ = 7
 };
-struct RadioOrder
+struct ChangedItem
 {
-	Order order;
-	int type;
-	XYPosition pos;//ÒÔÉÏÎªÒª·¢µÄ
+	XYPosition pos;
+	ITEM type;
+	ChangedItem(XYPosition p, ITEM i)
+	{
+		this->pos = p;
+		this->type = i;
+	}
+};
+struct Thing
+{
+	ToDoType type;
+	XYPosition destination;
+	ITEM item;
+	int id;
+	int mode;//only for CHASE_ENEMY
+	double ang;
 	int priority;
-};
+	Thing()
+	{
+		this->type = WANDER;
+		this->destination = XYPosition{ 0,0 };
+		this->id = 0;
+		this->mode = 0;
+		this->ang = 0.0;
+		this->item = FIST;
+		this->priority = 0;
+	}
+	Thing(ToDoType t, XYPosition d)//for Move(RUN, CHASE, WANDER)
+	{
+		this->type = t;
+		this->destination = d;
+		this->id = 0;
+		this->mode = 0;
+		this->ang = 0.0;
+		this->item = FIST;
+		this->priority = 10 * (int)t;
+	}
+	Thing(ToDoType t, XYPosition d, int i)//for Move(RUN, CHASE, WANDER)
+	{
+		this->type = t;
+		this->destination = d;
+		this->id = i;
+		this->mode = 0;
+		this->ang = 0.0;
+		this->item = FIST;
+		this->priority = 10 * (int)t;
+	}
+	Thing(ToDoType t, XYPosition d, ITEM it)//for Move(RUN, CHASE, WANDER)
+	{
+		this->type = t;
+		this->destination = d;
+		this->id = 0;
+		this->mode = 0;
+		this->ang = 0.0;
+		this->item = it;
+		this->priority = 10 * (int)t;
+	}
+	Thing(ToDoType t, int i, ITEM it)//for Collect
+	{
+		this->type = t;
+		this->destination = XYPosition{ 0.0,0.0 };
+		this->id = i;
+		this->mode = 0;
+		this->ang = 0.0;
+		this->item = it;
+		this->priority = 10 * (int)t;
+	}
+	Thing(ToDoType t, XYPosition d, ITEM i, double a, int idt = 0, int p = 0)//for Heal & Shoot
+	{
+		this->type = t;
+		this->destination = d;
+		this->id = idt;
+		this->mode = 0;
+		this->ang = a;
+		this->item = i;
+		this->priority = 10 * (int)t + p;
+	}
+}sucTodo1, sucTodo2, realShoot;
+bool operator < (Thing a, Thing b)
+{
+	return ((a.priority < b.priority) || (a.priority == b.priority && a.type < b.type));
+}
+bool operator == (Thing a, Thing b)
+{
+	return  (a.ang == b.ang && a.id == b.id && a.item == b.item && a.priority == b.priority && a.type == b.type && a.destination.x == b.destination.x && a.destination.y == b.destination.y);
+}
 struct Node
 {
 	int x, y;
@@ -172,8 +279,8 @@ struct Node
 	}
 	Node(XYPosition p)
 	{
-		this->x = LimitBound(DoubleToInt(p.x));
-		this->y = LimitBound(DoubleToInt(p.y));
+		this->x = LimitBound((int)p.x);
+		this->y = LimitBound((int)p.y);
 		this->g = 0;
 		this->h = 0;
 		this->f = 0;
@@ -181,8 +288,8 @@ struct Node
 	}
 	Node(int x, int y)
 	{
-		this->x = x;
-		this->y = y;
+		this->x = LimitBound(x);
+		this->y = LimitBound(y);
 		this->g = 0;
 		this->h = 0;
 		this->f = 0;
@@ -190,8 +297,8 @@ struct Node
 	}
 	Node(int x, int y, Node* father)
 	{
-		this->x = x;
-		this->y = y;
+		this->x = LimitBound(x);
+		this->y = LimitBound(y);
 		this->g = 0;
 		this->h = 0;
 		this->f = 0;
@@ -227,14 +334,40 @@ double Dist(Node start, Node finish)
 {
 	return sqrt((finish.x - start.x)*(finish.x - start.x) + (finish.y - start.y)*(finish.y - start.y));
 }
+int UnitValue(ITEM t)
+{
+	if (totalHurt <= 150 && t >= 1 && t <= 9 && t != 8)//Ã»Ç¹
+		return 1000;
+	if (totalHeal <= 40 && t >= 15 && t <= 16)//Ã»Ò©
+		return valueLater[t][info.self.vocation] * 2;
+	if (totalHurt < 800)
+		return valueEarlier[t][info.self.vocation];
+	else
+		return valueLater[t][info.self.vocation];
+}
+int InPoison(XYPosition d)
+{
+	int in = 0, time = 0;
+	if (frame <= 200 || frame >= 2830)//»¹Ã»ÓÐÈ¦»òËõÃ»ÁË
+		return 2;
+	if (frame <= 600)
+		time = 0;
+	else if (frame <= 1340)
+		time = 1;
+	else
+		time = 2;
+	if (Dist(d, info.poison.current_center) <= info.poison.current_radius * poisonRatio[info.self.vocation][time][0] + info.poison.next_radius * poisonRatio[info.self.vocation][time][1])
+		in++;
+	if (Dist(d, info.poison.next_center) <= info.poison.next_radius * poisonRatio[info.self.vocation][time][2])
+		in++;
+	return in;
+}
 class BFS
 {
 public:
 	BFS()
 	{
-		for (int i = 0; i < 1000; i++)
-			for (int j = 0; j < 1000; j++)
-				contain[i][j] = 0;
+		memset(contain, 0, sizeof(contain));
 	}
 	XYPosition SearchAccess(XYPosition s)//Ñ°ÕÒÄÜµ½´ïµÄµã
 	{
@@ -250,10 +383,8 @@ public:
 		}
 		if (landform[org.x][org.y] <= 2)//ÖÕµãÒÑÄÜ×ß
 			return a;
-		for (int i = 0; i < 1000; i++)
-			for (int j = 0; j < 1000; j++)
-				contain[i][j] = 0;
-		while (visit.size() > 0)
+		memset(contain, 0, sizeof(contain));
+		while (!visit.empty())
 			visit.pop();
 		visit.push(org);
 		contain[org.x][org.y] = 1;
@@ -290,38 +421,41 @@ private:
 	XYInt org;
 	XYPosition dorg;
 	queue <XYInt> visit;
-};//ÓÃµÄÊ±ºòÏÖ¿ª
+}finder;
 class Astar {
 public:
-	bool Search(Node* startPos, Node* endPos);
-	void CheckPoint(int x, int y, it1 father, int g);
+	bool Search(Node* startPos, Node* endPos, bool isItem);
+	void CheckPoint(int x, int y, it1 father, bool side);
 	void NextStep(it1 currentPoint);
 	void CountGHF(Node* sNode, Node* eNode, int g);
-	static bool Compare(const Node* n1, const Node* n2);
 	bool UnWalk(int x, int y);
 	void RecordPath(Node* current);
+	void RecordItemPath(Node* current);
+	double RealDist(XYPosition d);
 	multiset < Node*, QueueCompare > openList;
-	Node *startPos;
-	Node *endPos;
+	Node *start;
+	Node *end;
 	bool openContain[1000][1000];
 	bool closeContain[1000][1000];
+	Node dustbin[1000 * 1000];
+	int db_count;
 	it1 it[1000][1000];
 }astar;
-bool Astar::Search(Node* startPos, Node* endPos)//ÓÐ¿ÉÄÜ¿ªÊ¼µÄµØ·½ÊÇ²»ÄÜ×ßµÄ£¬¿¨Ç½ÀïÁË£¬¿ÉÓÅ»¯
+bool Astar::Search(Node* startPos, Node* endPos, bool isItem = false)//ÓÐ¿ÉÄÜ¿ªÊ¼µÄµØ·½ÊÇ²»ÄÜ×ßµÄ£¬¿¨Ç½ÀïÁË£¬¿ÉÓÅ»¯
 {
-	if (startPos->x < 0 || startPos->x >= 1000 || startPos->y < 0 || startPos->y >= 1000 ||
-		endPos->x < 0 || endPos->x >= 1000 || endPos->y < 0 || endPos->y >= 1000)
+	if (startPos->x < 0 || startPos->x >= 1000 || startPos->y < 0 || startPos->y >= 1000 || endPos->x < 0 || endPos->x >= 1000 || endPos->y < 0 || endPos->y >= 1000)
 		return 0;
 	if (landform[endPos->x][endPos->y] > 2 || landform[startPos->x][startPos->y] > 2)
 		return 0;
-	for (int i = 0; i < 1000; i++)
-		for (int j = 0; j < 1000; j++)
-			openContain[i][j] = closeContain[i][j] = 0;
+	memset(openContain, 0, sizeof(openContain));
+	memset(closeContain, 0, sizeof(closeContain));
 	openList.clear();
 	path.clear();
+	itemPath.clear();
 	it1 current;
-	this->startPos = startPos;
-	this->endPos = endPos;
+	db_count = 0;
+	this->start = startPos;
+	this->end = endPos;
 	it[startPos->x][startPos->y] = openList.insert(startPos);
 	openContain[startPos->x][startPos->y] = 1;
 	//Ö÷ÒªÊÇÕâ¿é£¬°Ñ¿ªÊ¼µÄ½Úµã·ÅÈëopenlistºó¿ªÊ¼²éÕÒÅÔ±ßµÄ8¸ö½Úµã£¬Èç¹û×ø±ê³¬³¤·¶Î§»òÔÚcloselist¾Íreturn Èç¹ûÒÑ¾­´æÔÚopenlist¾Í¶Ô±Èµ±Ç°½Úµãµ½±éÀúµ½µÄÄÇ¸ö½ÚµãµÄGÖµºÍµ±Ç°½Úµãµ½Ô­À´¸¸½ÚµãµÄGÖµ Èç¹ûÔ­À´µÄGÖµ±È½Ï´ó ²»ÓÃ¹Ü ·ñÔòÖØÐÂ¸³ÖµGÖµ ¸¸½Úµã ºÍf Èç¹ûÊÇÐÂ½Úµã ¼ÓÈëµ½openlist Ö±µ½opellistÎª¿Õ»òÕÒµ½ÖÕµã
@@ -330,7 +464,10 @@ bool Astar::Search(Node* startPos, Node* endPos)//ÓÐ¿ÉÄÜ¿ªÊ¼µÄµØ·½ÊÇ²»ÄÜ×ßµÄ£¬¿¨
 		current = openList.begin();
 		if ((*current)->x == endPos->x && (*current)->y == endPos->y)
 		{
-			RecordPath(*current);
+			if (isItem)
+				RecordItemPath(*current);
+			else
+				RecordPath(*current);
 			return 1;
 		}
 		NextStep(current);
@@ -340,7 +477,7 @@ bool Astar::Search(Node* startPos, Node* endPos)//ÓÐ¿ÉÄÜ¿ªÊ¼µÄµØ·½ÊÇ²»ÄÜ×ßµÄ£¬¿¨
 	}
 	return 0;
 }
-void Astar::CheckPoint(int x, int y, it1 father, int g)
+void Astar::CheckPoint(int x, int y, it1 father, bool side)//side=1£ºÐ±×Å×ß£¬side=0£ºË®Æ½ÊúÖ±×ß
 {
 	if (x < 0 || x >= 1000 || y < 0 || y >= 1000)
 		return;
@@ -348,62 +485,41 @@ void Astar::CheckPoint(int x, int y, it1 father, int g)
 		return;
 	if (closeContain[x][y] == 1)
 		return;
+	int gin;//Õý¡¢Ð±ÏòÏûºÄ
+	if (side)
+		gin = whCost[x][y];
+	else
+		gin = wCost[x][y];
 	if (openContain[x][y] == 1)
 	{
 		Node* point = *it[x][y];
-		if (point->g > (*father)->g + g)
+		if (point->g > (*father)->g + gin)
 		{
 			openList.erase(it[x][y]);
 			point->father = *father;
-			point->g = (*father)->g + g;
+			point->g = (*father)->g + gin;
 			point->f = point->g + point->h;
 			it[x][y] = openList.insert(point);
-			int a = 1;
 		}
 	}
 	else
 	{
-		Node *point = new Node(x, y, *father);
-		CountGHF(point, endPos, g);
+		Node *point = &(dustbin[++db_count] = Node(x, y, *father));
+		CountGHF(point, end, gin);
 		it[point->x][point->y] = openList.insert(point);
 		openContain[point->x][point->y] = 1;
 	}
 }
 void Astar::NextStep(const it1 current)
 {
-	int w = 10, wh = 14;//Õý¡¢Ð±ÏòÏûºÄ
-	switch (landform[(*current)->x][(*current)->y])//¾ßÌåÀàÐÍ¼ûRectºÍCircº¯Êý
-	{
-	case 6://DEEP_WATER
-		w = 20; wh = 28;
-		break;
-	case 4://RECTANGLE_BUILDING, CIRCLE_BUILDING
-		w = 15; wh = 21;
-		break;
-	case 2://SHALLOW_WATER
-		w = 13; wh = 18;
-		break;
-	case 5://WALL
-		w = 15; wh = 21;
-		break;
-	case 3://TREE
-		w = 15; wh = 21;
-		break;
-	case 1://RECTANGLE_GRASS, CIRCLE_GRASS
-		w = 8; wh = 11;
-		break;
-	default:
-		w = 10; wh = 14;
-		break;
-	}
-	CheckPoint((*current)->x - 1, (*current)->y, (current), w);//×ó
-	CheckPoint((*current)->x + 1, (*current)->y, (current), w);//ÓÒ
-	CheckPoint((*current)->x, (*current)->y + 1, (current), w);//ÉÏ
-	CheckPoint((*current)->x, (*current)->y - 1, (current), w);//ÏÂ
-	//CheckPoint((*current)->x - 1, (*current)->y + 1, (current), wh);//×óÉÏ
-	//CheckPoint((*current)->x - 1, (*current)->y - 1, (current), wh);//×óÏÂ
-	//CheckPoint((*current)->x + 1, (*current)->y - 1, (current), wh);//ÓÒÏÂ
-	//CheckPoint((*current)->x + 1, (*current)->y + 1, (current), wh);//ÓÒÉÏ
+	CheckPoint((*current)->x - 1, (*current)->y, (current), 0);//×ó
+	CheckPoint((*current)->x + 1, (*current)->y, (current), 0);//ÓÒ
+	CheckPoint((*current)->x, (*current)->y + 1, (current), 0);//ÉÏ
+	CheckPoint((*current)->x, (*current)->y - 1, (current), 0);//ÏÂ
+	CheckPoint((*current)->x - 1, (*current)->y + 1, (current), 1);//×óÉÏ
+	CheckPoint((*current)->x - 1, (*current)->y - 1, (current), 1);//×óÏÂ
+	CheckPoint((*current)->x + 1, (*current)->y - 1, (current), 1);//ÓÒÏÂ
+	CheckPoint((*current)->x + 1, (*current)->y + 1, (current), 1);//ÓÒÉÏ
 }
 void Astar::CountGHF(Node* sNode, Node* eNode, int g)
 {
@@ -413,10 +529,6 @@ void Astar::CountGHF(Node* sNode, Node* eNode, int g)
 	sNode->f = f;
 	sNode->h = h;
 	sNode->g = currentg;
-}
-bool Astar::Compare(const Node* n1, const Node* n2)
-{
-	return n1->f < n2->f;
 }
 bool Astar::UnWalk(int x, int y)
 {
@@ -430,15 +542,56 @@ void Astar::RecordPath(Node* current)
 	{
 		XYPosition p;
 		RecordPath((current)->father);
-		p.x = (current)->x, p.y = (current)->y;
+		p.x = (double)((current)->x) + 0.5, p.y = (double)((current)->y) + 0.5;
 		path.push_back(p);
 	}
 }
-bool Reachable(XYPosition p)
+void Astar::RecordItemPath(Node* current)
 {
-	if (p.x < 0 || p.x > 999.0 || p.y < 0 || p.y > 999.0)
-		return 0;
-	return (landform[DoubleToInt(p.x)][DoubleToInt(p.y)] <= 2);
+	if ((current)->father != NULL)
+	{
+		XYPosition p;
+		RecordItemPath((current)->father);
+		p.x = (double)((current)->x) + 0.5, p.y = (double)((current)->y) + 0.5;
+		itemPath.push_back(p);
+	}
+}
+double Astar::RealDist(XYPosition d)//ÈôËùÓÐÂ·¶¼ÔÚÈ¦ÄÚÔò·µ»Ø¾àÀë£¬·ñÔò·µ»Ø¾àÀë¸ºÖµ
+{
+	Node start(d), end(info.self.xy_pos);
+	Node *pNodea = &start, *pNodeb = &end;
+	Search(pNodeb, pNodea, true);
+	if (itemPath.size() < 5)
+	{
+		double l = Dist(d, info.self.xy_pos);
+		if (frame <= 200 || frame >= 2830)
+			return l;
+		for (int i = 0; i < itemPath.size(); i++)
+			if (InPoison(itemPath[i]) != 2)
+				return -l;
+		return l;
+	}
+	int f = 2, b = itemPath.size() - 3;//front, back
+	double rd = Dist(info.self.xy_pos, itemPath[f]) + Dist(d, itemPath[b]);//realDist
+	while (true)
+	{
+		if (b - f < 3)
+			break;
+		rd += Dist(itemPath[f], itemPath[f + 3]);
+		f += 3;
+		if (b - f < 3)
+			break;
+		rd += Dist(itemPath[b], itemPath[b - 3]);
+		b -= 3;
+	}
+	rd += Dist(itemPath[f], itemPath[b]);
+	if (frame <= 200 || frame >= 2830)
+		return rd;
+	for (int i = 0; i < itemPath.size(); i++)
+		if (InPoison(itemPath[i]) != 2)
+			return -rd;
+	return rd;
+
 }
 bool IsFriend(int id)
 {
@@ -450,22 +603,30 @@ bool IsFriend(int id)
 bool HaveItem(ITEM a)
 {
 	for (int i = 0; i < info.self.bag.size(); i++)
-	{
 		if (info.self.bag[i].type == a && info.self.bag[i].durability > 0)
 			return 1;
-	}
 	return 0;
 }
 int HaveWeapon(double searchDist = 3.0)//searchdist=3²»ËãfistºÍ»¢ÌÎ´¸£¬·µ»ØÄÜ´òÖÐµÄÉËº¦×î¸ßµÄÇ¹Ö§±àºÅ£¨½öÏÞÇ¹Ö§ºÍ»¢ÌÎ´¸£©£¬Ã»ÓÐÇ¹·µ»Ø-1
 {
-	int num = -1, damageMax = 0, demandMin = 100;
+	int num = -1, num2 = -1;
+	double valueMax = 0, valueMax2 = 0;
 	for (int i = 0; i <= 9; i++)
-	{
-		if ((searchDist <= ITEM_DATA[i].range) && HaveItem((ITEM)i) && damageMax <= ITEM_DATA[i].damage / ITEM_DATA[i].cd)
+		if (searchDist <= ITEM_DATA[i].range && HaveItem((ITEM)i) && valueMax <= UnitValue((ITEM)i))
 		{
 			num = i;
-			damageMax = ITEM_DATA[i].damage;
+			valueMax = UnitValue((ITEM)i);
 		}
+	if (num >= 6 && num <= 7 && searchDist <= 100.0)//¾ÑÇÒ¾àÀë½Ï½ü£¬¿´¿´ÓÐÃ»ÓÐÆäËûÇ¹
+	{
+		for (int i = 0; i <= 9; i++)
+			if (i != 6 && i != 7 && searchDist <= ITEM_DATA[i].range && HaveItem((ITEM)i) && valueMax2 <= UnitValue((ITEM)i))
+			{
+				num2 = i;
+				valueMax2 = UnitValue((ITEM)i);
+			}
+		if (num2 >= 0)
+			return num2;
 	}
 	return Max(-1, num);
 }
@@ -481,21 +642,27 @@ void Rect(BLOCK_TYPE t, int x1, int y1, int x2, int y2)
 			{
 			case SHALLOW_WATER://¿ÉÒÔÍ¨ÐÐµ«»á¼õËÙ
 				landform[i][j] = 2;
+				landformValue[i][j] = 10;
 				break;
 			case RECTANGLE_GRASS:case CIRCLE_GRASS://¿ÉÒÔÍ¨ÐÐ¿ÉÒÔÒþ±Î
 				landform[i][j] = 1;
+				landformValue[i][j] = 3;
 				break;
 			case DEEP_WATER://ÎÞ·¨Í¨ÐÐÎÞ·¨µ²×Óµ¯£¬³¬´ó
 				landform[i][j] = 6;
+				landformValue[i][j] = 100;
 				break;
 			case WALL://ÎÞ·¨Í¨ÐÐÎÞ·¨µ²×Óµ¯£¬½ÏÐ¡
 				landform[i][j] = 5;
+				landformValue[i][j] = 100;
 				break;
 			case RECTANGLE_BUILDING:case CIRCLE_BUILDING://ÎÞ·¨Í¨ÐÐÄÜµ²×Óµ¯£¬´ó¼Ò»ï
 				landform[i][j] = 4;
+				landformValue[i][j] = 100;
 				break;
 			case TREE://ÎÞ·¨Í¨ÐÐÄÜµ²×Óµ¯£¬Ð¡¼Ò»ï
 				landform[i][j] = 3;
+				landformValue[i][j] = 100;
 				break;
 			default://Õý³£Í¨ÐÐ
 				break;
@@ -519,21 +686,27 @@ void Circ(BLOCK_TYPE t, int x, int y, int r)
 				{
 				case SHALLOW_WATER://¿ÉÒÔÍ¨ÐÐµ«»á¼õËÙ
 					landform[i][j] = 2;
+					landformValue[i][j] = 10;
 					break;
 				case RECTANGLE_GRASS:case CIRCLE_GRASS://¿ÉÒÔÍ¨ÐÐ¿ÉÒÔÒþ±Î
 					landform[i][j] = 1;
+					landformValue[i][j] = 3;
 					break;
 				case DEEP_WATER://ÎÞ·¨Í¨ÐÐÎÞ·¨µ²×Óµ¯£¬³¬´ó
 					landform[i][j] = 6;
+					landformValue[i][j] = 100;
 					break;
 				case WALL://ÎÞ·¨Í¨ÐÐÎÞ·¨µ²×Óµ¯£¬½ÏÐ¡
 					landform[i][j] = 5;
+					landformValue[i][j] = 100;
 					break;
 				case RECTANGLE_BUILDING:case CIRCLE_BUILDING://ÎÞ·¨Í¨ÐÐÄÜµ²×Óµ¯£¬´ó¼Ò»ï
 					landform[i][j] = 4;
+					landformValue[i][j] = 100;
 					break;
 				case TREE://ÎÞ·¨Í¨ÐÐÄÜµ²×Óµ¯£¬Ð¡¼Ò»ï
 					landform[i][j] = 3;
+					landformValue[i][j] = 100;
 					break;
 				default://Õý³£Í¨ÐÐ
 					break;
@@ -543,9 +716,12 @@ void Circ(BLOCK_TYPE t, int x, int y, int r)
 }
 void MapProcess()
 {
+	memset(landform, 0, sizeof(landform));
+	memset(wCost, 0, sizeof(wCost));
+	memset(whCost, 0, sizeof(whCost));
 	for (int i = 0; i < 1000; i++)
 		for (int j = 0; j < 1000; j++)
-			landform[i][j] = 0;
+			landformValue[i][j] = 5;
 	for (int y = 9; y >= 0; y--)
 	{
 		for (int x = 0; x < 10; x++)
@@ -555,57 +731,371 @@ void MapProcess()
 			for (int i = 0; i < AREA_DATA[num].size(); i++)
 			{
 				if (AREA_DATA[num][i].shape == RECTANGLE)
-					Rect(AREA_DATA[num][i].type, offsetx + AREA_DATA[num][i].x0, offsety + AREA_DATA[num][i].y0, offsetx + AREA_DATA[num][i].x1, offsety + AREA_DATA[num][i].y1);
+					Rect(AREA_DATA[num][i].type, offsetx + AREA_DATA[num][i].x0, offsety + AREA_DATA[num][i].y0 - 1, offsetx + AREA_DATA[num][i].x1 - 1, offsety + AREA_DATA[num][i].y1);
 				else if (AREA_DATA[num][i].shape == CIRCLE)
 					Circ(AREA_DATA[num][i].type, offsetx + AREA_DATA[num][i].x0, offsety + AREA_DATA[num][i].y0, AREA_DATA[num][i].r);
 			}
 		}
 	}
 }
-void Initial()//´ýÍêÉÆ
+void CostProcess(int part)//¹²10²¿·Ö£¬´«Èë12345678910
 {
-	srand(time(NULL));
-	follow = 2;
-	nowStatus = info.self.status;
-	wantMove = wantShoot = 0;
-	shrink.x = shrink.y = 0;
+	const int r = 3;
+	static int count;
+	int start, end;
+	if (part < 1 || part > 10)
+		return;
+	else
+	{
+		start = (part - 1) * 100;
+		end = part * 100;
+	}
+	for (int i = start; i < end; i++)
+	{
+		for (int j = 0; j < 1000; j++)
+		{
+			int xmin = LimitBound(i - r), xmax = LimitBound(i + r),
+				ymin = LimitBound(j - r), ymax = LimitBound(j + r);
+			int cnt = 0, sum = 0;
+			for (int ii = xmin; ii <= xmax; ii++)
+			{
+				for (int jj = ymin; jj <= ymax; jj++)
+				{
+					if (abs(ii - i) + abs(jj - j) <= r)
+					{
+						cnt++;
+						sum += landformValue[ii][jj];
+					}
+				}
+			}
+			sum = sum / cnt;
+			wCost[i][j] = 5 * sum;
+			whCost[i][j] = 7 * sum;
+			count++;
+		}
+	}
+}
+bool RectIntersect(double ang, double x0, double y0, double x1, double y1, double critical)
+{
+	XYPosition leftUp, rightUp, leftLow, rightLow;
+	double a = AngleLimit(ang);
+	int quadrant;//ÏóÏÞ
+	if (x0 < 0.0 && y0 > 0.0 && x1 > 0.0 && y1 < 0.0)//±»·½¿é°üÎ§	
+		return true;
+	if (a >= 0.0 && a < 90.0)
+		quadrant = 1;
+	else if (a >= 90.0 && a < 180.0)
+		quadrant = 2;
+	else if (a >= 180.0 && a < 270.0)
+		quadrant = 3;
+	else
+		quadrant = 4;
+	switch (quadrant)
+	{
+	case 1:
+		leftUp.x = x0, leftUp.y = y0;
+		rightLow.x = x1, rightLow.y = y1;
+		break;
+	case 2:
+		a -= 90.0;
+		leftUp.x = y1, leftUp.y = -x0;
+		rightLow.x = y0, rightLow.y = -x1;
+		break;
+	case 3:
+		a -= 180.0;
+		leftUp.x = -x1, leftUp.y = -y1;
+		rightLow.x = -x0, rightLow.y = -y0;
+		break;
+	default://case 4:
+		a -= 270.0;
+		leftUp.x = -y0, leftUp.y = x1;
+		rightLow.x = -y1, rightLow.y = x0;
+		break;
+	}//È«¶¼×ªµ½µÚÒ»ÏóÏÞ£¬´ËÊ±0 <= a < 90
+	rightUp.x = rightLow.x, rightUp.y = leftUp.y;
+	leftLow.x = leftUp.x, leftLow.y = rightLow.y;
+	double s = sin(a * pi / 180.0), c = cos(a * pi / 180.0);
+	if (s * rightLow.x < c * rightLow.y || s * leftUp.x > c * leftUp.y)//ÎÞ½»µã
+		return false;
+	if (DoubleEqual(a, 90.0))
+	{
+		if (leftUp.x > 0.0 || rightLow.x < 0.0)
+			return false;
+		else if (rightLow.y >= 0 && rightLow.y <= critical)
+			return true;
+		else
+			return false;
+	}
+	else if (DoubleEqual(a, 0.0))
+	{
+		if (leftUp.y < 0.0 || rightLow.y > 0.0)
+			return false;
+		else if (leftUp.x >= 0 && leftUp.x <= critical)
+			return true;
+		else
+			return false;
+	}
+	XYPosition org, point;
+	org.x = org.y = 0.0;
+	double l;//½üµã¾àÀë
+	if (s * leftLow.x > c * leftLow.y)//ÉäÏßÔÚ×óÏÂ½ÇÖ®ÉÏ
+	{
+		if (s * rightUp.x > c * rightUp.y)//ÉäÏßÔÚ×óÏÂ½ÇÖ®ÉÏ£¬ÓÒÉÏ½ÇÖ®ÉÏ£¬½üµãÎ»ÓÚ×ó±ß»òÉÏ±ß
+		{
+			if (leftUp.x >= 0.0)
+				point.x = leftUp.x, point.y = point.x * tan(a * pi / 180.0);
+			else
+				point.y = leftUp.y, point.x = point.y / tan(a * pi / 180.0);
+			if (point.y < 0)
+				return false;
+		}
+		else//ÉäÏßÔÚ×óÏÂ½ÇÖ®ÉÏ£¬ÓÒÉÏ½ÇÖ®ÏÂ£¬½üµãÎ»ÓÚ×ó±ß»òÓÒ±ß
+		{
+			if (leftUp.x >= 0.0)
+				point.x = leftUp.x, point.y = point.x * tan(a * pi / 180.0);
+			else
+				point.x = rightLow.x, point.y = point.x * tan(a * pi / 180.0);
+			if (point.x < 0)
+				return false;
+		}
+	}
+	else
+	{
+		if (s * rightUp.x > c * rightUp.y)//ÉäÏßÔÚ×óÏÂ½ÇÖ®ÏÂ£¬ÓÒÉÏ½ÇÖ®ÉÏ£¬½üµãÎ»ÓÚÉÏ±ß»òÏÂ±ß
+		{
+			if (rightLow.y >= 0.0)
+				point.y = rightLow.y, point.x = point.y / tan(a * pi / 180.0);
+			else
+				point.y = leftUp.y, point.x = point.y / tan(a * pi / 180.0);
+			if (point.y < 0)
+				return false;
+		}
+		else//ÉäÏßÔÚ×óÏÂ½ÇÖ®ÏÂ£¬ÓÒÉÏ½ÇÖ®ÏÂ£¬½üµãÎ»ÓÚÏÂ±ß»òÓÒ±ß
+		{
+			if (rightLow.y >= 0.0)
+				point.y = rightLow.y, point.x = point.y / tan(a * pi / 180.0);
+			else
+				point.x = rightLow.x, point.y = point.x * tan(a * pi / 180.0);
+			if (point.x < 0)
+				return false;
+		}
+	}
+	l = Dist(org, point);
+	if (l >= 0.0 && l <= critical)
+		return true;
+	else
+		return false;
+}
+bool CircIntersect(double ang, double x0, double y0, double r, double critical)//angÎª¾ø¶Ô½Ç¶È£¬×ø±ê¾ùÐè´«ÈëÒÔÈËËùÔÚ´¦ÎªÔ­µãÏà¶Ô×ø±ê
+{
+	double a = AngleLimit(ang), s = sin(a * pi / 180.0), c = cos(a * pi / 180.0);
+	double delta = r * r - (c * y0 - s * x0) * (c * y0 - s * x0);//ÅÐ±ðÊ½
+	if ((r * r - y0 * y0 - x0 * x0) >= 0)//ÒÑÔÚÔ²ÄÚ
+		return true;
+	if (delta < 0.0)//ÎÞ½»µã
+		return false;
+	delta = sqrt(delta);
+	double l = (c * x0 + s * y0 - delta);
+	if (l >= 0.0 && l <= critical)
+		return true;
+	else
+		return false;
+}
+bool Intersect(XYPosition og, double ang, double bias, double critical = 0.6)//angÎª¾ø¶Ô½Ç¶È
+{
+	XYPosition tmp;
+	tmp.x = tmp.y = 50.0;
+	for (int y = 9; y >= 0; y--)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			AREA num = MAP[y * 10 + x];
+			double offsetx = (double)(x * 100) - og.x, offsety = (double)(y * 100) - og.y;
+			if (Dist(tmp, XYPosition{ (double)offsetx, (double)offsety }) > 220.0)//ÂÔ´óÓë150¸ùºÅ2
+				continue;
+			for (int i = 0; i < AREA_DATA[num].size(); i++)
+			{
+				if (AREA_DATA[num][i].shape == RECTANGLE && AREA_DATA[num][i].type != SHALLOW_WATER && AREA_DATA[num][i].type != RECTANGLE_GRASS && AREA_DATA[num][i].type != CIRCLE_GRASS)
+				{
+					if (RectIntersect(ang, offsetx + AREA_DATA[num][i].x0 - bias, offsety + AREA_DATA[num][i].y0 + bias, offsetx + AREA_DATA[num][i].x1 + bias, offsety + AREA_DATA[num][i].y1 - bias, critical))
+						return true;
+				}
+				else if (AREA_DATA[num][i].shape == CIRCLE && AREA_DATA[num][i].type != SHALLOW_WATER && AREA_DATA[num][i].type != RECTANGLE_GRASS && AREA_DATA[num][i].type != CIRCLE_GRASS)
+				{
+					if (CircIntersect(ang, offsetx + AREA_DATA[num][i].x0, offsety + AREA_DATA[num][i].y0, AREA_DATA[num][i].r + bias, critical))
+						return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+void Initial(VOCATION profession)//´ýÍêÉÆ
+{
+	static int initialPart = 0, iii = 0;
+	update_info();
 	if (frame == 0)
 	{
-		parachute(profession, XYPosition{ (start_pos.x + over_pos.x) / 2 + rand() % 100, (start_pos.y + over_pos.y) / 2 + rand() % 100 });
+		XYPosition jump;
+		switch (parachutePos)
+		{
+		case 0:
+			switch (profession)
+			{
+			case MEDIC:
+				//jump.x = 555, jump.y = 650;
+				jump.x = 465, jump.y = 430;
+				break;
+			case HACK:
+				//jump.x = 735, jump.y = 350;//hill¿¿ÏÂ
+				jump.x = 565, jump.y = 430;
+				break;
+			case SNIPER:
+				//jump.x = 455, jump.y = 780;//hill¿¿ÉÏ
+				jump.x = 435, jump.y = 430;
+				break;
+			default://signalman
+				//jump.x = 355, jump.y = 550;//×ó²à²Ý´Ô
+				jump.x = 535, jump.y = 430;
+				break;
+			}
+			break;
+		case 1:
+			jump.x = 440, jump.y = 717;
+			break;
+		case 2:
+			jump.x = 550, jump.y = 750;
+			break;
+		case 3:
+			jump.x = 750, jump.y = 250;
+			break;
+		case 4:
+			jump.x = 650, jump.y = 450;
+			break;
+		case 5:
+			jump.x = 350, jump.y = 450;
+			break;
+		case 6:
+			jump.x = 250, jump.y = 750;
+			break;
+		case 7:
+			jump.x = 450, jump.y = 450;
+			break;
+		default:
+			jump.x = 250, jump.y = 550;
+			break;
+		}
+		parachute(profession, jump);
 		MapProcess();
+	}
+	else
+	{
+		if (initialPart < 10)
+			CostProcess(++initialPart);
+		srand((unsigned int)(time(nullptr) + info.player_ID * frame));
+		sucTodo1 = Thing();
+		sucTodo2 = Thing();
+		realShoot = Thing();
+		nowViewAng = info.self.view_angle;
+		nowStatus = info.self.status;
+		grassPos.x = grassPos.y = 0.0;
+		shrink.x = shrink.y = 0.0;
+		pace.x = pace.y = 0.0;
+		enemyPace.x = enemyPace.y = 0.0;
+		myPace.x = myPace.y = 0.0;
+		idealMove = idealView = 0.0;
+		isStop = 0;
 	}
 }
 bool Shoot(ITEM item_type, double shoot_angle, int parameter = -1)//²ÎÊý£ºÊ¹ÓÃµÄµÀ¾ß/Ç¹µÄÃ¶¾Ù£¬Ïà¶Ô½Ç¶È£¬ÌØÊâ²ÎÊý£¨Ò½ÁÆ±øÊ¹ÓÃÒ©Æ·µÄ¶ÔÏóID£©
 {
-	wantShoot = 1;
 	switch (nowStatus)
 	{
 	case RELAX:
-		shoot(item_type, shoot_angle, parameter);
-		nowStatus = SHOOTING;
-		return true;
+		if (info.self.attack_cd > 0)
+			return false;
+		else
+		{
+			shoot(item_type, shoot_angle, parameter);
+			nowStatus = SHOOTING;
+			return true;
+		}
 	case MOVING:
-		shoot(item_type, shoot_angle, parameter);
-		nowStatus = MOVING_SHOOTING;
-		return true;
+		if (info.self.attack_cd > 0)
+			return false;
+		else
+		{
+			shoot(item_type, shoot_angle, parameter);
+			nowStatus = MOVING_SHOOTING;
+			return true;
+		}
 	default:
 		return false;
 	}
 }
-bool Move(double move_angle, double view_angle, int parameter = -1)//²ÎÊý£ºÇ°½ø·½ÏòÓëÊÓ½ÇµÄÏà¶Ô½Ç¶È£¨Ïà¶ÔÓÚµ±Ç°ÊÓ½Ç£©£¬parameter == NOMOVE(0)Ê±²»ÒÆ¶¯£¬Ö»µ÷Õû½Ç¶È
+XYPosition MyPace(double moveAng, double length)//moveAngÎª¾ø¶Ô½Ç¶È£¬¸Õ¼ñÍê¶«Î÷µÄRELAX×´Ì¬»áÔ¤²â´íÎó
 {
-	wantMove = 1;
+	double l = VOCATION_DATA[info.self.vocation].move * length;
+	if (collectGarbage == 2)
+	{
+		if (info.self.move_cd != 2)
+			return XYPosition{ 0.0, 0.0 };
+		l = VOCATION_DATA[info.self.vocation].move * 0.5;
+	}
+	for (int y = 9; y >= 0; y--)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			AREA num = MAP[y * 10 + x];
+			int offsetx = x * 100, offsety = y * 100;
+			if (num != POOL && num != FARMLAND)
+				continue;
+			for (int i = 0; i < AREA_DATA[num].size(); i++)
+			{
+				if (AREA_DATA[num][i].type == SHALLOW_WATER && info.self.xy_pos.x >= (double)(AREA_DATA[num][i].x0 + offsetx)
+					&& info.self.xy_pos.x <= (double)(AREA_DATA[num][i].x1 + offsetx) && info.self.xy_pos.y <= (double)(AREA_DATA[num][i].y0 + offsety) && info.self.xy_pos.y >= (double)(AREA_DATA[num][i].y1 + offsety))//ÔÚÇ³Ì²ÄÚ²¿
+				{
+					l *= 0.6;
+					return XYPosition{ l * cos(moveAng * pi / 180.0), l * sin(moveAng * pi / 180.0) };
+				}
+			}
+		}
+	}
+	return XYPosition{ l * cos(moveAng * pi / 180.0), l * sin(moveAng * pi / 180.0) };
+}
+bool Move(double move_angle, double view_angle, int strong = 0, int parameter = -1)//²ÎÊý£ºÇ°½ø·½ÏòÓëÊÓ½ÇµÄÏà¶Ô½Ç¶È£¨Ïà¶ÔÓÚµ±Ç°ÊÓ½Ç£©£¬parameter == NOMOVE(0)Ê±²»ÒÆ¶¯£¬Ö»µ÷Õû½Ç¶È
+{
 	if (parameter != NOMOVE)
 	{
 		switch (nowStatus)
 		{
 		case RELAX:case MOVING:
-			move(move_angle, view_angle);
 			nowStatus = MOVING;
+			if (strong || info.self.move_cd != 2)
+			{
+				myPace = MyPace(AngleLimit(move_angle + nowViewAng), 0.2);
+				move(move_angle, view_angle);
+			}
+			else
+			{
+				myPace = MyPace(info.self.move_angle, 0.5);
+				move(0.0, view_angle, NOMOVE);
+			}
+			nowViewAng = AngleLimit(nowViewAng + view_angle);
 			return true;
-		case SHOOTING:
-			move(move_angle, view_angle);
+		case SHOOTING:case MOVING_SHOOTING:
 			nowStatus = MOVING_SHOOTING;
+			if (strong || info.self.move_cd != 2)
+			{
+				myPace = MyPace(AngleLimit(move_angle + nowViewAng), 0.2);
+				move(move_angle, view_angle);
+			}
+			else
+			{
+				myPace = MyPace(info.self.move_angle, 0.5);
+				move(0.0, view_angle, NOMOVE);
+			}
+			nowViewAng = AngleLimit(nowViewAng + view_angle);
 			return true;
 		default:
 			return false;
@@ -613,22 +1103,34 @@ bool Move(double move_angle, double view_angle, int parameter = -1)//²ÎÊý£ºÇ°½ø·
 	}
 	else
 	{
+		if (info.self.move_cd == 2)
+			myPace = MyPace(AngleLimit(move_angle + nowViewAng), 0.5);
+		else
+			myPace = MyPace(AngleLimit(move_angle + nowViewAng), 0.2);
 		move(move_angle, view_angle, NOMOVE);
+		nowViewAng = AngleLimit(nowViewAng + view_angle);
 		return true;
 	}
+}
+bool Reachable(XYPosition p)//½ö¹©ShrinkÊ¹ÓÃ£¡£¡£¡£¡£¡£¡£¡£¡±ÈlandformÅÐ¶¨ÒªÑÏ£¡£¡£¡£¡
+{
+	if (p.x < 0 || p.x > 999.0 || p.y < 0 || p.y > 999.0)
+		return 0;
+	return ((landform[(int)(p.x)][(int)(p.y)] <= 2) && wCost[(int)(p.x)][(int)(p.y)] <= 200);
 }
 Node Shrink(XYPosition des)//¿ÉÓÅ»¯
 {
 	XYPosition close;
 	PolarPosition polar;
-	const double r = 25.0;
 	double delta;
 	close.x = des.x, close.y = des.y;
 	polar = XYToPolar(des);
-	delta = Max(fabs(sin(polar.angle * pi / 180.0)), fabs(cos(polar.angle * pi / 180.0)));
-	delta = 1 / delta;
-	if (Reachable(des) && polar.distance < boundMax)
+	double absolute = AngleLimit(polar.angle + nowViewAng);//¾ø¶Ô½Ç¶È
+	delta = 1 / Max(fabs(sin(absolute * pi / 180.0)), fabs(cos(absolute * pi / 180.0)));
+	if (Reachable(des) && polar.distance < boundMax)//·ûºÏÌõ¼þ
 		return Node(des);
+	else if (polar.distance < boundMax)//¾àÀë½Ï½üµ«²»ÄÜ×ß
+		return finder.SearchAccess(des);
 	polar.distance = boundMax;
 	while (polar.distance > boundMin)
 	{
@@ -637,52 +1139,10 @@ Node Shrink(XYPosition des)//¿ÉÓÅ»¯
 		if (Reachable(close))
 			return Node(close);
 	}
-	BFS finder;
 	polar.distance = boundMax;
 	close = PolarToXY(polar);
 	close = finder.SearchAccess(close);
 	return Node(close);
-}
-bool MoveToDes(int parameter = -1)
-{
-	if (info.self.status == ON_PLANE || info.self.status == JUMPING || frame < 5)
-		return 0;
-	if (parameter == NOMOVE)
-		return Move(0, VOCATION_DATA[info.self.vocation].angle - 1.0, NOMOVE);
-	if (Dist(info.self.xy_pos, destination) < 3.0)
-		return Move(XYToPolar(destination).angle, XYToPolar(destination).angle);
-	Node a = Shrink(destination);
-	shrink.x = a.x, shrink.y = a.y;
-	Node b(info.self.xy_pos);
-	Node *pNodea = &a, *pNodeb = &b;
-	astar.Search(pNodeb, pNodea);
-	if (!path.empty())
-	{
-		if (follow == 2)
-			return Move(XYToPolar(path[0]).angle, XYToPolar(destination).angle, parameter);
-		else if (follow == 1)
-			return Move(XYToPolar(path[0]).angle, XYToPolar(path[0]).angle, parameter);
-		else
-			return Move(XYToPolar(path[0]).angle, VOCATION_DATA[info.self.vocation].angle - 1.0, parameter);
-		/*int sz = Min(2, (int)path.size());//È¡Ç°Èý¸öµãÆ½¾ù
-		XYPosition average;
-		average.x = 0, average.y = 0;
-		for (int i = 0; i < sz; i++)
-		{
-			average.x += path[i].x;
-			average.y += path[i].y;
-		}
-		average.x /= (double)sz;
-		average.y /= (double)sz;
-		if (follow == 2)
-			return Move(XYToPolar(average).angle, XYToPolar(destination).angle, parameter);
-		else if (follow == 1)
-			return Move(XYToPolar(average).angle, XYToPolar(average).angle, parameter);
-		else
-			return Move(XYToPolar(average).angle, VOCATION_DATA[info.self.vocation].angle - 1.0, parameter);*/
-	}
-	else
-		return 0;
 }
 bool Pickup(int target_ID, bool strong = false, int parameter = -1)//²ÎÊý£ºµØÉÏµÄÎïÆ·ID£¬ÐèÒªÔÚÒ»¶¨·¶Î§ÄÚ²ÅÄÜ³É¹¦£¨PICKUP_DISTANCE£©£¬ÈôÎªstrongÎªtrueÔò´ò¶Ï¹¥»÷£¬·ñÔòÖ»´ò¶ÏÒÆ¶¯
 {
@@ -715,47 +1175,415 @@ bool Radio(int target_ID, int msg)//Ã¿»ØºÏÖ»ÄÜ·¢³öÈ¥µÚÒ»Ìõ£¡²ÎÊý£º½ÓÊÕÕßID£¬ÐÅÏ¢
 	}
 	return false;
 }
-void Demand()
+bool Priority(ITEM a, ITEM b, double dista, double distb, int lock = 0)//1: b nb, 0: a nb, lock=1:ÒÑËø¶¨
 {
-	for (int i = 0; i < ITEM_SZ; i++)
-		demandPercent[i] = 100;
-	demandPercent[0] = -1;//fist
-	demandPercent[17] = -1;//code case
-	demandPercent[15] = demandPercent[16] = 120;//bandage,first aid case
-	const int m = 10;
-	for (int i = 0; i < info.self.bag.size(); i++)
+	int category[2];
+	if (dista < 0 && distb > 0)
+		return 1;
+	if (distb < 0 && dista > 0)
+		return 0;
+	double da = fabs(dista), db = fabs(distb);
+	switch (a)
 	{
-		switch (info.self.bag[i].type)
+	case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 9:
+		category[0] = 0;
+		break;
+	case 10:case 11:case 12:case 13:
+		category[0] = 1;
+		break;
+	case 14:
+		category[0] = 2;
+		break;
+	case 15:case 16:
+		category[0] = 3;
+		break;
+	case 17:
+		category[0] = 4;
+		break;
+	default://0,8,18,19,20
+		category[0] = 5;
+		break;
+	}
+	switch (b)
+	{
+	case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 9:
+		category[1] = 0;
+		break;
+	case 10:case 11:case 12:case 13:
+		category[1] = 1;
+		break;
+	case 14:
+		category[1] = 2;
+		break;
+	case 15:case 16:
+		category[1] = 3;
+		break;
+	case 17:
+		category[1] = 4;
+		break;
+	default://0,8,18,19,20
+		category[1] = 5;
+		break;
+	}
+	if ((category[1] == 2 && demand[2] == 0) || (category[1] == 4 && demand[4] == 0) || category[1] == 5)
+		return 0;
+	double dist[2];
+	dist[0] = Max(1.0, da - 3.0);
+	dist[1] = Max(1.0, db - 3.0);
+	if (demand[category[1]] == 0 && demand[category[0]] != 0)
+		return 0;
+	else if (demand[category[0]] == 0 && demand[category[1]] != 0)
+		return 1;
+	else
+		return ((double)UnitValue(a) / dist[0] + lock * 1.0) < (double)UnitValue(b) / dist[1] ? 1 : 0;
+}
+int FindGarbageNum()//·µ»Øvector±àºÅ£¬Ã»ÓÐ·µ»Ø-1
+{
+	if (info.items.size() < 1)
+		return -1;
+	int num = 0, flag = 0;
+	for (int i = 0; i < info.items.size(); i++)
+	{
+		if (info.items[i].polar_pos.distance > collectLimit)
+			continue;
+		if ((i == 0 || Priority(info.items[num].type, info.items[i].type, astar.RealDist(PolarToXY(info.items[num].polar_pos)), astar.RealDist(PolarToXY(info.items[i].polar_pos)))) &&
+			UnitValue(info.items[num].type) > 0 && InPoison(PolarToXY(info.items[i].polar_pos)) == 2)
 		{
-		case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:
-			demandPercent[info.self.bag[i].type] -= m;
-			break;
-		case 10:case 11:case 12:case 13:
-			demandPercent[info.self.bag[i].type] = 100 - 100 * info.self.bag[i].durability / ITEM_DATA[info.self.bag[i].type].durability;
-			if (info.self.bag[i].type == 11)//ÒÑÓÐ¸ü¸ß¼¶·À»¤·þ²»ÒªµÍ¼¶·À»¤·þ£¬ÒÑÓÐÒ»¼¶ÒÔÉÏ·À»¤·þ²»Òª·Àµç·þ
-				demandPercent[10] = demandPercent[13] = 0;
-			else if (info.self.bag[i].type == 12)
-				demandPercent[10] = demandPercent[11] = demandPercent[13] = 0;
-			break;
-		case 14:
-			demandPercent[info.self.bag[i].type] = -1;
-			break;
-		case 15:case 16:
-			demandPercent[info.self.bag[i].type] = DoubleToInt((demandPercent[info.self.bag[i].type] * 0.8));//±ß¼ÊµÝ¼õ
-			break;
-		case 18:
-			demandPercent[18] = -1;
-			break;
-		case 19:
-			demandPercent[18] = demandPercent[19] = -1;
-			break;
-		case 20:
-			demandPercent[18] = demandPercent[19] = demandPercent[20] = -1;
-			break;
-		default://0,17
-			break;
+			num = i;
+			flag = 1;
 		}
 	}
+	return flag == 0 ? -1 : num;
+}
+bool CanSeeMe(int num)//´«ÈëµÐÈË±àºÅ£¬·µ»ØÊÇ·ñÄÜ¿´µ½×Ô¼º
+{
+	if (info.others[num].polar_pos.distance > VOCATION_DATA[info.others[num].vocation].distance)//Ì«Ô¶ÁË¿´²»¼û
+		return false;
+	double abAng = AngleLimit(180.0 + nowViewAng + info.others[num].polar_pos.angle);//µÐÈËÊÓ½Ç£¬×Ô¼ºÏà¶ÔµÐÈËµÄ¾ø¶Ô½Ç¶È
+	abAng = fabs(abAng - info.others[num].view_angle);
+	if (abAng >= 180.0)
+		abAng = 360.0 - abAng;//ÇóÎ»ÖÃºÍÊÓÏß½Ç¶È²î£¨Èñ½Ç£©
+	return (abAng <= 0.5 * VOCATION_DATA[info.others[num].vocation].angle);
+}
+int FindEnemyNumRange(double lmin, double lmax, bool canSee)//ÔÚ¾àÀëÎªlminµ½lmaxÄÚÑ°ÕÒ×î½üµÄµÐÈË£¨canSee£ºÊÇ·ñÓÅÏÈÕÒ¿´¼û×Ô¼ºµÄ£©
+{
+	int num = -1;
+	double minDist = 1000000.0;
+	if (canSee)
+	{
+		for (int i = 0; i < info.others.size(); i++)
+			if ((!IsFriend(info.others[i].player_ID)) && info.others[i].status != DEAD && info.others[i].status != REAL_DEAD && CanSeeMe(i) &&
+				info.others[i].polar_pos.distance < lmax && info.others[i].polar_pos.distance > lmin && info.others[i].polar_pos.distance < minDist)
+			{
+				num = i;
+				minDist = info.others[i].polar_pos.distance;
+			}//ÕÒ¾àÀë·¶Î§ÄÚÄÜ¿´¼û×Ô¼ºµÄ×î½üµÄµÐÈË
+		if (num >= 0)
+			return num;
+	}
+	for (int i = 0; i < info.others.size(); i++)
+		if ((!IsFriend(info.others[i].player_ID)) && info.others[i].status != DEAD && info.others[i].status != REAL_DEAD &&
+			info.others[i].polar_pos.distance < lmax && info.others[i].polar_pos.distance > lmin && info.others[i].polar_pos.distance < minDist)
+		{
+			num = i;
+			minDist = info.others[i].polar_pos.distance;
+		}//ÕÒ¾àÀë·¶Î§ÄÚ×î½üµÄµÐÈË
+	return Max(-1, num);
+}
+int FindEnemyNum()
+{
+	double gunl = 0.0, maxDist = 0;//ÓµÓÐµÄÇ¹ÄÜ´òµ½µÄ×îÔ¶¾àÀë
+	for (int i = 0; i < info.self.bag.size(); i++)
+		if (HaveItem(info.self.bag[i].type) && gunl < (double)(ITEM_DATA[info.self.bag[i].type].range))
+			gunl = (double)(ITEM_DATA[info.self.bag[i].type].range);
+	gunl = Min(VOCATION_DATA[info.self.vocation].distance, gunl);
+	if (gunl < 10.0)//Ö»ÓÐÈ­Í·»ò»¢ÌÎ´¸£¬Ç¹Ö§×î½ü¹¥»÷¾àÀëÎª80
+		return FindEnemyNumRange(0.0, 5.0, false);//ÕÒ¾àÀëÎª5Ö®ÄÚ×î½üµÄµÐÈË
+	int num = FindEnemyNumRange(10.0, 60.0, true);//ÕÒ¾àÀëÎª10-60Ö®¼ä×î½üµÄµÐÈË£¨ÓÅÏÈÕÒÄÜ¿´¼û×Ô¼ºµÄ£©
+	if (num >= 0)
+		return num;
+	num = -1;
+	for (int i = 0; i < info.others.size(); i++)
+		if ((!IsFriend(info.others[i].player_ID)) && info.others[i].status != DEAD && info.others[i].status != REAL_DEAD &&
+			info.others[i].polar_pos.distance < 10.0 && info.others[i].polar_pos.distance > 1.5 && info.others[i].polar_pos.distance > maxDist)
+		{
+			num = i;
+			maxDist = info.others[i].polar_pos.distance;
+		}//ÕÒ10ÒÔÄÚ×îÔ¶µÄµÐÈË
+	if (num >= 0)
+		return num;
+	num = FindEnemyNumRange(60.0, gunl + 20.0, true);//ÕÒ¾àÀëÎª10-60Ö®¼ä×î½üµÄµÐÈË£¨ÓÅÏÈÕÒÄÜ¿´¼û×Ô¼ºµÄ£©
+	return num;
+}
+void RealShoot()
+{
+	if (realShoot.type == SHOOT)
+	{
+		XYPosition enemy = realShoot.destination;
+		enemy.x += enemyPace.x - myPace.x;
+		enemy.y += enemyPace.y - myPace.y;
+		shoot(realShoot.item, XYToPolar(enemy).angle);
+	}
+}
+bool DoFirstThing()
+{
+	if (frame < 2 || info.self.status == ON_PLANE || info.self.status == JUMPING)
+		return false;
+	Thing f;
+	XYPosition dest = destination;
+	bool strong = 0;
+	if (!todo.empty())
+	{
+		f = todo.top();//first thing to do
+		dest = f.destination;
+	}
+	else
+		f.type = WANDER;
+	switch (f.type)
+	{
+	case SHOOT://¼Ù×°ÒÑ¾­´òÍêÁË
+		switch (nowStatus)
+		{
+		case RELAX:
+			if (info.self.attack_cd > 0)
+				return false;
+			else
+			{
+				realShoot = f;
+				nowStatus = SHOOTING;
+				return true;
+			}
+		case MOVING:
+			if (info.self.attack_cd > 0)
+				return false;
+			else
+			{
+				realShoot = f;
+				nowStatus = MOVING_SHOOTING;
+				return true;
+			}
+		default:
+			return false;
+		}
+	case HEAL:
+		return Shoot(f.item, f.ang);
+	case COLLECT:
+		return Pickup(f.id, true);
+	case CHASE_ENEMY:
+		strong = 1;
+		follow = 0;
+		break;
+	case RUN:
+		follow = 1;
+		break;
+	case CHASE_ITEM:
+		if (Dist(info.self.xy_pos, dest) < 6.0)
+			follow = 0;
+		else
+			follow = 1;
+		break;
+	case WANDER:
+		follow = 1;
+		break;
+	default://wander£¬µ«µãÂú×ãÒªÇó
+		follow = 1;
+		break;
+	}
+	if (follow < 0)
+	{
+		idealMove = 0.0;
+		idealView = VOCATION_DATA[info.self.vocation].angle - 1.0;
+		return Move(idealMove, idealView, NOMOVE, strong);
+	}
+	if (Dist(info.self.xy_pos, dest) < 3.0)
+	{
+		idealMove = idealView = XYToPolar(dest).angle;
+		return Move(idealMove, idealView, strong);
+	}
+	Node a = Shrink(dest);
+	shrink.x = a.x, shrink.y = a.y;
+	Node b(info.self.xy_pos);
+	Node *pNodea = &a, *pNodeb = &b;
+	astar.Search(pNodeb, pNodea);
+	if (!path.empty())
+	{
+		int xmin = LimitBound(DoubleToInt(info.self.xy_pos.x) - 2), xmax = LimitBound(DoubleToInt(info.self.xy_pos.x) + 2),
+			ymin = LimitBound(DoubleToInt(info.self.xy_pos.y) - 2), ymax = LimitBound(DoubleToInt(info.self.xy_pos.y) + 2);
+		int flag = 0;
+		for (int i = xmin; i <= xmax; i++)
+			for (int j = ymin; j <= ymax; j++)
+				if (landform[i][j] > 2)
+					flag++;
+		XYPosition average;
+		if (flag == 0)//ÖÜÎ§ÎÞÕÏ°­Îï
+		{
+			int sz = Min(6, (int)path.size());//È¡Ç°6¸öµãÆ½¾ù
+			average.x = 0, average.y = 0;
+			for (int i = 0; i < sz; i++)
+			{
+				average.x += path[i].x;
+				average.y += path[i].y;
+			}
+			average.x /= (double)sz;
+			average.y /= (double)sz;
+		}
+		else if (path.size() >= 2)
+			average = path[1];
+		else
+			average = path[0];
+		pace.x = average.x - info.self.xy_pos.x, pace.y = average.y - info.self.xy_pos.y;
+		idealMove = XYToPolar(average).angle;
+		idealView = XYToPolar(dest).angle;
+
+		//int enemyNum = FindEnemyNumRange(0.0, VOCATION_DATA[info.self.vocation].distance, true);
+		//double distMin = 100.0;
+		//if (enemyNum >= 0)
+		//	distMin = info.others[enemyNum].polar_pos.distance;
+		//if (distMin/*Dist(f.destination, info.self.xy_pos)*/ <= 5.0 && f.mode == 2)//Ö»ÓÐCHASE_ENEMY²Å»á¸ü¸Äid
+		//	idealMove = AngleLimit(idealMove - 30.0);
+		//else if (distMin/*Dist(f.destination, info.self.xy_pos)*/ <= 5.0 && f.mode == 3)
+		//	idealMove = AngleLimit(idealMove + 30.0);
+
+		if (follow == 1)//×ªÍ·£¬·ñÔò¿´ÖÕµã
+			idealView = 100.0;
+		return Move(idealMove, idealView, strong);
+	}
+	else
+		return false;
+}
+void Do()
+{
+	if (isStop)
+	{
+		Thing chase;
+		while (!todo.empty())
+		{
+			switch (todo.top().type)
+			{
+			case SHOOT:
+				XYPosition enemy;
+				enemy.x = todo.top().destination.x + enemyPace.x;
+				enemy.y = todo.top().destination.y + enemyPace.y;
+				if (Shoot(todo.top().item, XYToPolar(enemy).angle))
+					sucTodo1 = todo.top();
+				break;
+			case HEAL:
+				if (Shoot(todo.top().item, todo.top().ang))
+					sucTodo1 = todo.top();
+				break;
+			case CHASE_ENEMY:
+				if (Move(0.0, XYToPolar(todo.top().destination).angle, NOMOVE))
+					sucTodo2 = chase = todo.top();
+				break;
+			default://wander£¬µ«µãÂú×ãÒªÇó
+				break;
+			}
+			todo.pop();
+		}
+		if (chase.type == CHASE_ENEMY)
+		{
+			chase.priority = 10 * (int)chase.type + 5;
+			todo.push(chase);
+			todoPrint.push(chase);
+		}
+		else
+			Move(0.0, 100.0, NOMOVE);
+	}
+	else
+	{
+		Thing tmp1, tmp2;
+		while (DoFirstThing() == 0)
+		{
+			if (todo.empty())
+				break;
+			else
+				todo.pop();
+		}
+		if (!todo.empty())
+		{
+			tmp1 = sucTodo1 = todo.top();//´æ´¢±¾»ØºÏ³É¹¦×öµÄÊÂ1
+			destination = todo.top().destination;
+			if (todo.top().type == HEAL || todo.top().type == SHOOT)
+			{
+				todo.pop();
+				while (DoFirstThing() == 0)
+				{
+					if (todo.empty())
+						break;
+					else
+						todo.pop();
+				}
+				if (!todo.empty())
+				{
+					tmp2 = sucTodo2 = todo.top();//´æ´¢±¾»ØºÏ³É¹¦×öµÄÊÂ2
+					destination = todo.top().destination;
+				}
+			}
+		}
+		while (!todo.empty())//clear list
+			todo.pop();
+		if (tmp1.type == CHASE_ITEM)
+		{
+			tmp1.priority = 10 * (int)tmp1.type + 2;
+			todo.push(tmp1);
+		}
+		if (tmp2.type == CHASE_ITEM)
+		{
+			tmp2.priority = 10 * (int)tmp2.type + 2;
+			todo.push(tmp2);
+		}
+		if (tmp1.type == CHASE_ENEMY)
+		{
+			tmp1.priority = 10 * (int)tmp1.type + 5;
+			todo.push(tmp1);
+		}
+		if (tmp2.type == CHASE_ENEMY)
+		{
+			tmp2.priority = 10 * (int)tmp2.type + 5;
+			todo.push(tmp2);
+		}
+		if (tmp1.type != COLLECT && tmp2.type != COLLECT)
+			RealShoot();
+	}
+}
+void Demand()
+{
+	totalHurt = totalHeal = 0;
+	for (int i = 0; i < 5; i++)
+		demand[i] = 100;
+	demand[5] = 0;
+	memset(durability, 0, sizeof(durability));
+	for (int i = 0; i < info.self.bag.size(); i++)
+	{
+		if (info.self.bag[i].durability > 0)
+		{
+			durability[info.self.bag[i].type] = info.self.bag[i].durability;
+			switch (info.self.bag[i].type)
+			{
+			case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 9:
+				totalHurt += ITEM_DATA[info.self.bag[i].type].damage * info.self.bag[i].durability;
+				demand[0] -= (int)((double)info.self.bag[i].durability / (double)ITEM_DATA[info.self.bag[i].type].durability * (double)UnitValue(info.self.bag[i].type) * 4);
+				break;
+			case 10:case 11:case 12:case 13:
+				demand[1] -= (int)((double)info.self.bag[i].durability / (double)ITEM_DATA[info.self.bag[i].type].durability * (double)UnitValue(info.self.bag[i].type) * 2);
+				break;
+			case 14:
+				demand[2] = 0;
+				break;
+			case 15:case 16:
+				totalHeal -= (int)ITEM_DATA[info.self.bag[i].type].param * info.self.bag[i].durability;//param < 0
+				demand[3] -= UnitValue(info.self.bag[i].type);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	if (info.self.vocation != HACK)
+		demand[4] = 0;
+	for (int i = 0; i < 6; i++)
+		if (demand[i] < 0)
+			demand[i] = 0;
 }
 bool Neibour(XYPosition a, XYPosition b)
 {
@@ -763,62 +1591,136 @@ bool Neibour(XYPosition a, XYPosition b)
 }
 int SeeEnemy()//¿´µ½µÐÈË³É¹¦´òÁË·µ»Ø3£¬¿´µ½µÐÈËÒòcd´ò²»ÁË»òÕß¿´¼ûµÐÈËÓÐÇ¹´ò²»µ½·µ»Ø2£¬¿´¼ûÃ»Ç¹´ò²»ÁË·µ»Ø1£¬Ã»¿´¼û·µ»Ø0
 {
-	int num, enemyNum = -1, flag = 0;//flag´ú±íÊÇ·ñ×·»÷
-	double minDist = 1000000.0;
-	if (info.others.empty())
-		return 0;
-	for (int i = 0; i < info.others.size(); i++)
+	int num, enemyNum = FindEnemyNum();
+	if (!todo.empty() && todo.top().priority % 10 == 5)//ÊÇCHASE_ENEMY£¬ÓÉÓÚCHASE_ENEMYÓ¦¶¢×ÅµÐÈË£¬ËùÒÔÈç¹ûÉÏ»ØºÏÖ´ÐÐÁË£¬Õâ»ØºÏÀíÓ¦¿´¼ûµÐÈË£¬ÈôÃ»¿´¼û£¬ËµÃ÷±»ÕÚµ²»ò±»¸ÉËÀÁË£¬ÓÉÓÚSeeEnemyÊÇ×î³õÖ´ÐÐµÄº¯Êý£¬ËùÒÔÓ¦¸Ã²»»áÊÜµ½ÆäËûÍÆÈë¶ÓÁÐµÄÊÂ¼þÓ°Ïì¡£
 	{
-		if ((!IsFriend(info.others[i].player_ID)) && info.others[i].polar_pos.distance < minDist)
+		int flg = 0;
+		for (int i = 0; i < info.others.size(); i++)
 		{
-			enemyNum = i;
-			minDist = info.others[i].polar_pos.distance;
+			if ((!IsFriend(info.others[i].player_ID)) && info.others[i].player_ID == todo.top().id && info.others[i].status != DEAD && info.others[i].status != REAL_DEAD)//¿´¼ûÉÏ»ØºÏ±ê¼ÇµÄµÐÈËÁËÇÒÃ»ËÀ
+			{
+				int mod, num = HaveWeapon(info.others[i].polar_pos.distance);
+				Thing tmpt = todo.top();
+				if (num < 0)//ÏÖÓÐÇ¹´ò²»µ½£¬Ôò²»×·£¬ÒòÎªÓÐ¿ÉÄÜÓÐÆäËûÄÜ´òµ½µÄµÐÈË
+					break;
+				todo.pop();
+				if (!todoPrint.empty() && todoPrint.top().priority % 10 == 5)
+					todoPrint.pop();
+				if (info.others[i].polar_pos.distance > Min((double)ITEM_DATA[num].range, VOCATION_DATA[info.self.vocation].distance - 10.0))//ËäÄÜ´òµ½µ«¾àÀë½ÏÔ¶£¬ÐèÒª×·»÷
+					mod = 1;//1:×·»÷
+				else
+					mod = 2 + rand() % 2;//2:×óºáÌø£¬ÑÛ¾¦¶¢×Å,3:ÓÒºáÌø£¬ÑÛ¾¦¶¢×Å
+				tmpt.destination = PolarToXY(info.others[i].polar_pos);
+				tmpt.mode = mod;//Ë¢ÐÂmodeºÍµÐÈË×ø±ê
+				todo.push(tmpt);
+				todoPrint.push(tmpt);
+				enemyNum = i;
+				flg = 1;
+				break;
+			}
+		}
+		if (flg != 1)
+		{
+			todo.pop();
+			if (!todoPrint.empty() && todoPrint.top().priority % 10 == 5)
+				todoPrint.pop();
 		}
 	}
+	if (info.others.empty())
+		return 0;
 	if (enemyNum < 0)
 		return 0;
-	if (HaveWeapon() <= 0)//Ã»Ç¹´ò²»ÁË
+	if (HaveWeapon() <= 0)//Ã»Ç¹´ò²»ÁË 
 		return 1;
 	num = HaveWeapon(info.others[enemyNum].polar_pos.distance);
 	if (num >= 0)
 	{
-		if (Shoot((ITEM)num, info.others[enemyNum].polar_pos.angle))
-			return 3;
+		int mod;
+		if (info.others[enemyNum].status == MOVING || info.others[enemyNum].status == MOVING_SHOOTING)
+		{
+			double l = info.others[enemyNum].move_speed * predictEnemyPace;
+			if (landform[LimitBound((int)(PolarToXY(info.others[enemyNum].polar_pos).x))][LimitBound((int)(PolarToXY(info.others[enemyNum].polar_pos).y))] == 2)
+				l *= 0.6;
+			enemyPace.x = l * cos(info.others[enemyNum].move_angle * pi / 180.0);
+			enemyPace.y = l * sin(info.others[enemyNum].move_angle * pi / 180.0);
+		}//Ô¤Ãé
+		todo.push(Thing(SHOOT, PolarToXY(info.others[enemyNum].polar_pos), (ITEM)num, info.others[enemyNum].polar_pos.angle, info.others[enemyNum].player_ID));//´ËÊ±idÎªÊ¹ÓÃµÄÇ¹Ö§±àºÅ
+		todoPrint.push(Thing(SHOOT, PolarToXY(info.others[enemyNum].polar_pos), (ITEM)num, info.others[enemyNum].polar_pos.angle, info.others[enemyNum].player_ID));
+		if (info.others[enemyNum].polar_pos.distance > Min((double)ITEM_DATA[num].range, VOCATION_DATA[info.self.vocation].distance - 10.0))//ËäÄÜ´òµ½µ«¾àÀë½ÏÔ¶£¬ÐèÒª×·»÷
+			mod = 1;//1:×·»÷
 		else
-			return 2;
+			mod = 2 + rand() % 2;//2:×óºáÌø£¬ÑÛ¾¦¶¢×Å,3:ÓÒºáÌø£¬ÑÛ¾¦¶¢×Å
+		Thing tmpt(CHASE_ENEMY, PolarToXY(info.others[enemyNum].polar_pos), info.others[enemyNum].player_ID);
+		tmpt.mode = mod;
+		todo.push(tmpt);
+		todoPrint.push(tmpt);
 	}
-	else
+	else if (HaveWeapon(info.others[enemyNum].polar_pos.distance - 10.0) >= 0)//¾àÀëÉä³Ì·¶Î§²»Ì«Ô¶
 	{
-		destination = PolarToXY(info.others[enemyNum].polar_pos);
-		return 2;
+		Thing tmpt(CHASE_ENEMY, PolarToXY(info.others[enemyNum].polar_pos), info.others[enemyNum].player_ID);
+		tmpt.mode = 1;
+		todo.push(tmpt);
+		todoPrint.push(tmpt);
 	}
 	return 2;//ÓÐÇ¹µ«´ò²»µ½¾Í²»×·ÁË£¬·ðÏµ±ÈÈü
 }
-int CollectGarbage()//¼ñÆðÀ´ÁË·µ»Ø3£¬¿ÉÒÔ¼ñÃ»¼ñÆðÀ´·µ»Ø2£¬¿´¼ûÁË¹»²»µ½·µ»Ø1£¬Ã»¿´¼û»òÅÜ¶¾»ò²»ÏëÒª·µ»Ø0¡£¿ÉÓÅ»¯£¬´æid
+bool CanChange(XYPosition p, ITEM i)
 {
+	for (int i = 0; i < change.size(); i++)
+		if (Neibour(change[i].pos, p) && change[i].type == i)
+			return false;
+	return true;
+}
+int CollectGarbage()
+{
+	if (inside < 2)
+		return 0;
 	double minDist = 100000.0;
 	int num = -1;
-	if (inside == 0 || inside == 1)
-		return 0;
+	double relativeAng = -1.0;
+	if (!todo.empty() && todo.top().priority % 10 == 2)
+		relativeAng = XYToPolar(todo.top().destination).angle;
+	if (relativeAng >= 180.0)
+		relativeAng = 360.0 - relativeAng;
+	if (relativeAng >= 0.0 && relativeAng <= ((VOCATION_DATA[info.self.vocation].angle / 2.0)) && !Intersect(info.self.xy_pos, AngleLimit(XYToPolar(destination).angle + nowViewAng), 0.0, Dist(info.self.xy_pos, destination)))//ÈÕ³£×ªÍ·Ê±²»Ê±¶¢×Å
+	{
+		int flg = 0;
+		for (int i = 0; i < info.items.size(); i++)
+		{
+			if (Neibour(destination, PolarToXY(info.items[i].polar_pos)) && UnitValue(info.items[i].type) > 0 && InPoison(PolarToXY(info.items[i].polar_pos)) == 2)//ÏëÒªÇÒdest¾ÍÔÚÄÇÇÒÔÚÈ¦ÖÐ
+			{
+				flg = 1;
+				break;
+			}
+		}//³öÑ­»·ËµÃ÷destination²»ÊÇ¶«Î÷»òÕß¶«Î÷±»¼ñ×ßÁË
+		if (flg == 0 && (!todo.empty()) && todo.top().priority % 10 == 2)//Ã»¿´µ½£¬ËµÃ÷ÒÑ¾­±»¼ñ×ß
+		{
+			todo.pop();
+			if (!todoPrint.empty() && todoPrint.top().priority % 10 == 2)
+				todoPrint.pop();
+		}
+	}
 	if (!Neibour(info.self.xy_pos, destination))//»¹Ã»µ½dest
 	{
-		for (int i = 0; i < info.items.size(); i++)
-		{
-			if (Neibour(destination, PolarToXY(info.items[i].polar_pos)) && demandPercent[info.items[i].type] > 0)//ÏëÒªÇÒdest¾ÍÔÚÄÇ
-				return 1;//Ëø¶¨
-		}//³öÑ­»·ËµÃ÷destination²»ÊÇ¶«Î÷»òÕß¶«Î÷±»¼ñ×ßÁË
-		for (int i = 0; i < info.items.size(); i++)
-		{
-			if (info.items[i].polar_pos.distance < minDist && demandPercent[info.items[i].type] > 0)
-			{
-				num = i;
-				minDist = info.items[i].polar_pos.distance;
-			}
-		}//ÕÒÒ»¸ö×î½üµÄÏëÒªµÄ¶«Î÷±àºÅ
+		num = FindGarbageNum();
 		if (num >= 0)
 		{
-			destination = PolarToXY(info.items[num].polar_pos);
-			return 1;
+			if (!todo.empty() && todo.top().priority % 10 == 2 && CanChange(PolarToXY(info.items[num].polar_pos), info.items[num].type) && Priority(todo.top().item, info.items[num].type, 0, 0, 1))//¸ü»»ÎïÆ·
+			{
+				Thing tmpt(CHASE_ITEM, PolarToXY(info.items[num].polar_pos), info.items[num].type);
+				tmpt.priority = 10 * (int)tmpt.type + 3;
+				if (CanChange(todo.top().destination, todo.top().item))//ÎÞÖØ¸´
+					change.push_back(ChangedItem(todo.top().destination, todo.top().item));
+				todo.push(tmpt);
+				todoPrint.push(tmpt);
+				return 1;
+			}
+			else
+			{
+				todo.push(Thing(CHASE_ITEM, PolarToXY(info.items[num].polar_pos), info.items[num].type));
+				todoPrint.push(Thing(CHASE_ITEM, PolarToXY(info.items[num].polar_pos), info.items[num].type));
+				return 1;
+			}
 		}
 		else
 			return 0;
@@ -827,270 +1729,499 @@ int CollectGarbage()//¼ñÆðÀ´ÁË·µ»Ø3£¬¿ÉÒÔ¼ñÃ»¼ñÆðÀ´·µ»Ø2£¬¿´¼ûÁË¹»²»µ½·µ»Ø1£¬Ã»¿
 	{
 		for (int i = 0; i < info.items.size(); i++)
 		{
-			if (Neibour(info.self.xy_pos, PolarToXY(info.items[i].polar_pos)) && demandPercent[info.items[i].type] > 0)//ÏëÒªÇÒ¹»µÃµ½
+			if (Neibour(info.self.xy_pos, PolarToXY(info.items[i].polar_pos)) && UnitValue(info.items[i].type) > 0)//ÏëÒªÇÒ¹»µÃµ½
 			{
-				if (Pickup(info.items[i].item_ID, false))
-					return 3;
-				else
-					return 2;
+				todo.push(Thing(COLLECT, info.items[i].item_ID, info.items[i].type));
+				todoPrint.push(Thing(COLLECT, info.items[i].item_ID, info.items[i].type));
+				change.clear();
+				return 2;
 			}
 		}//³öÑ­»·ËµÃ÷¹»²»µ½»ò×ß¹ýÁË£¨²»Ó¦¸Ã³öÏÖ£©
-		for (int i = 0; i < info.items.size(); i++)
+		if (!todo.empty() && todo.top().priority % 10 == 2)
 		{
-			if (info.items[i].polar_pos.distance < minDist && demandPercent[info.items[i].type] > 0)
-			{
-				num = i;
-				minDist = info.items[i].polar_pos.distance;
-			}
-		}//ÕÒÒ»¸ö×î½üµÄÏëÒªµÄ¶«Î÷±àºÅ
+			todo.pop();
+			if ((!todoPrint.empty()) && todoPrint.top().priority % 10 == 2)
+				todoPrint.pop();
+		}
+		num = FindGarbageNum();
 		if (num >= 0)
 		{
-			destination = PolarToXY(info.items[num].polar_pos);
+			todo.push(Thing(CHASE_ITEM, PolarToXY(info.items[num].polar_pos), info.items[num].type));
+			todoPrint.push(Thing(CHASE_ITEM, PolarToXY(info.items[num].polar_pos), info.items[num].type));
 			return 1;
 		}
 		else
 			return 0;
 	}
 }
-void YYX()//ÅÜ¶¾£¬¸øµãËæ»úËã·¨¿ÉÓÅ»¯£¬ÏÖÔÚÓÐµã±©Á¦£¬¸ÄÐ´±ðÍüÁË±ØÐë¸øÄÜµ½´ïµÄµã
-{
-//	BFS finder;
-	/*if (frame <= 210)
-	{
-		inside = 2;
-	}
-	else
-	{
-		inside = 0;
-		if (Dist(info.self.xy_pos, info.poison.current_center) <= info.poison.current_radius * 0.7 + info.poison.next_radius * 0.3)
-			inside++;
-		if (Dist(info.self.xy_pos, info.poison.next_center) <= info.poison.next_radius * 0.95)
-			inside++;
-	}
-	if (inside == 0)
-	{
-		destination = info.poison.current_center;//finder.SearchAccess(info.poison.current_center);//ÐèÒªBFS
-		return;
-	}
-	else if (inside == 1)
-	{
-		destination = info.poison.next_center;//finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
-		return;
-	}
-	else//ÒÔÏÂÎªinside == 2
-	{//½øÀ´Ò»¶¨return
-		seeEnemy = SeeEnemy();
-		collectGarbage = CollectGarbage();
-		if (collectGarbage <= 0)//²»ÏëÈ¥ÕÒÈË/¶«Î÷
-		{
-			if (info.poison.next_radius > 120)//È¦»¹½Ï´ó
-			{
-				if (!(Dist(destination, info.poison.next_center) < 0.8 * info.poison.next_radius && Dist(destination, info.poison.next_center) > 0.1 * info.poison.next_radius && Dist(destination, info.self.xy_pos) < 10.0 && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
-				{
-					//BFS finder;
-					double dx = (double)(rand() % (int)(0.8 * info.poison.next_radius)), dy = (double)(rand() % (int)(0.8 * info.poison.next_radius));
-					destination.x = LimitBound(info.poison.next_center.x + dx);
-					destination.y = LimitBound(info.poison.next_center.y + dy);
-					//destination = finder.SearchAccess(destination);
-				}
-				return;
-			}
-			else
-			{
-				destination = info.poison.next_center;//finder.SearchAccess(info.poison.next_center);//ÐèÒªBFS
-				return;
-			}
-		}
-		else
-			return;
-	}*/
-	if (frame < 5 || info.self.status == ON_PLANE || info.self.status == JUMPING)
-		return;
-	if (frame <= 200)
-	{//½øÀ´Ò»¶¨return
-		inside = 2;
-		seeEnemy = SeeEnemy();
-		if (seeEnemy <= 1)
-			collectGarbage = CollectGarbage();
-		if (collectGarbage <= 0 && seeEnemy <= 1)//²»ÏëÈ¥ÕÒÈË/¶«Î÷
-		{
-			const double radius = 100;
-			XYPosition org;
-			org.x = org.y = 500;
-			if (!(Dist(destination, org) < radius && Dist(destination, org) > 0.6 * radius && Dist(destination, info.self.xy_pos) > 15.0 && Reachable(destination) && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
-			{
-				double dx = (double)(rand() % (int)radius), dy = (double)(rand() % (int)radius);
-				destination.x = LimitBound(org.x + dx);
-				destination.y = LimitBound(org.y + dy);
-			}
-		}
-		return;
-	}//ÒÔÏÂÎªframe>200*/
-	inside = 0;
-	if (frame <= 900)
-	{
-		if (Dist(info.self.xy_pos, info.poison.current_center) <= info.poison.current_radius * 0.7 + info.poison.next_radius * 0.3)
-			inside++;
-		if (Dist(info.self.xy_pos, info.poison.next_center) <= info.poison.next_radius * 0.95)
-			inside++;
-	}
-	else
-	{
-		if (Dist(info.self.xy_pos, info.poison.current_center) <= info.poison.current_radius * 0.6 + info.poison.next_radius * 0.4)
-			inside++;
-		if (Dist(info.self.xy_pos, info.poison.next_center) <= info.poison.next_radius * 0.8)
-			inside++;
-	}//ÒÔÉÏÎª¼ÆËãinside
-	if (inside == 0)
-	{
-		destination = info.poison.current_center;//ÐèÒªBFS
-		return;
-	}
-	else if (inside == 1)
-	{
-		destination = info.poison.next_center;//ÐèÒªBFS
-		return;
-	}
-	else//ÒÔÏÂÎªinside == 2
-	{//½øÀ´Ò»¶¨return
-		seeEnemy = SeeEnemy();
-		collectGarbage = CollectGarbage();
-		if (collectGarbage <= 0)//²»ÏëÈ¥ÕÒÈË/¶«Î÷
-		{
-			if (info.poison.next_radius > 120)//È¦»¹½Ï´ó
-			{
-				if (!(Dist(destination, info.poison.next_center) < 0.8 * info.poison.next_radius && Dist(destination, info.poison.next_center) > 0.1 * info.poison.next_radius && Dist(destination, info.self.xy_pos) < 10.0 && Reachable(destination)))//des²»Âú×ã£¨desÎ»ÓÚµØÍ¼ÖÐÐÄµÄ°ë¾¶Ð¡ÓÚ200ÇÒ´óÓÚ120µÄÔ²»·ÄÚÇÒ¾à×Ô¼ºµÄ¾àÀë´óÓÚ15ÇÒÄÜ×ß£©
-				{
-					double dx = (double)(rand() % (int)(0.8 * info.poison.next_radius)), dy = (double)(rand() % (int)(0.8 * info.poison.next_radius));
-					destination.x = LimitBound(info.poison.next_center.x + dx);
-					destination.y = LimitBound(info.poison.next_center.y + dy);
-				}
-				return;
-			}
-			else
-			{
-				destination = info.poison.next_center;//ÐèÒªBFS
-				return;
-			}
-		}
-		else
-			return;
-	}
-}
 void Heal()
 {
-	if (fabs(info.self.hp_limit - info.self.hp > 5.0))
+	if (frame < 2 || info.self.status == ON_PLANE || info.self.status == JUMPING)
+		return;
+	if (fabs(info.self.hp_limit - info.self.hp >= 15.0) && fabs(info.self.hp_limit - info.self.hp < 65.0))
+	{
+		if ((!todo.empty() && todo.top().type != SHOOT) || todo.empty())//×¢ÒâÕâÀïÊ¹ÓÃµÄÊÇtodoPrint
+		{
+			for (int i = 0; i < info.self.bag.size(); i++)
+			{
+				if (info.self.bag[i].type == 15 && info.self.bag[i].durability > 0)
+				{
+					todo.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0));
+					todoPrint.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0));
+					return;
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < info.self.bag.size(); i++)
+			{
+				if (info.self.bag[i].type == 16 && info.self.bag[i].durability > 0)
+				{
+					todo.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+					todoPrint.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+					return;
+				}
+			}
+			for (int i = 0; i < info.self.bag.size(); i++)
+			{
+				if (info.self.bag[i].type == 15 && info.self.bag[i].durability > 0)
+				{
+					todo.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+					todoPrint.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+					return;
+				}
+			}
+		}
+	}
+	else if (fabs(info.self.hp_limit - info.self.hp >= 65.0))
 	{
 		for (int i = 0; i < info.self.bag.size(); i++)
 		{
-			if (info.self.bag[i].type == 16)
+			if (info.self.bag[i].type == 16 && info.self.bag[i].durability > 0)
 			{
-				if (frame % 8 == 0)
-				{
-					Shoot(info.self.bag[i].type, 0.0, info.player_ID);
-					return;
-				}
+				todo.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+				todoPrint.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+				return;
 			}
-			else if (info.self.bag[i].type == 15)
+		}
+		for (int i = 0; i < info.self.bag.size(); i++)
+		{
+			if (info.self.bag[i].type == 15 && info.self.bag[i].durability > 0)
 			{
-				if (frame % 5 == 0)
-				{
-					Shoot(info.self.bag[i].type, 0.0, info.player_ID);
-					return;
-				}
+				todo.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+				todoPrint.push(Thing(HEAL, info.self.xy_pos, info.self.bag[i].type, 0.0, 100));
+				return;
 			}
 		}
 	}
 }
-/*void File()
+void YYX()//ÅÜ¶¾
 {
-	if (frame <= 1)
+	if (frame < 2 || info.self.status == ON_PLANE || info.self.status == JUMPING)
 		return;
+	inside = InPoison(info.self.xy_pos);
+	if (inside < 2)
+	{
+		todo.push(Thing(RUN, info.poison.next_center));
+		todoPrint.push(Thing(RUN, info.poison.next_center));
+		return;
+	}
+	XYPosition tmp = destination;
+	if (frame <= 200)
+	{
+		XYPosition org;
+		org.x = org.y = 500.0;
+		if (!(Dist(destination, org) < 200.0 && Dist(destination, info.self.xy_pos) > 10.0 && landform[(int)destination.x][(int)destination.y] != 2))//des²»Âú×ã
+		{
+			double alpha = (double)(rand() % 16384) * pi / 8192.0;
+			tmp.x = LimitBound(org.x + 180.0 * cos(alpha));
+			tmp.y = LimitBound(org.y + 180.0 * sin(alpha));
+			tmp = finder.SearchAccess(tmp);
+		}
+	}
+	else if (info.poison.next_radius > 120)//È¦»¹½Ï´ó
+	{
+		if (!(Dist(destination, info.poison.next_center) < 0.75 * info.poison.next_radius && Dist(destination, info.self.xy_pos) > 10.0 && landform[LimitBound((int)destination.x)][LimitBound((int)destination.y)] != 2))//des²»Âú×ã
+		{
+			double alpha = (double)(rand() % 16384) * pi / 8192.0;
+			tmp.x = LimitBound(info.poison.next_center.x + 0.6 * info.poison.next_radius * cos(alpha));
+			tmp.y = LimitBound(info.poison.next_center.y + 0.6 * info.poison.next_radius * sin(alpha));
+			tmp = finder.SearchAccess(tmp);
+		}
+	}
+	else
+	{
+		if (!(Dist(destination, info.poison.next_center) < 0.5 * info.poison.next_radius && Dist(destination, info.self.xy_pos) > 7.0 && landform[LimitBound((int)destination.x)][LimitBound((int)destination.y)] != 2))//des²»Âú×ã
+		{
+			double alpha = (double)(rand() % 16384) * pi / 8192.0;
+			tmp.x = LimitBound(info.poison.next_center.x + 0.5 * info.poison.next_radius * cos(alpha));
+			tmp.y = LimitBound(info.poison.next_center.y + 0.5 * info.poison.next_radius * sin(alpha));
+			tmp = finder.SearchAccess(tmp);
+		}
+	}
+	todo.push(Thing(WANDER, tmp));
+	todoPrint.push(Thing(WANDER, tmp));
+}
+void FprintItem(FILE *fp, ITEM t)
+{
+	switch (t)
+	{
+	case HAND_GUN:
+		fprintf(fp, "    USP    ");
+		break;
+	case SUBMACHINE_GUN:
+		fprintf(fp, "    P90    ");
+		break;
+	case SEMI_AUTOMATIC_RILE:
+		fprintf(fp, "    SKS    ");
+		break;
+	case ASSAULT_RIFLE:
+		fprintf(fp, "    AK47   ");
+		break;
+	case MACHINE_GUN:
+		fprintf(fp, "    M249   ");
+		break;
+	case SNIPER_RILFE:
+		fprintf(fp, "    AWP    ");
+		break;
+	case SNIPER_BARRETT:
+		fprintf(fp, "  Barrett  ");
+		break;
+	case TIGER_BILLOW_HAMMER:
+		fprintf(fp, "   Hammer  ");
+		break;
+	case CROSSBOW:
+		fprintf(fp, " Cross Bow ");
+		break;
+	case VEST_1:
+		fprintf(fp, "   Vest 1  ");
+		break;
+	case VEST_2:
+		fprintf(fp, "   Vest 2  ");
+		break;
+	case VEST_3:
+		fprintf(fp, "   Vest 3  ");
+		break;
+	case INSULATED_CLOTHING:
+		fprintf(fp, "   Vest E  ");
+		break;
+	case MUFFLER:
+		fprintf(fp, "  Muffler  ");
+		break;
+	case BONDAGE:
+		fprintf(fp, "  Bandage  ");
+		break;
+	case FIRST_AID_CASE:
+		fprintf(fp, "  Aid Case ");
+		break;
+	case CODE_CASE:
+		fprintf(fp, "   Code    ");
+		break;
+	case SCOPE_2:
+		fprintf(fp, "  Scope 2  ");
+		break;
+	case SCOPE_4:
+		fprintf(fp, "  Scope 4  ");
+		break;
+	case SCOPE_8:
+		fprintf(fp, "  Scope 8  ");
+		break;
+	default:
+		fprintf(fp, "           ");
+		break;
+	}
+}
+void FprintThing(FILE *fp, Thing a)
+{
+	switch (a.type)
+	{
+	case SHOOT:
+		fprintf(fp, "SHOOT       ");
+		break;
+	case HEAL:
+		fprintf(fp, "HEAL        ");
+		break;
+	case COLLECT:
+		fprintf(fp, "COLLECT     ");
+		break;
+	case CHASE_ENEMY:
+		fprintf(fp, "CHASE_ENEMY ");
+		break;
+	case RUN:
+		fprintf(fp, "RUN         ");
+		break;
+	case CHASE_ITEM:
+		fprintf(fp, "CHASE_ITEM  ");
+		break;
+	case WANDER:
+		fprintf(fp, "WANDER      ");
+		break;
+	}
+	fprintf(fp, "%5.1f    %5.1f    %5.1f    ", a.destination.x, a.destination.y, a.ang);
+	FprintItem(fp, a.item);
+	fprintf(fp, "    %d      %2d", a.id, a.priority);
+}
+void File()
+{
+	int tfs = clock();
 	FILE *fp;
 	char round[100];
+	static int first = 0;
+	if (frame == 0)
+		return;
 	switch (info.self.vocation)
 	{
 	case MEDIC:
-		sprintf(round, "C:\\Users\\123\\Desktop\\medic\\%d.txt", frame);
+		sprintf(round, "C:\\Users\\123\\Desktop\\%dmedic%d.txt", info.player_ID, info.player_ID / 4 + 1);
 		break;
 	case HACK:
-		sprintf(round, "C:\\Users\\123\\Desktop\\hack\\%d.txt", frame);
+		sprintf(round, "C:\\Users\\123\\Desktop\\%dhack%d.txt", info.player_ID, info.player_ID / 4 + 1);
 		break;
 	case SIGNALMAN:
-		sprintf(round, "C:\\Users\\123\\Desktop\\signalman\\%d.txt", frame);
+		sprintf(round, "C:\\Users\\123\\Desktop\\%dsignalman%d.txt", info.player_ID, info.player_ID / 4 + 1);
 		break;
-	case SNIPER:
-		sprintf(round, "C:\\Users\\123\\Desktop\\sniper\\%d.txt", frame);
+	default://case SNIPER:
+		sprintf(round, "C:\\Users\\123\\Desktop\\%dsniper%d.txt", info.player_ID, info.player_ID / 4 + 1);
 		break;
 	}
-	fp = fopen(round, "w");
-	fprintf(fp, "frame:  %5d,  %3d,  %2d,  %2d,  %3d\n", frame, delay, seeEnemy, collectGarbage, path.size());
-	fprintf(fp, "Heal:%6.1f /%6.1f  Pos :%6.1f ,%6.1f\n", info.self.hp, info.self.hp_limit, info.self.xy_pos.x, info.self.xy_pos.y);
-	fprintf(fp, "Cen :%6.1f ,%6.1f  Next:%6.1f ,%6.1f\n", info.poison.current_center.x, info.poison.current_center.y, info.poison.next_center.x, info.poison.next_center.y);
-	fprintf(fp, "Rad :%6.1f ,%6.1f  Rest:%6d ", info.poison.current_radius, info.poison.next_radius, info.poison.rest_frames);
-	if (info.poison.move_flag == 3)
-		fprintf(fp, "to point \n");
-	if (info.poison.move_flag == 2)
-		fprintf(fp, "to move  \n");
-	else if (info.poison.move_flag == 1)
-		fprintf(fp, "to finish\n");
+	if (first == 0)
+	{
+		first = 1;
+		fp = fopen(round, "w");
+	}
 	else
-		fprintf(fp, "to start \n");
-	fprintf(fp, "Ang :%6.1f ,%6.1f  Stat: %d  ", info.self.move_angle, info.self.view_angle, inside);
+		fp = fopen(round, "a+");
+	fprintf(fp, "f=%d, enmey:%d, garbage:%d, path:%lu, delay:%d, follow:%d, hurt:%d, heal:%d, stop:%d\n", frame, seeEnemy, collectGarbage, path.size(), delay, follow, totalHurt, totalHeal, isStop);
+	fprintf(fp, "Heal:%6.1f /%6.1f  Pos :%6.3f %6.3f\n", info.self.hp, info.self.hp_limit, info.self.xy_pos.x, info.self.xy_pos.y);
+	fprintf(fp, "Cen :%6.1f ,%6.1f  Next:%6.1f ,%6.1f           ", info.poison.current_center.x, info.poison.current_center.y, info.poison.next_center.x, info.poison.next_center.y);
+	int xx = (int)info.self.xy_pos.x, yy = (int)info.self.xy_pos.y;
+	int xmin = LimitBound(xx - 2), xmax = LimitBound(xx + 2), y = LimitBound(yy + 2);
+	for (int i = xmin; i <= xmax; i++)
+		fprintf(fp, "%d  ", landform[i][y]);
+	y = LimitBound(yy + 1);
+	fprintf(fp, "\nRad :%6.1f ,%6.1f  Rest:%6d ", info.poison.current_radius, info.poison.next_radius, info.poison.rest_frames);
+	if (info.poison.move_flag == 3)
+		fprintf(fp, "to point          ");
+	if (info.poison.move_flag == 2)
+		fprintf(fp, "to move           ");
+	else if (info.poison.move_flag == 1)
+		fprintf(fp, "to finish         ");
+	else
+		fprintf(fp, "to start          ");
+	for (int i = xmin; i <= xmax; i++)
+		fprintf(fp, "%d  ", landform[i][y]);
+	y = LimitBound(yy);
+	fprintf(fp, "\nAng :%6.1f ,%6.1f  Stat:%6d     ", info.self.move_angle, info.self.view_angle, inside);
 	switch (info.self.status)
 	{
 	case RELAX:
-		fprintf(fp, "Relax"); break;
+		fprintf(fp, "Relax         "); break;
 	case ON_PLANE:
-		fprintf(fp, "Fly  "); break;
+		fprintf(fp, "Fly           "); break;
 	case JUMPING:
-		fprintf(fp, "Jump "); break;
+		fprintf(fp, "Jump          "); break;
 	case MOVING:
-		fprintf(fp, "Move "); break;
+		fprintf(fp, "Move          "); break;
 	case SHOOTING:
-		fprintf(fp, "Shoot"); break;
+		fprintf(fp, "Shoot         "); break;
 	case MOVING_SHOOTING:
-		fprintf(fp, "Mv&St"); break;
+		fprintf(fp, "Mv&St         "); break;
 	case DEAD:
-		fprintf(fp, "Dying"); break;
+		fprintf(fp, "Dying         "); break;
 	case REAL_DEAD:
-		fprintf(fp, "Dead "); break;
+		fprintf(fp, "Dead          "); break;
 	}
-	fprintf(fp, "\nToCr:%6.1f ,%6.1f  Want:", Dist(info.self.xy_pos, info.poison.current_center) - info.poison.current_radius, Dist(info.self.xy_pos, info.poison.next_center) - info.poison.next_radius);
-	if (wantMove)
-		fprintf(fp, "Move  ");
-	if (wantShoot)
-		fprintf(fp, "Shoot ");
-	fprintf(fp, "\nDest:%6.1f ,%6.1f  Dist:%6.1f\n", destination.x, destination.y, Dist(info.self.xy_pos, destination));
-	fprintf(fp, "Shrk:%6.1f ,%6.1f  ", shrink.x, shrink.y);
-	if (path.size() > 0)
-		fprintf(fp, "Pace:%6.3lf ,%6.3lf", path[0].x - info.self.xy_pos.x, path[0].y - info.self.xy_pos.y);
-	for (int i = 1; i < ITEM_SZ; i++)//Demand
+	for (int i = xmin; i <= xmax; i++)
+		fprintf(fp, "%d  ", landform[i][y]);
+	y = LimitBound(yy - 1);
+	fprintf(fp, "\nToCr:%6.1f ,%6.1f  Dest:%6.1f ,%6.1f           ", Dist(info.self.xy_pos, info.poison.current_center) - info.poison.current_radius, Dist(info.self.xy_pos, info.poison.next_center) - info.poison.next_radius, destination.x, destination.y);
+	for (int i = xmin; i <= xmax; i++)
+		fprintf(fp, "%d  ", landform[i][y]);
+	y = LimitBound(yy - 2);
+	fprintf(fp, "\nShrk:%6.1f ,%6.1f  Dist:%6.1f                   ", shrink.x, shrink.y, Dist(info.self.xy_pos, destination));
+	for (int i = xmin; i <= xmax; i++)
+		fprintf(fp, "%d  ", landform[i][y]);
+	fprintf(fp, "\nPace:%6.3lf ,%6.3lf  IdAg:%6.1f ,%6.1f", pace.x, pace.y, AngleLimit(idealMove + nowViewAng), AngleLimit(nowViewAng + idealView));
+	fprintf(fp, "\nAtCd:%3d ,MvCd:%3d", info.self.attack_cd, info.self.move_cd);
+	fprintf(fp, "\nMyPc:%6.4f ,%6.4f  EnPc:%6.4f ,%6.4f", myPace.x, myPace.y, enemyPace.x, enemyPace.y);
+	fprintf(fp, "\nPredictPos:%6.3f ,%6.3f  gras:%6.1f ,%6.1f", info.self.xy_pos.x + myPace.x, info.self.xy_pos.y + myPace.y, grassPos.x, grassPos.y);
+	int fst = 0;
+	for (int i = 0; i < info.others.size(); i++)
+		if ((!IsFriend(info.others[i].player_ID)) && info.others[i].status != DEAD && info.others[i].status != REAL_DEAD)
+		{
+			if (fst == 0)
+			{
+				fst = 1;
+				fprintf(fp, "\n---------------------------------------------------------------------------------\n");
+				fprintf(fp, "num,   speed,  moveAng,   viewAng,     dist,       x,         y,         id");
+			}
+			fprintf(fp, "\nenemy:%5.1f, %9.3f, %9.3f, %9.3f, %9.3f, %9.3f, %7d", info.others[i].move_speed, info.others[i].move_angle,
+				AngleLimit(info.self.view_angle + info.others[i].polar_pos.angle), info.others[i].polar_pos.distance,
+				PolarToXY(info.others[i].polar_pos, false).x, PolarToXY(info.others[i].polar_pos, false).y, info.others[i].player_ID);
+		}
+	fst = 0;
+	fprintf(fp, "\npath: ");
+	for (int i = 0; i < Min(6, (int)path.size()); i++)
+		fprintf(fp, "%d:%5.1f, %5.1f ", i, path[i].x, path[i].y);
+	fprintf(fp, "\nchange: ");
+	for (int i = 0; i < change.size(); i++)
 	{
-		if ((i - 1) % 5 == 0)
+		fprintf(fp, "\n%d: %5.1f, %5.1f  ", i + 1, change[i].pos.x, change[i].pos.y);
+		FprintItem(fp, change[i].type);
+	}
+	for (int i = 1; i < ITEM_SZ; i++)
+		if (durability[i] > 0)
+		{
+			if (fst == 0)
+			{
+				fst = 1;
+				fprintf(fp, "\n---------------------------------------------------------------------------------");
+			}
 			fprintf(fp, "\n");
-		if (demandPercent[i] > 0)
-			fprintf(fp, "%3d%%   ", demandPercent[i]);
-		else
-			fprintf(fp, "---%%   ");
-	}
-	int xx = DoubleToInt(info.self.xy_pos.x), yy = DoubleToInt(info.self.xy_pos.y), r = 1;
-	int xmin = LimitBound(xx - r), xmax = LimitBound(xx + r), ymin = LimitBound(yy - r), ymax = LimitBound(yy + r);
-	for (int j = ymax; j >= ymin; j--)
+			FprintItem(fp, (ITEM)i);
+			fprintf(fp, "  %8d   %10d%%", durability[i], (100 * durability[i]) / ITEM_DATA[i].durability);
+		}
+	fst = 0;
+	while (!todoPrint.empty())
 	{
-		fprintf(fp, "\n");
-		for (int i = xmin; i <= xmax; i++)
-			fprintf(fp, "%d  ", landform[i][j]);
+		if (fst == 0)
+		{
+			fst = 1;
+			fprintf(fp, "\n---------------------------------------------------------------------------------\n");
+			fprintf(fp, " type         x        y       ang         item      id      prio\n");
+		}
+		FprintThing(fp, todoPrint.top());
+		if (sucTodo1 == todoPrint.top() || sucTodo2 == todoPrint.top())
+			fprintf(fp, "       Execute\n");
+		else
+			fprintf(fp, "\n");
+		todoPrint.pop();
 	}
-	fprintf(fp, "\n\n\n");
+	if (sucTodo1.type == CHASE_ITEM)
+	{
+		sucTodo1.priority = 10 * (int)sucTodo1.type + 2;
+		todoPrint.push(sucTodo1);
+	}
+	if (sucTodo2.type == CHASE_ITEM)
+	{
+		sucTodo2.priority = 10 * (int)sucTodo2.type + 2;
+		todoPrint.push(sucTodo2);
+	}
+	if (sucTodo1.type == CHASE_ENEMY)
+	{
+		sucTodo1.priority = 10 * (int)sucTodo1.type + 5;
+		todoPrint.push(sucTodo1);
+	}
+	if (sucTodo2.type == CHASE_ENEMY)
+	{
+		sucTodo2.priority = 10 * (int)sucTodo2.type + 5;
+		todoPrint.push(sucTodo2);
+	}
+	static XYPosition t1, t2, predict;
+	if (frame == 0)
+	{
+		t1.x = t1.y = t2.x = t2.y = 0.0;
+		predict = info.self.xy_pos;
+	}
+	if (info.self.status != DEAD && info.self.status != REAL_DEAD && DoubleEqual(t1.x, info.self.xy_pos.x, 0.1)
+		&& DoubleEqual(t1.y, info.self.xy_pos.y, 0.1) && DoubleEqual(t2.x, info.self.xy_pos.x, 0.1)
+		&& DoubleEqual(t2.y, info.self.xy_pos.y, 0.1) && DoubleEqual(t1.x, t2.x, 0.1) && DoubleEqual(t1.y, t2.y, 0.1))
+	{
+		if (info.self.status == SHOOTING)
+			fprintf(fp, "ShootStuck!!!!\n");
+		else
+			fprintf(fp, "RealStuck!!!!\n");
+	}
+	fprintf(fp, "PreL:%4.2f, delta:%4.2f, ReaL%4.2f\n", Dist(predict, t1), Dist(predict, info.self.xy_pos), Dist(t1, info.self.xy_pos));
+	if (info.self.status != DEAD && info.self.status != REAL_DEAD && info.self.status != JUMPING && info.self.status != ON_PLANE && info.self.status != RELAX && Dist(info.self.xy_pos, predict) >= 0.08)
+		fprintf(fp, "predictLost!\n");
+	t2 = t1;
+	t1 = info.self.xy_pos;
+	predict.x = info.self.xy_pos.x + myPace.x;
+	predict.y = info.self.xy_pos.y + myPace.y;
+	if (delay > 20)
+		fprintf(fp, "TimeDanger!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	tfs = clock() - tfs;
+	if (tfs + delay > 40)
+		fprintf(fp, "%d RealTimeDanger!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", tfs + delay);
+	fprintf(fp, "\n========================================================================================================\n");
 	fclose(fp);
-}*/
+}
+XYPosition Grass()//·µ»Ø-1£¬-1»òÈ¦ÄÚµÄ×î½ü²Ý´ÔÎ»ÖÃ
+{
+	XYPosition center, tmp;//center´æ´¢×î½üµÄ²Ý´ÔÖÐÐÄÎ»ÖÃ
+	center.x = center.y = -1.0;
+	double distMin = 150.0;//×îÔ¶¼ì²â¾àÀë×Ô¼º150¾àÀëÄÚµÄ²Ý´Ô
+	if (!((frame > 200 && totalHurt >= 1000 && totalHeal >= 50) || (frame > 540 && totalHurt >= 300) || (frame > 1080 && totalHurt >= 200)))//²»Âú×ã¶×²Ý´ÔÌõ¼þ
+		return XYPosition{ -1.0, -1.0 };
+	for (int y = 9; y >= 0; y--)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			AREA blockType = MAP[y * 10 + x];
+			double offsetx = (double)x * 100.0, offsety = (double)y * 100.0;
+			if (blockType != GRASS && blockType != FARMLAND)
+				continue;
+			for (int i = 0; i < AREA_DATA[blockType].size(); i++)
+			{
+				if (AREA_DATA[blockType][i].type == RECTANGLE_GRASS)
+				{
+					tmp.x = offsetx + (double)(AREA_DATA[blockType][i].x0 + AREA_DATA[blockType][i].x1) * 0.5;
+					for (int yy = 15; yy < 90; yy += 10)
+					{
+						tmp.y = offsety + (double)yy;//³¤Ìõ²ÝµØ·Ö³ÉËÄ¸ñ£¬³¤Ìõ²ÝµØ´Ó10µ½90
+						if (Dist(info.self.xy_pos, tmp) < distMin && InPoison(tmp) == 2)
+						{
+							distMin = Dist(info.self.xy_pos, tmp);
+							center = tmp;
+						}
+					}
+				}
+				else if (AREA_DATA[blockType][i].type == CIRCLE_GRASS)
+				{
+					tmp.x = offsetx + (double)AREA_DATA[blockType][i].x0;
+					tmp.y = offsety + (double)AREA_DATA[blockType][i].y0;
+					if (Dist(info.self.xy_pos, tmp) < distMin && InPoison(tmp) == 2)
+					{
+						distMin = Dist(info.self.xy_pos, tmp);
+						center = tmp;
+					}
+				}
+			}
+		}
+	}
+	if (center.x >= 0.0 && center.x <= 999.0 && center.y >= 0.0 && center.y <= 999.0)//¶×²Ý´Ô
+	{
+		if (Dist(info.self.xy_pos, center) < 2.4 && InPoison(info.self.xy_pos) == 2)
+			isStop = 1;
+		else
+		{
+			Thing tmpt(RUN, center);
+			tmpt.priority = 10 * (int)tmpt.type + 8;
+			todo.push(tmpt);
+			todoPrint.push(tmpt);
+		}
+	}
+	return center;
+}
 void play_game()
 {
-	update_info();
-	Initial();
+	bool printLog = 0;
+	parachutePos = 0;
+	delay = clock();
+	Initial(SIGNALMAN);
 	Demand();
+	seeEnemy = SeeEnemy();
+	collectGarbage = CollectGarbage();
 	YYX();
-	MoveToDes();
 	Heal();
+	//grassPos = Grass();
+	Do();
+	delay = clock() - delay;
+	if (printLog)
+		File();
+	else
+		while (!todoPrint.empty())
+			todoPrint.pop();
 }

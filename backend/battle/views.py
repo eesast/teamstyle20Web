@@ -11,6 +11,7 @@ from battle.models import Room, Queue
 root_path=os.getcwd()
 AI_IND = 1000
 is_final = True
+time_limits = 65   #minutes   just for finals
 AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修改
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
@@ -91,7 +92,19 @@ final_list = [30,37,39,40,42,45,50,51,52,54,58,60,64,68,70,71]
 def start_finals():
     room_size=len(Room.objects.all())
     if(room_size!=0):
-        return HttpResponse('Running!')
+        now = datetime.datetime.utcnow()
+        room=Room.objects.all()[0]
+        battle_id=room.battle_id
+        battle=Battle.objects.get(id=battle_id)
+        t=battle.start_time
+        t=t.replace(tzinfo=None)
+        minu=(now-t).total_seconds()/60
+        if minu > time_limits:
+            battle.status=3
+            battle.save()
+            room.delete()
+        else:
+            return HttpResponse('Has been running for %d minutes; time_limits:%d'%(minu,time_limits))
     team_engaged = []
     for i in final_list:
         team_engaged.append(i)

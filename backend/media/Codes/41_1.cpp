@@ -1,11 +1,12 @@
-#include "api.h"
+
 #include "base.h"
+#include "api.h"
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
 #include <cmath>
 #define pi 3.1415926535
-#pragma warning (disable:0145)
+
 using namespace ts20;
 
 extern XYPosition start_pos, over_pos;
@@ -42,10 +43,10 @@ void go_into_circle()
 	double deltay = abs(info.self.xy_pos.y - info.poison.current_center.y);
 	double r = info.poison.current_radius;
 	if (deltax * deltax + deltay * deltay >= 0.5*r*r)
-	{ 
-		Move_dir(info.poison.current_center, info.self.view_angle);
+	{
+		Move_rect(info.poison.current_center);
 	}
-} 
+}
 void play_game()
 {
 	/* Your code in this function */
@@ -67,8 +68,12 @@ void play_game()
 	{
 		srand(time(nullptr) + info.player_ID*frame);
 	}
-
-	Item weapon;
+	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
+	{
+		std::cout << "jumping" << std::endl;
+		return;
+	}
+	Item weapon = info.self.bag[0] ;
 	double damage2 = 0;
 	int j = 0;
 	for (int i = 0; i < info.self.bag.size(); ++i)
@@ -82,29 +87,34 @@ void play_game()
 			}
 		}
 	}
-	if (info.self.status == ON_PLANE || info.self.status == JUMPING)
+	Item aidkit;
+	for (int i = 0; i < info.self.bag.size(); i++)
 	{
-		std::cout << "jumping" << std::endl;
-		return;
-	}
+		if (info.self.bag[i].durability > 0 && (info.self.bag[i].type == BONDAGE || info.self.bag[i].type == FIRST_AID_CASE))
+		{
+			aidkit = info.self.bag[i];
+		}
+	}	
+	if (info.self.hp_limit - info.self.hp >= 50)
+	{
+		if (aidkit.type == BONDAGE || aidkit.type == FIRST_AID_CASE)
+		{
+			shoot(aidkit.type, 0, -1);
+		}
+	}	
 	if (abs(former_position.x - info.self.xy_pos.x) <= 0.1&&abs(former_position.y - info.self.xy_pos.y) <= 0.1&&info.self.status != PICKUP)
 	{
-		;
 		move(90, 90);
 	}
 	else
 	{
 		if (info.others.empty())
 		{
-			std::cout << "no others" << std::endl;
 			if (info.items.empty())
 			{
-				//see nothing
 				if (info.self.status != MOVING)
 				{
-
 					go_into_circle();
-					std::cout << "move" << info.self.move_angle << std::endl;
 				}
 			}
 			else
@@ -120,12 +130,12 @@ void play_game()
 				}
 				std::cout << "status" << info.self.status << std::endl;
 				std::cout << "**closest item angle" << closest_item.polar_pos.angle << "distance" << closest_item.polar_pos.distance << "**" << std::endl;
-				if (closest_item.polar_pos.distance < 1 || info.self.bag.size() < 8)
+				if (closest_item.polar_pos.distance < 1 && closest_item.polar_pos.angle <= 300 )
 				{
 					pickup(closest_item.item_ID);
-					std::cout << "try pickup" << closest_item.item_ID << std::endl;
+					std::cout << "try pickup" << closest_item.type << std::endl;
 				}
-				else if (info.self.status != MOVING)
+				else if (info.self.status != MOVING || info.self.status != MOVING_SHOOTING)
 				{
 					move(closest_item.polar_pos.angle, closest_item.polar_pos.angle);
 					std::cout << "move" << closest_item.polar_pos.angle << std::endl;
@@ -159,21 +169,11 @@ void play_game()
 			{
 				if (closest_enemy.polar_pos.distance > ITEM_DATA[weapon.type].range)
 				{
-
 					move(closest_enemy.polar_pos.angle, 0);
-
 				}
 				else if (info.self.bag[j].durability > 0)
 				{
 					shoot(weapon.type, closest_enemy.polar_pos.angle);
-				}
-				else
-				{
-					weapon.type = FIST;
-					if (info.self.status != PICKUP || info.self.status != MOVING || info.self.status != MOVING_SHOOTING)
-					{
-						go_into_circle();
-					}
 				}
 			}
 		}
