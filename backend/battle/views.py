@@ -90,6 +90,9 @@ def debug_add_team(request):
 final_list = [30,37,39,40,42,45,50,51,52,54,58,60,64,68,70,71]
 
 def start_finals():
+# NOTE: final is ended
+    return
+#
     room_size=len(Room.objects.all())
     if(room_size!=0):
         now = datetime.datetime.utcnow()
