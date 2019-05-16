@@ -200,6 +200,7 @@ def append_team_member_name(user_info, query, showtype_Input=0):
         thisTeamInfo = team.get_teamInfo(showtype)
         thisTeamInfo["members"] = list()
         thisTeamInfo["membersName"] = list()
+        thisTeamInfo["captainName"] = ''
         try:
             for member in thisTeamInfo["membersID"]:
                 get_name_URL = 'https://api.eesast.com/v1/users/' + str(member)
