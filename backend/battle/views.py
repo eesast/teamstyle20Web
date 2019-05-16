@@ -10,6 +10,7 @@ from battle.models import Room, Queue
 
 root_path=os.getcwd()
 AI_IND = 1000
+is_final = True
 AI_path=root_path+'/media/Codes/robot/robot.so'  # NOTE:记得在服务器上修改
 so_path = root_path+'/media/Codes/output' # 用户编译好后的文件夹
 codes_path = root_path+'/media/Codes'     # 用户代码文件夹
@@ -90,7 +91,7 @@ final_list = [30,37,39,40,42,45,50,51,52,54,58,60,64,68,70,71]
 def start_finals():
     room_size=len(Room.objects.all())
     if(room_size!=0):
-        return HttpResponse('room_num is not zero')
+        return HttpResponse('Running!')
     team_engaged = []
     for i in final_list:
         team_engaged.append(i)
@@ -147,9 +148,6 @@ def start_finals():
     return HttpResponse('Successful!')
         
 def start_finals_trig(request):
-    a=len(Room.objects.all())
-    if a>=1:
-        return HttpResponse('Running!')
     return start_finals()
 
 def run_battle():
@@ -179,9 +177,8 @@ def add_battle(request):
     ''' 用于添加对战 '''
     # TODO:改成POST?
 
-    # NOTE for finals
-    return HttpResponse('Final!', status=406)
-    # end for finals
+    if is_final:
+        return HttpResponse('Final!', status=406)
 
     if request.method!='GET':
         return HttpResponse('Not GET!', status=406)
@@ -352,7 +349,10 @@ def end_battle(request):
         team.battle_time += 1
         team.save()
         battle.save()
-        run_battle()
+        if is_final:
+            start_finals()
+        else:
+            run_battle()
         return HttpResponse('Battle Error!')
     result=open(data_path+'/%d/%s'%(battle_id,json_name)).read()
     result=json.loads(result)
@@ -374,8 +374,10 @@ def end_battle(request):
 
     battle.save()
     update_rank()
-#run_battle() NOTE  for finals
-    start_finals()
+    if is_final:
+        start_finals()
+    else:
+        run_battle()
     return HttpResponse('End battle successfully!')
 
 def compile(request):
