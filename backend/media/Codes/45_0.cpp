@@ -2457,8 +2457,8 @@ void play_game()
 		if (frame == 0)//第零帧的时候，跳伞
 		{
 			srand(time(nullptr) + 100 * TEAM_INDEX + 1000 * AI_VOCATION);
-			//landing_point = { 570,590 };
-			landing_point = { (double)(400 + rand() % 200),(double)(200 + rand() % 200) };//需要随机降落就不注释这一句，不需要随机降落就注释这一句
+			landing_point = { 470,580 };
+			//landing_point = { (double)(400 + rand() % 200),(double)(600 + rand() % 200) };//需要随机降落就不注释这一句，不需要随机降落就注释这一句
 			parachute((VOCATION)AI_VOCATION, landing_point);
 			lastEnemy.player_ID = -1;//初始化lastEnemy
 			return;
