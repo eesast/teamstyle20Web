@@ -276,6 +276,8 @@ def is_AI(team_id):
 
 def view_result(request):
     ''' 查询对战结果，传入battle_id，返回一个JSON '''
+    if is_final:
+        start_finals()
     update_rank()
     if request.method!='GET':
         return HttpResponse('Not GET!', status=406)

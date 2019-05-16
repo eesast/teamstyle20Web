@@ -146,8 +146,11 @@ void walk(std::ofstream &fout, PolarPosition polar, double view_angle = NAN)
 		const std::vector<block> &_block = dst_landform == CITY ? _CITY : AREA_DATA[dst_landform];
 		for (auto &a : _block)
 		{
-			if (a.type == SHALLOW_WATER || a.type == CIRCLE_GRASS || a.type == RECTANGLE_GRASS)
+			if (a.type == CIRCLE_GRASS || a.type == RECTANGLE_GRASS)
 				continue;
+			if (a.type == SHALLOW_WATER)
+				if (polar.angle < 20 || polar.angle > 340)
+					continue;
 			if (a.shape == CIRCLE && hypot(_x - a.x0, _y - a.y0) < a.r + _r + 0.1)
 			{
 				fout << "DEBUG _ Point 6" << std::endl;
