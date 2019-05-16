@@ -199,6 +199,7 @@ def append_team_member_name(user_info, query, showtype_Input=0):
             showtype = int(showtype_Input >= 1)
         thisTeamInfo = team.get_teamInfo(showtype)
         thisTeamInfo["members"] = list()
+        thisTeamInfo["membersName"] = list()
         try:
             for member in thisTeamInfo["membersID"]:
                 get_name_URL = 'https://api.eesast.com/v1/users/' + str(member)
@@ -208,8 +209,10 @@ def append_team_member_name(user_info, query, showtype_Input=0):
                 assert type(query_result) is dict, 500
                 assert 'name' in query_result, 500
                 thisTeamInfo["members"].append(query_result["username"])
+                thisTeamInfo["membersName"].append(query_result["name"])
                 if str(member) == str(thisTeamInfo["captainID"]):
                     thisTeamInfo["captain"] = query_result["username"]
+                    thisTeamInfo["captainName"].append(query_result["name"])
         except AssertionError:
             thisTeamInfo["captain"] = thisTeamInfo["captainID"]
             thisTeamInfo["members"] = thisTeamInfo["membersID"]
