@@ -213,7 +213,7 @@ def append_team_member_name(user_info, query, showtype_Input=0):
                 thisTeamInfo["membersName"].append(query_result["name"])
                 if str(member) == str(thisTeamInfo["captainID"]):
                     thisTeamInfo["captain"] = query_result["username"]
-                    thisTeamInfo["captainName"].append(query_result["name"])
+                    thisTeamInfo["captainName"] = query_result["name"]
         except AssertionError:
             thisTeamInfo["captain"] = thisTeamInfo["captainID"]
             thisTeamInfo["members"] = thisTeamInfo["membersID"]
